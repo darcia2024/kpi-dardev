@@ -115,6 +115,51 @@
         </div>
       </div>
 
+      <!-- Komitmen Kerahasiaan Data -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row">
+          <div class="card-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            Komitmen Kerahasiaan Data KPI
+          </div>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px;">
+          Data internal organisasi adalah amanah. Rancangan ini dibuat agar yang rahasia tetap rahasia, dan kuncinya hanya dipegang oleh KPI, bukan oleh pengembang.
+        </p>
+
+        <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">Jaminan yang dibangun ke dalam sistem</div>
+        <ul class="pillar-items-list">
+          <li class="pillar-item">
+            <strong>Kunci PIN dipegang KPI</strong>
+            Dokumen rahasia hanya terbuka dengan PIN yang ditentukan dan disimpan sendiri oleh tim KPI. Pengembang tidak menyimpan, melihat, atau dapat memulihkan PIN itu.
+          </li>
+          <li class="pillar-item">
+            <strong>Pemisahan peran yang tegas</strong>
+            Mengelola kode dan tampilan bukan berarti berhak membuka isi dokumen. Akun pengembang tidak diberi akses ke konten berklasifikasi tinggi.
+          </li>
+          <li class="pillar-item">
+            <strong>Klasifikasi berjenjang</strong>
+            Setiap dokumen diberi label kerahasiaan, dari Umum sampai Sangat Rahasia. Makin tinggi klasifikasinya, makin sempit siapa yang boleh membukanya.
+          </li>
+          <li class="pillar-item">
+            <strong>Catatan akses permanen</strong>
+            Setiap pembukaan dan pengunduhan dokumen sensitif tercatat, dan tidak dapat diubah atau dihapus oleh siapa pun, termasuk pengembang dan admin.
+          </li>
+          <li class="pillar-item">
+            <strong>Penyimpanan terenkripsi</strong>
+            Berkas rahasia disimpan dalam keadaan terkunci, dan tautan aksesnya selalu punya batas waktu.
+          </li>
+          <li class="pillar-item">
+            <strong>Serah terima penuh</strong>
+            Setelah selesai, seluruh kata sandi, kunci, dan hak admin diserahkan sepenuhnya kepada KPI, lalu akses pengembang dicabut.
+          </li>
+        </ul>
+
+        <p style="font-size: 12.5px; color: var(--text-tertiary); line-height: 1.6; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--hairline);">
+          Rancangan ini sengaja dibuat untuk bisa diperiksa. Tim KPI dipersilakan mengaudit hak akses dan catatan aktivitas kapan saja.
+        </p>
+      </div>
+
       <!-- UX0 - UX8 Timeline -->
       <div class="card" style="margin-bottom: var(--space-24);">
         <div class="card-header-row">
