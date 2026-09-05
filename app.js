@@ -1,8 +1,9 @@
 /**
  * Rancangan UI/UX & Pengerjaan Website KPI PPMI Mesir
  * Interactive Core Application Engine
+ * Dirancang & dikembangkan oleh Dar Dev
  * Tanggal: 5 September 2026
- * Diperkaya dengan 13 Dokumen Spesifikasi Sumber (Downloads/*.docx)
+ * Diperkaya dengan 13 Dokumen Spesifikasi Sumber
  */
 
 // --- 1. DATA MASTER: 61 LAYAR (PETA LENGKAP & RELASI ENTITAS DB) ---
@@ -284,17 +285,17 @@ function initScreenCatalog() {
 
     tableBody.innerHTML = filtered.map(screen => `
       <tr>
-        <td><span class="screen-code-tag" onclick="openScreenModal('${screen.id}')">${screen.id}</span></td>
-        <td>
+        <td data-label="Kode"><span class="screen-code-tag" onclick="openScreenModal('${screen.id}')">${screen.id}</span></td>
+        <td data-label="Nama Halaman">
           <strong style="display: block; font-size: 13.5px; color: var(--text-primary); cursor: pointer;" onclick="openScreenModal('${screen.id}')">${screen.name}</strong>
           <span style="font-size: 11.5px; color: var(--text-tertiary);">${screen.category}</span>
         </td>
-        <td><span class="badge badge-neutral">${screen.role}</span></td>
-        <td style="max-width: 320px;">${screen.purpose}</td>
-        <td style="max-width: 300px; font-size: 12.5px; color: var(--text-secondary);">${screen.controls}</td>
-        <td>
-          <code style="font-size: 11px; background: var(--surface-secondary); padding: 2px 6px; border-radius: 4px; display: block; margin-bottom: 4px;">${screen.source}</code>
-          <span style="font-size: 10.5px; color: var(--accent); font-family: var(--font-mono);">${screen.db}</span>
+        <td data-label="Untuk Peran"><span class="badge badge-neutral">${screen.role}</span></td>
+        <td data-label="Untuk Apa" style="max-width: 320px;">${screen.purpose}</td>
+        <td data-label="Aturan & Batas Akses" style="max-width: 300px; font-size: 12.5px; color: var(--text-secondary);">${screen.controls}</td>
+        <td data-label="Sumber & Data">
+          <code style="font-size: 11px; background: var(--surface-secondary); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 4px;">${screen.source}</code>
+          <span style="font-size: 10.5px; color: var(--accent); font-family: var(--font-mono); display: block;">${screen.db}</span>
         </td>
       </tr>
     `).join('');
@@ -969,11 +970,11 @@ function initErdExplorer() {
     const filtered = domain === 'ALL' ? DATABASE_ENTITIES : DATABASE_ENTITIES.filter(e => e.domain === domain);
     tableBody.innerHTML = filtered.map(e => `
       <tr>
-        <td><strong style="font-family: var(--font-mono); color: var(--accent); font-size: 13px;">${e.table}</strong></td>
-        <td><span class="badge badge-neutral">${e.domain}</span></td>
-        <td><code style="font-size: 11.5px;">${e.pk}</code></td>
-        <td style="font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); max-width: 380px;">${e.fields}</td>
-        <td style="font-size: 12.5px; color: var(--text-primary);">${e.desc}</td>
+        <td data-label="Nama Tabel"><strong style="font-family: var(--font-mono); color: var(--accent); font-size: 13px;">${e.table}</strong></td>
+        <td data-label="Kelompok"><span class="badge badge-neutral">${e.domain}</span></td>
+        <td data-label="Nomor Identitas"><code style="font-size: 11.5px;">${e.pk}</code></td>
+        <td data-label="Kolom Utama" style="font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); max-width: 380px;">${e.fields}</td>
+        <td data-label="Untuk Apa" style="font-size: 12.5px; color: var(--text-primary);">${e.desc}</td>
       </tr>
     `).join('');
   }
