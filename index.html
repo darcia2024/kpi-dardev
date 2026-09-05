@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161618" media="(prefers-color-scheme: dark)">
+  <title>Rancangan UI/UX & Pengerjaan Website KPI PPMI Mesir</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Topbar Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-section">
+        <div class="brand-logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 44 50" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="kpiShield" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#E4232B"/>
+                <stop offset="0.55" stop-color="#C4161C"/>
+                <stop offset="1" stop-color="#7C1417"/>
+              </linearGradient>
+            </defs>
+            <path d="M9 4Q4 4 4 9L4 23C4 36 11 44 22 47C33 44 40 36 40 23L40 9Q40 4 35 4Z" fill="url(#kpiShield)"/>
+            <circle cx="18" cy="15" r="5.4" fill="#fff"/>
+            <path d="M18 21C11.5 21 8 26.5 8 33.5C8 39 11 43 15.5 45C14 40 14.5 34 16 29C17.2 25 19.5 22.5 22.5 21.8C21.3 21.3 19.8 21 18 21Z" fill="#fff"/>
+            <circle cx="30" cy="20.5" r="3.8" fill="#fff"/>
+            <path d="M30 24.5C25.5 24.5 23 28.5 23 33.5C23 37.5 25 40.5 28 42C27 38 27.3 33.5 28.5 30C29.4 27 31 25.4 33.2 24.9C32.3 24.6 31.2 24.5 30 24.5Z" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <div class="brand-title">
+            KPI / PPMI Mesir
+            <span class="brand-tag">Rancangan untuk Ditinjau</span>
+          </div>
+          <div class="brand-sub">Komisi Peduli Interaksi &bull; Rancangan Website Organisasi</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="cairo-time-badge" title="Waktu Resmi Acuan Organisasi">
+          <span class="dot"></span>
+          <span id="cairo-clock-text">17:42 Kairo (EET)</span>
+        </div>
+
+        <div class="segmented-control" role="group" aria-label="Preferensi tampilan">
+          <button type="button" id="theme-toggle-btn" class="segmented-btn active" aria-pressed="false">Tampilan: Terang</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-shell">
+
+  <!-- Navigasi utama -->
+  <nav class="nav-tabs-bar" aria-label="Navigasi bagian rancangan">
+    <div class="nav-tabs-container">
+      <button class="tab-nav-item active" data-tab="roadmap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <span>Rencana Kerja &amp; Tim</span>
+      </button>
+      <button class="tab-nav-item" data-tab="catalog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>
+        <span>Daftar 61 Halaman</span>
+      </button>
+      <button class="tab-nav-item" data-tab="wireframes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h8M8 17h5"/></svg>
+        <span>Contoh Tampilan</span>
+        <span class="badge-count">8</span>
+      </button>
+      <button class="tab-nav-item" data-tab="flows">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M8.5 6H14l1.5 5M8.5 18H14l1.5-5"/></svg>
+        <span>Alur Kerja</span>
+      </button>
+      <button class="tab-nav-item" data-tab="design">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18 4.5 4.5 0 0 0 0-9 4.5 4.5 0 0 1 0-9z"/></svg>
+        <span>Warna &amp; Komponen</span>
+      </button>
+      <button class="tab-nav-item" data-tab="decisions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 21v-2"/><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/></svg>
+        <span>Perlu Diputuskan</span>
+      </button>
+      <button class="tab-nav-item" data-tab="sources">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+        <span>Dokumen &amp; Data</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Isi utama -->
+  <main class="main-wrapper">
+
+    <!-- PANEL 1: ROADMAP & 3 PILAR TEKNIS -->
+    <section id="panel-roadmap" class="tab-content-panel active">
+      <div class="section-headline">
+        <div class="title-area">
+          <h1>Rencana Pengerjaan & Pembagian Tugas Tim</h1>
+          <p>Status rancangan per 5 September 2026 untuk ditinjau. Menjelaskan 9 tahap pengerjaan (UX0-UX8) dan pembagian tugas antara tim Tampilan, tim Sistem, dan tim Penyimpanan Data. Data pada rancangan ini adalah contoh, bukan data asli.</p>
+        </div>
+      </div>
+
+      <div class="notice-banner info">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        <div>
+          <strong>Komitmen Kejujuran Informasi:</strong>
+          Tidak ada angka karangan, klaim keberhasilan palsu, foto pengurus rekaan, atau logo baru. Bagian yang masih contoh diberi tanda jelas <em>[Data contoh]</em>. Logo resmi dan foto kegiatan menunggu file resmi dari pengurus PPMI Mesir.
+        </div>
+      </div>
+
+      <!-- UX0 - UX8 Timeline -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row">
+          <div class="card-title">Tahap Pengerjaan (UX0 - UX8)</div>
+        </div>
+
+        <div class="stage-timeline-list">
+          <div class="stage-card">
+            <div class="stage-badge-id">UX0</div>
+            <div class="stage-content">
+              <h3>Merangkum Kebutuhan &amp; Menyusun Peta Halaman</h3>
+              <p>Merangkum 13 dokumen kebutuhan menjadi 61 halaman, daftar peran, batas akses, dan aturan prioritas.</p>
+              <div class="stage-meta"><span>Butuh: 13 Dokumen Sumber</span> &bull; <span>Status: Selesai</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card current">
+            <div class="stage-badge-id">UX1</div>
+            <div class="stage-content">
+              <h3>Fondasi Visual &amp; Identitas Tampilan</h3>
+              <p>Palet warna mode terang dan gelap dengan tema hangat, tampilan kartu membulat, dan huruf bawaan perangkat.</p>
+              <div class="stage-meta"><span>Butuh: Arah Visual &amp; Warna</span> &bull; <span>Status: Ditinjau Hari Ini</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-badge-id">UX2</div>
+            <div class="stage-content">
+              <h3>Alur Kerja Utama &amp; Pengelolaan Tugas</h3>
+              <p>Rincian halaman A01-A10, W01-W05, T01-T11: login, verifikasi dua langkah, papan tugas, pelaporan hambatan, dan pemeriksaan bukti.</p>
+              <div class="stage-meta"><span>Butuh: Aturan Penyelesaian Tugas</span> &bull; <span>Status: Sudah Dirancang</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-badge-id">UX3</div>
+            <div class="stage-content">
+              <h3>Pengelolaan Dokumen &amp; Rapat</h3>
+              <p>Rincian halaman F01-F06 dan M01-M07: izin berbatas waktu, pemeriksaan file, voting tertutup, dan notulen yang dikunci.</p>
+              <div class="stage-meta"><span>Butuh: Aturan Kerahasiaan &amp; Rapat</span> &bull; <span>Status: Sudah Dirancang</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-badge-id">UX4</div>
+            <div class="stage-content">
+              <h3>Website Publik &amp; Redaksi Konten</h3>
+              <p>Halaman P01-P15 dan C01-C07: penulisan konten dua bahasa (ID/EN) terpisah, penyaringan konten agar aman untuk umum, dan data transparansi.</p>
+              <div class="stage-meta"><span>Butuh: Konten Resmi Lembaga</span> &bull; <span>Status: Sudah Dirancang</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-badge-id">UX5 - UX7</div>
+            <div class="stage-content">
+              <h3>Layanan Aspirasi, Arsip Organisasi, dan AI</h3>
+              <p>Aspirasi warga dengan kode rahasia, cara hitung nilai kinerja yang objektif, serah terima jabatan, dan bantuan AI.</p>
+              <div class="stage-meta"><span>Butuh: Keputusan Q01-Q18</span> &bull; <span>Status: Sudah Dirancang</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-badge-id">UX8</div>
+            <div class="stage-content">
+              <h3>Uji Coba Tampilan yang Bisa Diklik</h3>
+              <p>Uji coba oleh berbagai peran, uji dengan pembaca layar untuk tunanetra, uji di layar HP kecil, dan uji kondisi-kondisi tak biasa.</p>
+              <div class="stage-meta"><span>Butuh: Persetujuan Rancangan</span> &bull; <span>Status: Menunggu Serah Terima</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tri-Pillar Implementation Architecture -->
+      <div class="card">
+        <div class="card-header-row">
+          <div class="card-title">Pembagian Tugas 3 Tim Pengerjaan</div>
+        </div>
+        <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px;">
+          Tim Tampilan menampilkan data sesuai kesepakatan, tetapi tim Sistem dan tim Data selalu memeriksa ulang setiap tindakan penting.
+        </p>
+
+        <div class="pillars-grid">
+          <div class="pillar-col">
+            <div class="pillar-title">1. Tim Tampilan (yang dilihat pengguna)</div>
+            <div class="pillar-desc">Bagian yang tampil di layar dan langsung dipakai orang.</div>
+            <ul class="pillar-items-list">
+              <li class="pillar-item">
+                <strong>Login & Sesi:</strong>
+                Halaman isi kata sandi, isian kode dua langkah, peringatan sesi habis, dan pemulihan draf dengan aman.
+              </li>
+              <li class="pillar-item">
+                <strong>Pengelolaan Tugas:</strong>
+                Papan dan tabel tugas, batang progres, unggah beberapa file bukti, dan panel pemeriksa.
+              </li>
+              <li class="pillar-item">
+                <strong>Redaksi Konten:</strong>
+                Penulisan versi Indonesia/Inggris, pratinjau versi publik, dan penjadwalan terbit.
+              </li>
+              <li class="pillar-item">
+                <strong>Kemudahan Akses:</strong>
+                Rapi di layar HP kecil, bisa dipakai dengan keyboard, mode kontras tinggi, dan pengurangan animasi.
+              </li>
+            </ul>
+          </div>
+
+          <div class="pillar-col">
+            <div class="pillar-title">2. Tim Sistem (mesin di belakang layar)</div>
+            <div class="pillar-desc">Mengatur aturan main, memeriksa izin, dan menjalankan alur kerja otomatis.</div>
+            <ul class="pillar-items-list">
+              <li class="pillar-item">
+                <strong>Aturan Perpindahan Status:</strong>
+                Memastikan status tugas berpindah dengan benar (Draf &rarr; Dikerjakan &rarr; Diperiksa &rarr; Selesai) dan menandai yang lewat tenggat.
+              </li>
+              <li class="pillar-item">
+                <strong>Keamanan File:</strong>
+                Pemindaian virus, menahan file berbahaya di karantina, dan memberi cap air otomatis.
+              </li>
+              <li class="pillar-item">
+                <strong>Rapat & Voting:</strong>
+                Mengunci notulen final agar tak bisa diubah, dan menghitung suara tertutup (satu orang satu suara).
+              </li>
+              <li class="pillar-item">
+                <strong>Pemisahan Publik:</strong>
+                Memisahkan tegas data internal dari data yang boleh diakses website publik.
+              </li>
+            </ul>
+          </div>
+
+          <div class="pillar-col">
+            <div class="pillar-title">3. Tim Penyimpanan Data</div>
+            <div class="pillar-desc">Menyimpan semua data dengan rapi, mengatur siapa boleh melihat baris data mana, dan mencatat riwayat.</div>
+            <ul class="pillar-items-list">
+              <li class="pillar-item">
+                <strong>Pembatasan per Baris Data:</strong>
+                Membatasi data yang bisa dilihat berdasarkan divisi, periode aktif, dan peran pengguna.
+              </li>
+              <li class="pillar-item">
+                <strong>Versi & Riwayat:</strong>
+                Menyimpan riwayat revisi tugas, naskah publikasi, formulir, dan persetujuan.
+              </li>
+              <li class="pillar-item">
+                <strong>Penyimpanan File Tertutup:</strong>
+                File disimpan terkunci dan terenkripsi, dengan tautan akses yang ada batas waktunya.
+              </li>
+              <li class="pillar-item">
+                <strong>Catatan Riwayat Permanen:</strong>
+                Rekaman semua tindakan yang tidak bisa diubah atau dihapus oleh admin siapa pun.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 2: KATALOG 61 LAYAR -->
+    <section id="panel-catalog" class="tab-content-panel">
+      <div class="section-headline">
+        <div class="title-area">
+          <h1>Daftar 61 Halaman</h1>
+          <p>Semua halaman yang dirancang dari 13 dokumen kebutuhan. Klik kode halaman untuk melihat rincian aturan, batas akses, dan data yang dipakai.</p>
+        </div>
+      </div>
+
+      <div class="catalog-controls">
+        <div class="search-input-box">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="screen-search-input" placeholder="Cari nama halaman, kode (misal P01, T03), peran pengguna, atau nama tabel data..." />
+        </div>
+
+        <div class="catalog-module-filters">
+          <button class="filter-chip active" data-cat="ALL">Semua</button>
+          <button class="filter-chip" data-cat="Publik">Publik (P)</button>
+          <button class="filter-chip" data-cat="Fondasi">Akun & Akses (A)</button>
+          <button class="filter-chip" data-cat="Workspace">Ruang Kerja (W)</button>
+          <button class="filter-chip" data-cat="Tugas">Tugas (T)</button>
+          <button class="filter-chip" data-cat="Rapat">Kalender & Rapat (M)</button>
+          <button class="filter-chip" data-cat="Dokumen">Dokumen (F)</button>
+          <button class="filter-chip" data-cat="Knowledge">Panduan (K)</button>
+          <button class="filter-chip" data-cat="CMS">Redaksi (C)</button>
+          <button class="filter-chip" data-cat="Layanan">Layanan (S)</button>
+          <button class="filter-chip" data-cat="Evaluasi">Penilaian (E)</button>
+          <button class="filter-chip" data-cat="Handover">Serah Terima (H)</button>
+          <button class="filter-chip" data-cat="AI">AI (I)</button>
+        </div>
+      </div>
+
+      <div class="screens-table-wrapper">
+        <table class="screens-table">
+          <thead>
+            <tr>
+              <th style="width: 70px;">Kode</th>
+              <th style="width: 190px;">Nama Halaman</th>
+              <th style="width: 140px;">Untuk Peran</th>
+              <th>Untuk Apa Halaman Ini</th>
+              <th>Aturan & Batas Akses</th>
+              <th style="width: 140px;">Sumber & Data</th>
+            </tr>
+          </thead>
+          <tbody id="screens-table-body">
+            <!-- Rendered by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PANEL 3: SIMULATOR WIREFRAME INTERAKTIF -->
+    <section id="panel-wireframes" class="tab-content-panel">
+      <div class="section-headline">
+        <div class="title-area">
+          <h1>Contoh Tampilan Halaman</h1>
+          <p>Pratinjau langsung 8 tata letak halaman utama. Coba lihat tampilannya di ukuran layar Komputer, Tablet, dan HP.</p>
+        </div>
+      </div>
+
+      <div class="wireframe-studio-layout">
+        <!-- Sidebar Selector -->
+        <div class="wireframe-picker-sidebar">
+          <div class="wireframe-picker-title">Pilih Contoh Halaman</div>
+          <button class="wf-select-btn active" data-wf="W1">
+            <span>1. Beranda Publik</span>
+            <span class="badge badge-neutral" style="font-size: 10px;">P01</span>
+          </button>
+          <button class="wf-select-btn" data-wf="W2">
+            <span>2. Ruang Kerja Pengurus</span>
+            <span class="badge badge-neutral" style="font-size: 10px;">W02</span>
+          </button>
+          <button class="wf-select-btn" data-wf="W3">
+            <span>3. Detail Tugas & Pemeriksaan</span>
+            <span class="badge badge-neutral" style="font-size: 10px;">T03/T06</span>
+          </button>
+          <button class="wf-select-btn" data-wf="W4">
+            <span>4. Dokumen & Berbagi Izin</span>
+            <span class="badge badge-neutral" style="font-size: 10px;">F03/F04</span>
+          </button>
+          <button class="wf-select-btn" data-wf="W5">
+            <span>5. Editor Konten Dua Bahasa</span>
+            <span class="badge badge-neutral" style="font-size: 10px;">C02/C04</span>
+          </button>
+          <button class="wf-select-btn" data-wf="W6">
+            <span>6. Rapat & Voting</span>
+            <span class="badge badge-neutral" style="font-size: 10px;">M03/M05</span>
+          </button>
+          <button class="wf-select-btn" data-wf="W7">
+            <span>7. Pengaduan & Penanganan</span>
+            <span class="badge badge-neutral" style="font-size: 10px;">P13/S04</span>
+          </button>
+          <button class="wf-select-btn" data-wf="W8">
+            <span>8. AI & Konfirmasi Manusia</span>
+            <span class="badge badge-neutral" style="font-size: 10px;">I01/I03</span>
+          </button>
+        </div>
+
+        <!-- Simulation Viewport -->
+        <div class="simulator-main-viewport">
+          <div class="viewport-toolbar">
+            <div class="viewport-info">
+              <span id="current-wf-title">Contoh 1: Beranda Publik</span>
+            </div>
+
+            <div class="device-switcher">
+              <button class="dev-btn active" data-dev="desktop">Komputer</button>
+              <button class="dev-btn" data-dev="tablet">Tablet</button>
+              <button class="dev-btn" data-dev="mobile">HP</button>
+            </div>
+          </div>
+
+          <div class="viewport-container">
+            <div id="simulated-screen-frame" class="simulated-screen-frame">
+              <div class="sim-chrome" aria-hidden="true">
+                <div class="sim-dots"><span></span><span></span><span></span></div>
+                <div class="sim-url">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                  kpi.ppmimesir.org
+                </div>
+                <div class="sim-chrome-spacer"></div>
+              </div>
+              <div id="simulated-wf-body" class="sim-body">
+                <!-- Dirender oleh app.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 4: ALUR KERJA KRITIS (F01 - F09) -->
+    <section id="panel-flows" class="tab-content-panel">
+      <div class="section-headline">
+        <div class="title-area">
+          <h1>Alur Kerja & Penanganan Masalah</h1>
+          <p>Penjelasan langkah demi langkah proses-proses penting, cara menangani bila terjadi kegagalan, dan aturan menjaga data tetap benar.</p>
+        </div>
+      </div>
+
+      <div class="flow-diagram-container">
+        <!-- Flow Menu -->
+        <div class="flow-list-menu">
+          <button class="flow-menu-btn active" data-flow="F01">
+            <strong>F01. Login &amp; Hak Akses</strong>
+          </button>
+          <button class="flow-menu-btn" data-flow="F02">
+            <strong>F02. Tugas Sampai Selesai</strong>
+          </button>
+          <button class="flow-menu-btn" data-flow="F03">
+            <strong>F03. Dokumen &amp; Izin Berbagi</strong>
+          </button>
+          <button class="flow-menu-btn" data-flow="F04">
+            <strong>F04. Rapat ke Tindak Lanjut</strong>
+          </button>
+          <button class="flow-menu-btn" data-flow="F05">
+            <strong>F05. Konten Publik Dua Bahasa</strong>
+          </button>
+          <button class="flow-menu-btn" data-flow="F06">
+            <strong>F06. Pengaduan yang Aman</strong>
+          </button>
+          <button class="flow-menu-btn" data-flow="F07">
+            <strong>F07. Panduan SOP &amp; Penilaian</strong>
+          </button>
+          <button class="flow-menu-btn" data-flow="F08">
+            <strong>F08. Serah Terima Jabatan</strong>
+          </button>
+          <button class="flow-menu-btn" data-flow="F09">
+            <strong>F09. AI &amp; Konfirmasi Manusia</strong>
+          </button>
+        </div>
+
+        <!-- Flow Visual Content -->
+        <div class="flow-visual-canvas" id="active-flow-display">
+          <!-- Rendered by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 5: DESIGN SYSTEM STUDIO -->
+    <section id="panel-design" class="tab-content-panel">
+      <div class="section-headline">
+        <div class="title-area">
+          <h1>Warna & Komponen Tampilan</h1>
+          <p>Daftar warna yang dipakai (dengan kontras cukup agar mudah dibaca), ukuran huruf yang konsisten, efek kaca buram, dan aturan tampilan status.</p>
+        </div>
+      </div>
+
+      <!-- Color Swatches -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row">
+          <div class="card-title">Daftar Warna Resmi (Mode Terang / Gelap)</div>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary);">
+          Setiap status penting (terlambat, rahasia, gagal) selalu disertai ikon dan tulisan, tidak hanya dibedakan lewat warna.
+        </p>
+
+        <div class="token-palette-grid">
+          <div class="token-swatch">
+            <div class="swatch-color-box" style="background-color: var(--canvas);"></div>
+            <div class="swatch-label">Warna Latar</div>
+            <div class="swatch-value">Terang: #F5F5F7 &bull; Gelap: #161618</div>
+          </div>
+          <div class="token-swatch">
+            <div class="swatch-color-box" style="background-color: var(--surface);"></div>
+            <div class="swatch-label">Warna Kartu / Panel</div>
+            <div class="swatch-value">Terang: #FFFFFF &bull; Gelap: #222225</div>
+          </div>
+          <div class="token-swatch">
+            <div class="swatch-color-box" style="background-color: var(--accent);"></div>
+            <div class="swatch-label">Warna Utama (Merah)</div>
+            <div class="swatch-value">Terang: #C8102E &bull; Gelap: #FF7A85</div>
+          </div>
+          <div class="token-swatch">
+            <div class="swatch-color-box" style="background-color: var(--error);"></div>
+            <div class="swatch-label">Warna Gagal / Kesalahan</div>
+            <div class="swatch-value">Terang: #B42318 &bull; Gelap: #FFB4AB</div>
+          </div>
+          <div class="token-swatch">
+            <div class="swatch-color-box" style="background-color: var(--success);"></div>
+            <div class="swatch-label">Warna Berhasil</div>
+            <div class="swatch-value">Terang: #216E39 &bull; Gelap: #8CD9A6</div>
+          </div>
+          <div class="token-swatch">
+            <div class="swatch-color-box" style="background-color: var(--warning);"></div>
+            <div class="swatch-label">Warna Peringatan</div>
+            <div class="swatch-value">Terang: #805000 &bull; Gelap: #F2C66D</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- State & Error Message Playground -->
+      <div class="card">
+        <div class="card-header-row">
+          <div class="card-title">Contoh Pesan Sistem yang Baku</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 14px;">
+          <div style="padding: 12px; border: 1px solid var(--border-decor); border-radius: 8px;">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600;">Belum Ada Tugas</div>
+            <div style="font-size: 13px; color: var(--text-primary); margin-top: 4px;">"Belum ada tugas dalam tampilan ini."</div>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border-decor); border-radius: 8px;">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600;">Versi Sudah Berubah</div>
+            <div style="font-size: 13px; color: var(--text-primary); margin-top: 4px;">"Versi yang Anda tinjau telah berubah. Buka versi terbaru."</div>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border-decor); border-radius: 8px;">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600;">File Sedang Diperiksa</div>
+            <div style="font-size: 13px; color: var(--text-primary); margin-top: 4px;">"File sedang diperiksa dan belum dapat digunakan."</div>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border-decor); border-radius: 8px;">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600;">Izin Akses Habis</div>
+            <div style="font-size: 13px; color: var(--text-primary); margin-top: 4px;">"Akses sementara Anda pada dokumen ini telah berakhir."</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 6: KEPUTUSAN TERBUKA & SKENARIO UJI -->
+    <section id="panel-decisions" class="tab-content-panel">
+      <div class="section-headline">
+        <div class="title-area">
+          <h1>18 Hal yang Masih Perlu Diputuskan</h1>
+          <p>Daftar hal yang belum ada aturan resminya dari organisasi, lengkap dengan usulan sementara, untuk diputuskan sebelum pengerjaan dimulai.</p>
+        </div>
+      </div>
+
+      <div class="questions-grid" id="questions-cards-container">
+        <!-- Rendered by app.js -->
+      </div>
+    </section>
+
+    <!-- PANEL 7: PUSTAKA 13 DOKUMEN SUMBER & ERD -->
+    <section id="panel-sources" class="tab-content-panel">
+      <div class="section-headline">
+        <div class="title-area">
+          <h1>Dokumen Sumber & Struktur Data</h1>
+          <p>Menunjukkan bahwa seluruh rancangan ini mengacu pada 13 dokumen kebutuhan resmi, disertai struktur 34 tabel data dan tabel hak akses tiap peran.</p>
+        </div>
+      </div>
+
+      <!-- 13 Documents Grid -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row">
+          <div class="card-title">13 Dokumen Kebutuhan Asli</div>
+        </div>
+        <div class="card-grid" id="source-docs-grid" style="margin-top: 14px;">
+          <!-- Injected by app.js -->
+        </div>
+      </div>
+
+      <!-- Role-Permission Matrix Baseline -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row">
+          <div class="card-title">Tabel Hak Akses 10 Peran</div>
+          <span class="badge badge-neutral">Sumber: Dokumen Hak Akses &amp; Peran</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+          Keterangan: <span style="color: var(--success); font-weight: 600;">Ya</span> = Boleh &bull; <strong style="color: var(--warning);">D</strong> = Hanya untuk divisi sendiri &bull; <strong style="color: var(--error);">A</strong> = Perlu izin/persetujuan khusus &bull; <strong>-</strong> = Tidak boleh sama sekali.
+        </p>
+        <div class="screens-table-wrapper">
+          <table class="screens-table" style="font-size: 12px;">
+            <thead>
+              <tr>
+                <th>Bagian Sistem</th>
+                <th>Publik</th>
+                <th>Pengurus</th>
+                <th>Pemeriksa</th>
+                <th>Koordinator</th>
+                <th>Pimpinan</th>
+                <th>Sekjend</th>
+                <th>Ketua KPI</th>
+                <th>Admin Sistem</th>
+                <th>Auditor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Dashboard &amp; Ruang Kerja</strong></td><td>-</td><td>Ya</td><td>Ya</td><td>Ya (D)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya (D)</td></tr>
+              <tr><td><strong>Pengelolaan Tugas</strong></td><td>-</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya (D)</td></tr>
+              <tr><td><strong>Pemeriksaan Bukti Tugas</strong></td><td>-</td><td>-</td><td>Ya</td><td>Ya (D)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>-</td><td>Ya (D)</td></tr>
+              <tr><td><strong>Rapat &amp; Notulen Final</strong></td><td>-</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>-</td><td>Ya (D)</td></tr>
+              <tr><td><strong>Pemungutan Suara</strong></td><td>-</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>-</td><td>-</td></tr>
+              <tr><td><strong>Dokumen &amp; Berkas Biasa</strong></td><td>-</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya (D)</td><td>Ya (D)</td></tr>
+              <tr><td><strong>Dokumen Rahasia</strong></td><td>-</td><td>-</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>-</td><td>A</td></tr>
+              <tr><td><strong>Redaksi Konten Publik</strong></td><td>-</td><td>Ya (D)</td><td>Ya (D)</td><td>Ya (D)</td><td>A</td><td>A</td><td>A</td><td>-</td><td>Ya (D)</td></tr>
+              <tr><td><strong>Pengaduan Warga</strong></td><td>-</td><td>-</td><td>-</td><td>A</td><td>A</td><td>A</td><td>A</td><td>-</td><td>Ya (D)</td></tr>
+              <tr><td><strong>Kinerja Lintas Divisi</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Ya</td><td>Ya</td><td>-</td><td>A</td></tr>
+              <tr><td><strong>Asisten AI (Tanya Jawab)</strong></td><td>-</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya (D)</td></tr>
+              <tr><td><strong>Menjalankan Tindakan AI</strong></td><td>-</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>-</td><td>A</td></tr>
+              <tr><td><strong>Catatan Riwayat &amp; Keamanan</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>A</td><td>Ya</td><td>Ya</td><td>Ya (D)</td><td>Ya</td></tr>
+              <tr><td><strong>Pengaturan Akun &amp; Peran</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>A</td><td>A</td><td>Ya</td><td>A</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5 Classification Tiers -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row">
+          <div class="card-title">5 Tingkat Kerahasiaan Dokumen</div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 12px;">
+          <div style="padding: 12px; border-radius: 8px; border: 1px solid var(--border-decor); background: var(--surface);">
+            <span class="badge badge-neutral" style="margin-bottom: 4px;">Tingkat 1</span>
+            <strong style="display: block; font-size: 13px;">UMUM</strong>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 4px;">Bisa dilihat siapa saja tanpa perlu login.</p>
+          </div>
+          <div style="padding: 12px; border-radius: 8px; border: 1px solid var(--border-decor); background: var(--surface);">
+            <span class="badge badge-accent" style="margin-bottom: 4px;">Tingkat 2</span>
+            <strong style="display: block; font-size: 13px;">INTERNAL</strong>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 4px;">Bisa dilihat semua pengurus yang terdaftar.</p>
+          </div>
+          <div style="padding: 12px; border-radius: 8px; border: 1px solid var(--border-decor); background: var(--surface);">
+            <span class="badge badge-warning" style="margin-bottom: 4px;">Tingkat 3</span>
+            <strong style="display: block; font-size: 13px;">TERBATAS</strong>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 4px;">Hanya untuk divisi atau kelompok kerja tertentu.</p>
+          </div>
+          <div style="padding: 12px; border-radius: 8px; border: 1px solid var(--border-decor); background: var(--surface);">
+            <span class="badge badge-error" style="margin-bottom: 4px;">Tingkat 4</span>
+            <strong style="display: block; font-size: 13px;">RAHASIA</strong>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 4px;">Sangat terbatas; setiap unduhan dicatat rinci.</p>
+          </div>
+          <div style="padding: 12px; border-radius: 8px; border: 1px solid #B42318; background: #FEE4E2;">
+            <span class="badge badge-error" style="margin-bottom: 4px;">Tingkat 5</span>
+            <strong style="display: block; font-size: 13px; color: #B42318;">SANGAT RAHASIA</strong>
+            <p style="font-size: 11.5px; color: #5D0000; margin-top: 4px;">Kerahasiaan tertinggi; perlu persetujuan Ketua/Sekjend.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Database ERD Explorer -->
+      <div class="card">
+        <div class="card-header-row">
+          <div class="card-title">Daftar 34 Tabel Penyimpanan Data</div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label style="font-size: 12px; font-weight: 600;">Saring Kelompok:</label>
+            <select id="erd-domain-filter" style="font-size: 12px; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-control);">
+              <option value="ALL">Semua Kelompok (34 Tabel)</option>
+              <option value="Identity & Access">Identity & Access</option>
+              <option value="Organization Core">Organization Core</option>
+              <option value="Work & Tasks">Work & Tasks</option>
+              <option value="Meetings & Decisions">Meetings & Decisions</option>
+              <option value="Files & Storage">Files & Storage</option>
+              <option value="Public CMS & Service">Public CMS & Service</option>
+              <option value="Governance & AI">Governance & AI</option>
+            </select>
+          </div>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">
+          Setiap tabel utama punya nomor identitas unik, mencatat waktu dibuat dan diperbarui, serta dilindungi aturan siapa boleh melihat baris data mana.
+        </p>
+
+        <div class="screens-table-wrapper">
+          <table class="screens-table" style="font-size: 12px;">
+            <thead>
+              <tr>
+                <th style="width: 170px;">Nama Tabel</th>
+                <th style="width: 150px;">Kelompok</th>
+                <th style="width: 110px;">Nomor Identitas</th>
+                <th>Kolom Utama</th>
+                <th>Untuk Apa</th>
+              </tr>
+            </thead>
+            <tbody id="erd-table-body">
+              <!-- Rendered by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  </div><!-- /app-shell -->
+
+  <!-- Kartu rincian halaman -->
+  <div class="modal-overlay" id="screen-modal-overlay" onclick="if(event.target === this) closeScreenModal();">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" onclick="closeScreenModal()" aria-label="Tutup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div id="screen-modal-content">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- App Footer -->
+  <footer>
+    <div>
+      <div>
+        <strong>Komisi Peduli Interaksi (KPI) PPMI Mesir</strong> &bull; Dokumen Rancangan Tampilan &amp; Pengerjaan Website
+      </div>
+      <div>
+        Tanggal: 5 September 2026 &bull; Status: <em>Rancangan untuk Review</em> &bull; Tema Putih &amp; Merah
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
