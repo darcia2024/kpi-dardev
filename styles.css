@@ -2100,6 +2100,114 @@ body > footer > div {
   .wireframe-picker-sidebar { flex-direction: column; }
 }
 
+/* Tablet (potret dan lanskap) */
+@media (min-width: 721px) and (max-width: 1024px) {
+  /* Menu: 7 bagian membungkus ke baris berikutnya, tidak ada yang tersembunyi */
+  .nav-tabs-bar { overflow-x: visible; }
+  .nav-tabs-container {
+    flex-wrap: wrap;
+    padding: 8px var(--space-20);
+    gap: 6px;
+  }
+  .tab-nav-item {
+    flex: 0 1 auto;
+    padding: 9px 13px;
+    font-size: 13px;
+    gap: 7px;
+  }
+  .tab-nav-item.active { background: var(--surface-secondary); }
+
+  .main-wrapper { padding: var(--space-32) var(--space-20) var(--space-48); }
+
+  /* Daftar contoh tampilan jadi kisi ringkas supaya pratinjau cepat terlihat */
+  .wireframe-picker-sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 6px;
+    padding: var(--space-12);
+  }
+  .wireframe-picker-title {
+    flex: 1 0 100%;
+    margin-bottom: 0;
+    padding: 2px 4px 2px;
+  }
+  .wf-select-btn {
+    flex: 1 1 290px;
+    min-width: 0;
+    padding: 9px 12px;
+    font-size: 12.5px;
+    background: var(--surface-secondary);
+  }
+  .wf-select-btn > span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .wf-select-btn.active {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+  .wf-select-btn.active .badge { color: var(--text-on-accent); opacity: 0.8; }
+
+  /* Daftar alur kerja juga jadi kisi ringkas */
+  .flow-list-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: var(--space-12);
+  }
+  .flow-menu-btn {
+    flex: 1 1 290px;
+    min-width: 0;
+    padding: 10px 13px;
+    background: var(--surface-secondary);
+  }
+  .flow-menu-btn strong {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .flow-menu-btn.active {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+  .flow-menu-btn.active strong { color: var(--text-on-accent); }
+
+  .flow-visual-canvas { padding: var(--space-20); }
+  .card,
+  .notice-banner { padding: var(--space-20); }
+
+  /* Tabel daftar halaman dibuat pas satu layar, tanpa geser samping.
+     Kolom sumber data disembunyikan karena isinya sudah ada di jendela rincian. */
+  .screens-table th,
+  .screens-table td { padding-left: 12px; padding-right: 12px; }
+  #panel-catalog .screens-table th:nth-child(6),
+  #panel-catalog .screens-table td:nth-child(6) { display: none; }
+  #panel-catalog .screens-table td:nth-child(3) { max-width: 120px; }
+  #panel-catalog .screens-table td:nth-child(3) .badge { white-space: normal; }
+
+  /* Petunjuk bahwa tabel lebar bisa digeser ke samping */
+  .screens-table-wrapper { position: relative; }
+  .screens-table-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 26px;
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--surface));
+    border-radius: 0 var(--radius-panel) var(--radius-panel) 0;
+  }
+  #panel-catalog .screens-table-wrapper::after { display: none; }
+}
+
+/* Tablet potret: kartu pertanyaan dua kolom supaya tidak terlalu panjang ke bawah */
+@media (min-width: 721px) and (max-width: 900px) {
+  .questions-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+}
+
 /* Ponsel besar / tablet kecil */
 @media (max-width: 720px) {
   :root { --header-h: 52px; }

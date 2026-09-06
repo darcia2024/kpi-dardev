@@ -1654,9 +1654,9 @@ function initSourceDocsExplorer() {
       </div>
       <h3 style="font-size: 15px; font-weight: 600; color: var(--text-primary);">${doc.title}</h3>
       <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.4;">${doc.purpose}</p>
-      <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border-decor); font-size: 11px; color: var(--text-tertiary); display: flex; justify-content: space-between;">
-        <span style="font-family: var(--font-mono);">${doc.file}</span>
-        <span style="color: var(--accent); font-weight: 600;">Terverifikasi</span>
+      <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border-decor); font-size: 11px; color: var(--text-tertiary); display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 10px;">
+        <span style="font-family: var(--font-mono); min-width: 0; flex: 1 1 140px; overflow-wrap: anywhere;">${doc.file}</span>
+        <span style="color: var(--accent); font-weight: 600; flex: 0 0 auto;">Terverifikasi</span>
       </div>
     </div>
   `).join('');
