@@ -248,34 +248,117 @@ const DATABASE_ENTITIES = [
 
 // --- 4. DATA MASTER: 18 KEPUTUSAN TERBUKA (Q01 - Q18) ---
 const QUESTIONS_DATA = [
-  { id: 'Q01', title: 'Nama Pejabat & Struktur Asli', cat: 'Organisasi', prop: 'Contoh ini memakai kode peran standar, bukan nama orang asli.', block: 'Pencocokan akun asli' },
-  { id: 'Q02', title: 'Perbandingan Kinerja Antar Divisi', cat: 'Kebijakan', prop: 'Untuk sementara, fitur perbandingan hanya dibuka untuk Ketua dan Sekjend.', block: 'Layar E02' },
-  { id: 'Q03', title: 'Pemisahan Admin Teknis & Isi Rahasia', cat: 'Akses', prop: 'Admin teknis tidak otomatis bisa membaca dokumen rahasia.', block: 'Layar A06, F05' },
-  { id: 'Q04', title: 'Tugas Induk Selesai Otomatis?', cat: 'Tugas', prop: 'Kalau semua bagian selesai, statusnya jadi "Siap Diajukan"; pemeriksaan tetap manual.', block: 'Layar T08' },
-  { id: 'Q05', title: 'Penetapan Status Terlambat', cat: 'Tugas', prop: 'Status "terlambat" muncul otomatis saat lewat tenggat, dan wajib diisi alasannya.', block: 'Layar T03' },
-  { id: 'Q06', title: 'Pengecualian Divisi Sensitif', cat: 'Keamanan', prop: 'Data anggota dan cara kerja divisi sensitif dirahasiakan penuh dari website publik.', block: 'Layar P03, P04' },
-  { id: 'Q07', title: 'Cara & Lama Verifikasi Dua Langkah', cat: 'Keamanan', prop: 'Kode keamanan tambahan memakai aplikasi di HP; sesi login dicek ulang berkala.', block: 'Layar A02' },
-  { id: 'Q08', title: 'Kerahasiaan Pemungutan Suara', cat: 'Rapat', prop: 'Daftar pemilih diverifikasi, tapi pilihan suara tiap orang dirahasiakan.', block: 'Layar M05' },
-  { id: 'Q09', title: 'Memeriksa Bukti Tugas Sendiri', cat: 'Tugas', prop: 'Dilarang: pembuat tugas tidak boleh menyetujui bukti kerjanya sendiri.', block: 'Layar T06' },
-  { id: 'Q10', title: 'Batas Ukuran & Jenis Berkas', cat: 'Dokumen', prop: 'Maksimal 25MB per file; file program (.exe/.sh) diblokir sistem.', block: 'Layar F02' },
-  { id: 'Q11', title: 'Konten Bila Versi Bahasa Belum Ada', cat: 'Editorial', prop: 'Kalau versi Inggris belum ada, tampilkan pemberitahuan; jangan tampilkan draf mentah.', block: 'Layar C02, P15' },
-  { id: 'Q12', title: 'Identitas Pelapor & Janji Waktu Layanan', cat: 'Layanan', prop: 'Pelapor boleh anonim lewat kode acak; janji waktu layanan tidak dikarang.', block: 'Layar P12, S04' },
-  { id: 'Q13', title: 'Cara Menghitung Nilai Kinerja', cat: 'Evaluasi', prop: 'Rumus penilaian ditampilkan terbuka; data yang kosong bukan berarti nol.', block: 'Layar E01' },
-  { id: 'Q14', title: 'Koreksi Data Periode yang Sudah Ditutup', cat: 'Handover', prop: 'Hanya bisa dikoreksi lewat berita acara resmi.', block: 'Layar A08, H03' },
-  { id: 'Q15', title: 'Dokumen yang Boleh Dibaca AI', cat: 'AI', prop: 'AI hanya boleh membaca dokumen Umum dan Internal yang tidak rahasia.', block: 'Layar I01' },
-  { id: 'Q16', title: 'Privasi Buku Kontak', cat: 'Komunikasi', prop: 'Yang ditampilkan hanya email resmi lembaga dan jabatan, bukan nomor pribadi.', block: 'Layar S06' },
-  { id: 'Q17', title: 'Logo & Warna Identitas Resmi', cat: 'Branding', prop: 'Memakai tulisan sederhana "KPI PPMI Mesir" dan warna putih-merah yang simpel.', block: 'Seluruh tampilan' },
-  { id: 'Q18', title: 'Zona Waktu Resmi Organisasi', cat: 'Sistem', prop: 'Waktu resmi memakai waktu Kairo, dengan keterangan yang jelas.', block: 'Kalender & Jadwal' },
-  { id: 'Q19', title: 'Awal & Akhir Tahun Keuangan', cat: 'Keuangan', prop: 'Mengikuti periode kepengurusan 2026/2027, kecuali KPI menetapkan tanggal lain.', block: 'Layar B01, B02' },
-  { id: 'Q20', title: 'Mata Uang Utama & Kurs', cat: 'Keuangan', prop: 'Satu mata uang utama dipakai untuk pembukuan; kurs dicatat saat transaksi bila ada mata uang lain.', block: 'Layar B04, B05' },
-  { id: 'Q21', title: 'Batas Nominal Persetujuan', cat: 'Keuangan', prop: 'Perlu daftar batas nominal per jenis transaksi dan siapa penyetujunya.', block: 'Layar B04, A14' },
-  { id: 'Q22', title: 'Pembayaran Besar Perlu Dua Penyetuju?', cat: 'Keuangan', prop: 'Di atas nominal tertentu sebaiknya butuh dua penyetuju; nominalnya menunggu keputusan KPI.', block: 'Layar B06' },
-  { id: 'Q23', title: 'Batas Waktu Pertanggungjawaban Uang Muka', cat: 'Keuangan', prop: 'Uang muka wajib dipertanggungjawabkan dalam batas waktu tertentu sebelum boleh mengajukan lagi.', block: 'Layar B04, B08' },
-  { id: 'Q24', title: 'Penyimpanan Nomor Rekening', cat: 'Keuangan', prop: 'Sistem hanya menyimpan keterangan tersamar, bukan nomor rekening lengkap.', block: 'Layar B03, B06' },
-  { id: 'Q25', title: 'Siapa Boleh Membuka Kembali Periode Tertutup', cat: 'Keuangan', prop: 'Hanya lewat persetujuan pimpinan dengan alasan tertulis dan tercatat.', block: 'Layar B01, B08' },
-  { id: 'Q26', title: 'Lama Penyimpanan Tiap Jenis Catatan', cat: 'Sistem', prop: 'Perlu daftar berapa lama dokumen, transaksi, kasus, dan catatan riwayat disimpan.', block: 'Layar A15' },
-  { id: 'Q27', title: 'Batas Akses Admin Demisioner', cat: 'Akses', prop: 'Ketua/Sekretaris demisioner bisa jadi admin hanya lewat sidang anggota, dan dicabut begitu admin baru ditetapkan.', block: 'Layar A05, H06' },
-  { id: 'Q28', title: 'Bolehkah AI Mendeteksi Kejanggalan Keuangan', cat: 'AI', prop: 'Boleh sebatas menandai untuk diperiksa manusia; AI tidak menyimpulkan adanya pelanggaran.', block: 'Layar I06, B09' }
+  { id: 'Q01', cat: 'Organisasi', title: 'Nama Pengurus & Jabatannya',
+    q: 'Kapan daftar nama pengurus beserta jabatannya bisa kami terima? Selama belum ada, sistem masih memakai nama contoh.',
+    prop: 'Sementara memakai kode jabatan standar, bukan nama orang.', block: 'Seluruh sistem' },
+
+  { id: 'Q02', cat: 'Kebijakan', title: 'Siapa Boleh Membandingkan Kinerja Divisi',
+    q: 'Siapa saja yang boleh melihat perbandingan kinerja antar divisi? Cukup Ketua dan Sekjend, atau kepala divisi juga boleh melihat divisinya sendiri?',
+    prop: 'Sementara dibuka hanya untuk Ketua dan Sekjend.', block: 'Halaman E02' },
+
+  { id: 'Q03', cat: 'Akses', title: 'Batas Akses Admin Sistem',
+    q: 'Apakah Admin Sistem boleh membaca isi dokumen rahasia, atau hanya boleh mengurus pengaturan sistemnya saja?',
+    prop: 'Admin mengurus sistem, tidak otomatis boleh membaca isi dokumen rahasia.', block: 'Halaman A06, F05' },
+
+  { id: 'Q04', cat: 'Tugas', title: 'Tugas Induk Selesai Otomatis?',
+    q: 'Kalau semua sub-tugas sudah selesai, apakah tugas induknya langsung dianggap selesai, atau tetap harus diperiksa dulu?',
+    prop: 'Statusnya jadi "Siap Diajukan", pemeriksaan tetap dilakukan manusia.', block: 'Halaman T08' },
+
+  { id: 'Q05', cat: 'Tugas', title: 'Penandaan Tugas Terlambat',
+    q: 'Kalau tugas lewat tenggat, apakah langsung ditandai terlambat oleh sistem? Dan apakah pelaksana wajib mengisi alasan keterlambatannya?',
+    prop: 'Ditandai otomatis, dan alasan wajib diisi.', block: 'Halaman T03' },
+
+  { id: 'Q06', cat: 'Keamanan', title: 'Divisi Sensitif di Website Publik',
+    q: 'Untuk Divisi Intelligence and Operation, apa saja yang boleh tampil di website publik? Apakah nama anggotanya disembunyikan sepenuhnya?',
+    prop: 'Nama anggota dan cara kerjanya tidak ditampilkan sama sekali ke publik.', block: 'Halaman P03, P04' },
+
+  { id: 'Q07', cat: 'Keamanan', title: 'Login Dua Langkah',
+    q: 'Apakah pengurus wajib memakai kode dari aplikasi di HP saat login? Dan berapa lama sesi login boleh bertahan sebelum harus masuk ulang?',
+    prop: 'Wajib untuk pemegang jabatan; sesi dicek ulang secara berkala.', block: 'Halaman A02' },
+
+  { id: 'Q08', cat: 'Rapat', title: 'Kerahasiaan Pilihan Suara',
+    q: 'Saat voting rapat, apakah pilihan tiap orang dirahasiakan, atau boleh dilihat siapa memilih apa?',
+    prop: 'Daftar pemilih tercatat, tetapi pilihan tiap orang dirahasiakan.', block: 'Halaman M05' },
+
+  { id: 'Q09', cat: 'Tugas', title: 'Boleh Memeriksa Bukti Sendiri?',
+    q: 'Kami usulkan pembuat tugas tidak boleh menyetujui bukti kerjanya sendiri. Disetujui? Kalau di divisi kecil orangnya terbatas, siapa penggantinya?',
+    prop: 'Dilarang. Pemeriksa harus orang lain.', block: 'Halaman T06' },
+
+  { id: 'Q10', cat: 'Dokumen', title: 'Batas Ukuran & Jenis File',
+    q: 'Berapa ukuran file maksimal yang boleh diunggah pengurus?',
+    prop: 'Maksimal 25 MB per file. File program (.exe, .sh) diblokir.', block: 'Halaman F02' },
+
+  { id: 'Q11', cat: 'Editorial', title: 'Kalau Versi Bahasa Inggris Belum Siap',
+    q: 'Kalau artikel versi Inggris belum selesai, apa yang dilihat pengunjung? Pemberitahuan bahwa belum tersedia, atau langsung ditampilkan versi Indonesia?',
+    prop: 'Tampilkan pemberitahuan; draf mentah tidak pernah ditampilkan.', block: 'Halaman C02, P15' },
+
+  { id: 'Q12', cat: 'Layanan', title: 'Aduan Anonim & Janji Waktu Tanggapan',
+    q: 'Apakah warga boleh mengirim aduan tanpa mencantumkan nama? Dan berapa hari kerja janji waktu tanggapan yang realistis untuk dicantumkan?',
+    prop: 'Anonim didukung lewat kode pelacakan. Janji waktu diisi sesuai kemampuan nyata, bukan dikarang.', block: 'Halaman P12, S04' },
+
+  { id: 'Q13', cat: 'Evaluasi', title: 'Cara Menghitung Nilai Kinerja',
+    q: 'Nilai kinerja pengurus dihitung dari apa saja dan berapa bobot masing-masing? Misalnya: ketepatan waktu, jumlah tugas selesai, kelengkapan bukti.',
+    prop: 'Rumusnya ditampilkan terbuka. Data yang belum ada tidak dihitung sebagai nol.', block: 'Halaman E01, E04' },
+
+  { id: 'Q14', cat: 'Serah Terima', title: 'Memperbaiki Data Periode Lama',
+    q: 'Kalau ada data periode lama yang keliru, siapa yang berwenang memperbaikinya dan lewat prosedur apa?',
+    prop: 'Hanya lewat berita acara resmi, dan perbaikannya tercatat.', block: 'Halaman A08, H03' },
+
+  { id: 'Q15', cat: 'AI', title: 'Dokumen yang Boleh Dibaca AI',
+    q: 'Dokumen tingkat kerahasiaan apa saja yang boleh dibaca AI?',
+    prop: 'Hanya tingkat Umum dan Internal. Tidak termasuk Terbatas, Rahasia, dan Sangat Rahasia.', block: 'Halaman I01, I06' },
+
+  { id: 'Q16', cat: 'Komunikasi', title: 'Data di Buku Kontak',
+    q: 'Data apa yang boleh ditampilkan di buku kontak pengurus dan mitra?',
+    prop: 'Hanya email resmi lembaga dan jabatan. Nomor HP pribadi tidak ditampilkan.', block: 'Halaman S06' },
+
+  { id: 'Q17', cat: 'Identitas', title: 'File Logo Resmi & Warna',
+    q: 'Kapan file logo resmi dalam format aslinya bisa kami terima? Dan apakah kode warna merah yang kami pakai sekarang sudah sesuai?',
+    prop: 'Sementara memakai merah #C4161C hasil pencocokan dari gambar logo.', block: 'Seluruh tampilan' },
+
+  { id: 'Q18', cat: 'Sistem', title: 'Zona Waktu yang Dipakai',
+    q: 'Semua jadwal memakai waktu Kairo, benar? Untuk pengurus yang sedang di Indonesia, apakah perlu ditampilkan dua waktu sekaligus?',
+    prop: 'Waktu resmi Kairo, ditulis jelas pada setiap jadwal.', block: 'Kalender & jadwal' },
+
+  { id: 'Q19', cat: 'Keuangan', title: 'Awal & Akhir Tahun Keuangan',
+    q: 'Tahun keuangan KPI mulai tanggal berapa dan berakhir tanggal berapa? Apakah mengikuti periode kepengurusan?',
+    prop: 'Mengikuti periode kepengurusan 2026/2027.', block: 'Halaman B01, B02' },
+
+  { id: 'Q20', cat: 'Keuangan', title: 'Mata Uang Pembukuan',
+    q: 'Pembukuan memakai mata uang apa? Kalau ada transaksi dalam mata uang lain, kurs mana yang dipakai dan kapan dicatat?',
+    prop: 'Satu mata uang utama untuk pembukuan; kurs dicatat pada saat transaksi terjadi.', block: 'Halaman B04, B05' },
+
+  { id: 'Q21', cat: 'Keuangan', title: 'Batas Nominal Persetujuan',
+    q: 'Sampai nominal berapa Bendahara boleh menyetujui sendiri? Di atas nominal berapa harus naik ke Ketua atau BPH?',
+    prop: 'Perlu daftar batas nominal dari KPI. Belum bisa kami tebak.', block: 'Halaman B04, A14' },
+
+  { id: 'Q22', cat: 'Keuangan', title: 'Pembayaran Besar Perlu Dua Penyetuju?',
+    q: 'Untuk pembayaran di atas nominal tertentu, apakah wajib disetujui dua orang? Kalau ya, mulai nominal berapa?',
+    prop: 'Sebaiknya ya, untuk pengaman. Nominalnya menunggu keputusan KPI.', block: 'Halaman B06' },
+
+  { id: 'Q23', cat: 'Keuangan', title: 'Batas Waktu Pertanggungjawaban Uang Muka',
+    q: 'Setelah menerima uang muka, berapa hari batas waktu mempertanggungjawabkannya? Apakah yang belum lunas diblokir mengajukan lagi?',
+    prop: 'Ada batas waktu, dan pengajuan baru diblokir bila masih ada tunggakan.', block: 'Halaman B04, B08' },
+
+  { id: 'Q24', cat: 'Keuangan', title: 'Penyimpanan Nomor Rekening',
+    q: 'Nomor rekening penerima disimpan lengkap di sistem, atau cukup sebagian saja seperti empat angka terakhir?',
+    prop: 'Disimpan tersamar, hanya sebagian yang terlihat.', block: 'Halaman B03, B06' },
+
+  { id: 'Q25', cat: 'Keuangan', title: 'Membuka Kembali Periode yang Sudah Ditutup',
+    q: 'Kalau periode keuangan sudah ditutup lalu ada yang perlu diperbaiki, siapa yang berwenang membukanya kembali?',
+    prop: 'Hanya lewat persetujuan pimpinan, dengan alasan tertulis dan tercatat.', block: 'Halaman B01, B08' },
+
+  { id: 'Q26', cat: 'Sistem', title: 'Lama Penyimpanan Catatan',
+    q: 'Berapa lama dokumen, transaksi keuangan, kasus, dan catatan riwayat disimpan sebelum boleh diarsipkan?',
+    prop: 'Perlu daftar dari KPI per jenis catatan. Catatan yang sedang diaudit tidak boleh dihapus.', block: 'Halaman A15' },
+
+  { id: 'Q27', cat: 'Akses', title: 'Akses Admin Demisioner',
+    q: 'Ketua atau Sekretaris demisioner yang menjadi admin sementara, boleh mengakses apa saja? Seluruh data, atau hanya pengaturan sistem?',
+    prop: 'Hanya pengaturan sistem, dan dicabut begitu admin baru ditetapkan.', block: 'Halaman A05, H06' },
+
+  { id: 'Q28', cat: 'AI', title: 'AI Menandai Kejanggalan Keuangan',
+    q: 'Bolehkah AI ikut menandai transaksi yang terlihat janggal untuk diperiksa manusia? Atau sebaiknya AI tidak menyentuh data keuangan sama sekali?',
+    prop: 'Boleh sebatas menandai. AI tidak menyimpulkan adanya pelanggaran.', block: 'Halaman I06, B09' }
 ];
 
 // --- 5. INITIALIZATION & UI INTERACTIVITY ---
@@ -1043,12 +1126,16 @@ function initQuestionsTracker() {
         <span class="badge badge-neutral">${q.cat}</span>
       </div>
       <div class="question-title">${q.title}</div>
+      <div class="question-ask">
+        <span class="ask-label">Pertanyaan untuk KPI</span>
+        ${q.q}
+      </div>
       <div class="question-prop">
-        <strong>Usulan Sementara:</strong> ${q.prop}
+        <strong>Usulan kami:</strong> ${q.prop}
       </div>
       <div class="question-footer">
         <span>Terkait: <strong>${q.block}</strong></span>
-        <span style="color: var(--warning); font-weight: 600;">Status: Menunggu Keputusan</span>
+        <span style="color: var(--warning); font-weight: 600;">Menunggu jawaban</span>
       </div>
     </div>
   `).join('');
