@@ -373,7 +373,29 @@ document.addEventListener('DOMContentLoaded', () => {
   initSourceDocsExplorer();
   initErdExplorer();
   initThemeToggles();
+  initBackToTop();
 });
+
+// Tombol kembali ke atas, muncul setelah halaman digulir
+function initBackToTop() {
+  const btn = document.getElementById('to-top-btn');
+  if (!btn) return;
+
+  let ticking = false;
+  function update() {
+    btn.classList.toggle('show', window.scrollY > 500);
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  update();
+}
 
 // Digital Clock (Africa/Cairo EET/EEST)
 function initClock() {
@@ -414,6 +436,13 @@ function initTabs() {
       btn.classList.add('active');
       const activePanel = document.getElementById(`panel-${targetTab}`);
       if (activePanel) activePanel.classList.add('active');
+
+      // Di layar kecil, kembali ke awal bagian supaya tidak mendarat di tengah halaman
+      if (window.matchMedia('(max-width: 900px)').matches) {
+        const shell = document.querySelector('.app-shell');
+        const top = shell ? shell.offsetTop : 0;
+        window.scrollTo({ top, behavior: 'auto' });
+      }
     });
   });
 }
@@ -1679,7 +1708,9 @@ function initThemeToggles() {
   function applyTheme() {
     root.setAttribute('data-theme', isDark ? 'dark' : 'light');
     if (themeBtn) {
-      themeBtn.textContent = isDark ? 'Tampilan: Gelap' : 'Tampilan: Terang';
+      const label = themeBtn.querySelector('.seg-label');
+      const text = isDark ? 'Tampilan: Gelap' : 'Tampilan: Terang';
+      if (label) label.textContent = text; else themeBtn.textContent = text;
       themeBtn.classList.toggle('active', isDark);
       themeBtn.setAttribute('aria-pressed', String(isDark));
     }

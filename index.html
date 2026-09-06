@@ -52,7 +52,11 @@
         </div>
 
         <div class="segmented-control" role="group" aria-label="Preferensi tampilan">
-          <button type="button" id="theme-toggle-btn" class="segmented-btn active" aria-pressed="false">Tampilan: Terang</button>
+          <button type="button" id="theme-toggle-btn" class="segmented-btn active" aria-pressed="false" title="Ganti tampilan terang atau gelap">
+            <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+            <span class="seg-label">Tampilan: Terang</span>
+          </button>
         </div>
       </div>
     </div>
@@ -63,32 +67,32 @@
   <!-- Navigasi utama -->
   <nav class="nav-tabs-bar" aria-label="Navigasi bagian rancangan">
     <div class="nav-tabs-container">
-      <button class="tab-nav-item active" data-tab="roadmap">
+      <button class="tab-nav-item active" data-tab="roadmap" data-short="Rencana">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
         <span>Rencana Kerja &amp; Tim</span>
       </button>
-      <button class="tab-nav-item" data-tab="catalog">
+      <button class="tab-nav-item" data-tab="catalog" data-short="Halaman">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>
         <span>Daftar 113 Halaman</span>
       </button>
-      <button class="tab-nav-item" data-tab="wireframes">
+      <button class="tab-nav-item" data-tab="wireframes" data-short="Tampilan">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h8M8 17h5"/></svg>
         <span>Contoh Tampilan</span>
-        <span class="badge-count">8</span>
+        <span class="badge-count">15</span>
       </button>
-      <button class="tab-nav-item" data-tab="flows">
+      <button class="tab-nav-item" data-tab="flows" data-short="Alur">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M8.5 6H14l1.5 5M8.5 18H14l1.5-5"/></svg>
         <span>Alur Kerja</span>
       </button>
-      <button class="tab-nav-item" data-tab="design">
+      <button class="tab-nav-item" data-tab="design" data-short="Warna">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18 4.5 4.5 0 0 0 0-9 4.5 4.5 0 0 1 0-9z"/></svg>
         <span>Warna &amp; Komponen</span>
       </button>
-      <button class="tab-nav-item" data-tab="decisions">
+      <button class="tab-nav-item" data-tab="decisions" data-short="Keputusan">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 21v-2"/><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/></svg>
         <span>Perlu Diputuskan</span>
       </button>
-      <button class="tab-nav-item" data-tab="sources">
+      <button class="tab-nav-item" data-tab="sources" data-short="Dokumen">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
         <span>Dokumen &amp; Data</span>
       </button>
@@ -508,7 +512,7 @@
       <div class="section-headline">
         <div class="title-area">
           <h1>Contoh Tampilan Halaman</h1>
-          <p>Pratinjau langsung 8 tata letak halaman utama. Coba lihat tampilannya di ukuran layar Komputer, Tablet, dan HP.</p>
+          <p>Pratinjau langsung 15 tata letak halaman utama, dari login sampai keuangan. Coba lihat tampilannya di ukuran layar Komputer, Tablet, dan HP.</p>
         </div>
       </div>
 
@@ -1012,6 +1016,11 @@
       </div>
     </div>
   </footer>
+
+  <!-- Tombol kembali ke atas (muncul setelah menggulir) -->
+  <button type="button" id="to-top-btn" class="to-top" aria-label="Kembali ke atas">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 
   <script src="app.js"></script>
 </body>
