@@ -895,7 +895,363 @@ function initWireframeStudio() {
           </div>
         </div>
       `
+    },
+
+    W9: {
+      title: 'Contoh 9: Login & Verifikasi Dua Langkah (A01, A02)',
+      render: () => `
+        <div class="m m-auth">
+          <div class="m-auth-brand">
+            <i>KPI</i>
+            <h2>Portal Pengurus KPI</h2>
+            <p>Masuk memakai akun pengurus yang terdaftar. Menu dan data yang tampil menyesuaikan jabatan aktif Anda.</p>
+            <ul class="m-auth-points">
+              <li>Akses berlaku selama masa jabatan</li>
+              <li>Setiap masuk tercatat dalam riwayat keamanan</li>
+              <li>Anggota tim dari luar KPI tidak dibuatkan akun</li>
+            </ul>
+          </div>
+
+          <div class="m-auth-form">
+            <div class="m-authbox">
+              <div class="m-authstep">Langkah 1 dari 2</div>
+              <h3>Masuk</h3>
+              <div class="m-field"><label>Email atau username</label><div class="m-input">ahmad.fauzi</div></div>
+              <div class="m-field"><label>Kata sandi</label><div class="m-input">••••••••••</div></div>
+              <button class="btn-primary" style="justify-content:center;">Lanjut</button>
+              <a class="m-link">Lupa kata sandi</a>
+
+              <div class="m-divider"><span>Langkah 2 dari 2</span></div>
+
+              <div class="m-field">
+                <label>Kode 6 angka dari aplikasi di HP</label>
+                <div class="m-otp"><span>4</span><span>1</span><span>9</span><span>2</span><span>0</span><span class="on"></span></div>
+              </div>
+              <p class="m-muted">Kode berganti tiap 30 detik. Portal belum terbuka sebelum kode ini benar.</p>
+              <button class="btn-primary" style="justify-content:center;">Verifikasi dan masuk</button>
+              <p class="m-muted" style="text-align:center;">Kalau salah, pesannya dibuat umum dan tidak menyebut bagian mana yang keliru.</p>
+            </div>
+          </div>
+        </div>
+      `
+    },
+
+    W10: {
+      title: 'Contoh 10: Papan Tugas Divisi (T01)',
+      render: () => `
+        <div class="m m-app">
+          <aside class="m-aside">
+            <div class="m-brand"><i>${LOGO_SM}</i> Ruang Kerja</div>
+            <div class="m-navitem">${NAV.grid} Dashboard</div>
+            <div class="m-navitem">${NAV.home} My Workspace</div>
+            <div class="m-navitem">${NAV.check} Perlu Tindakan <span class="m-count">3</span></div>
+            <div class="m-aside-label">Operasional</div>
+            <div class="m-navitem on">${NAV.list} Tugas Divisi</div>
+            <div class="m-navitem">${NAV.cal} Kalender &amp; Rapat</div>
+            <div class="m-navitem">${NAV.doc} Pustaka Dokumen</div>
+          </aside>
+
+          <main class="m-main">
+            <div class="m-topbar">
+              <div>
+                <div class="m-crumb">Divisi Prevention and Education</div>
+                <h1>Tugas Divisi</h1>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="m-seg"><span class="on">Papan</span><span>Tabel</span></span>
+                <button class="btn-primary" style="padding:8px 14px;font-size:12px;">Buat tugas</button>
+              </div>
+            </div>
+
+            <div class="m-board">
+              <div class="m-col">
+                <div class="m-col-h">Belum dikerjakan <span>3</span></div>
+                <div class="m-tcard"><div class="t">Susun materi sosialisasi</div><div class="s">Tenggat 9 Sep &middot; Nabila</div><div class="m-prog"><span style="width:0%"></span></div></div>
+                <div class="m-tcard"><div class="t">Kumpulkan data peserta</div><div class="s">Tenggat 11 Sep &middot; Rifqi</div><div class="m-prog"><span style="width:0%"></span></div></div>
+              </div>
+              <div class="m-col">
+                <div class="m-col-h">Sedang dikerjakan <span>2</span></div>
+                <div class="m-tcard"><div class="t">Rilis pers Buletin No. 4</div><div class="s">Tenggat besok &middot; Ahmad</div><div class="m-prog"><span style="width:75%"></span></div></div>
+                <div class="m-tcard err"><div class="t">Verifikasi dokumentasi webinar</div><div class="s m-red">Terlambat 1 hari &middot; Salsa</div><div class="m-prog"><span style="width:40%"></span></div></div>
+              </div>
+              <div class="m-col">
+                <div class="m-col-h">Menunggu diperiksa <span>1</span></div>
+                <div class="m-tcard"><div class="t">Laporan triwulan divisi</div><div class="s">Bukti 1 berkas &middot; Ahmad</div><div class="m-prog"><span style="width:100%"></span></div></div>
+              </div>
+              <div class="m-col">
+                <div class="m-col-h">Selesai <span>12</span></div>
+                <div class="m-tcard"><div class="t">Notulen rapat pleno</div><div class="s">Diterima 2 Sep &middot; Nabila</div><div class="m-prog"><span style="width:100%"></span></div></div>
+              </div>
+            </div>
+
+            <p class="m-muted">Kartu hanya bisa digeser ke tahap yang sah. Tahap "Menunggu diperiksa" tidak bisa dilompati.</p>
+          </main>
+        </div>
+      `
+    },
+
+    W11: {
+      title: 'Contoh 11: Dasbor Keuangan (B01)',
+      render: () => `
+        <div class="m m-app">
+          <aside class="m-aside">
+            <div class="m-brand"><i>${LOGO_SM}</i> Keuangan</div>
+            <div class="m-navitem on">${NAV.grid} Dasbor</div>
+            <div class="m-navitem">${NAV.list} Anggaran</div>
+            <div class="m-navitem">${NAV.check} Pengajuan <span class="m-count">5</span></div>
+            <div class="m-aside-label">Proses</div>
+            <div class="m-navitem">${NAV.doc} Antrean Pembayaran</div>
+            <div class="m-navitem">${NAV.cal} Rekonsiliasi</div>
+            <div class="m-navitem">${NAV.bell} Audit Internal</div>
+          </aside>
+
+          <main class="m-main">
+            <div class="m-topbar">
+              <div>
+                <div class="m-crumb">Periode 2026/2027 &middot; status: Terbuka</div>
+                <h1>Dasbor Keuangan</h1>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <button class="btn-secondary" style="padding:8px 14px;font-size:12px;">Unduh laporan</button>
+                <div class="m-avatar">BD</div>
+              </div>
+            </div>
+
+            <div class="m-stats">
+              <div class="m-stat s1"><span class="lbl">Anggaran disahkan</span><span class="val">[nominal]</span><span class="sub">12 pos anggaran</span></div>
+              <div class="m-stat s2"><span class="lbl">Sudah terpakai</span><span class="val">[nominal]</span><span class="sub">64% dari anggaran</span></div>
+              <div class="m-stat s3"><span class="lbl">Posisi kas</span><span class="val">[nominal]</span><span class="sub">per 5 Sep 2026</span></div>
+              <div class="m-stat s4"><span class="lbl">Belum selesai</span><span class="val">7 item</span><span class="sub">uang muka &amp; tagihan</span></div>
+            </div>
+
+            <div class="m-grid2">
+              <div class="m-panel">
+                <div class="m-panel-h">Anggaran dibanding realisasi</div>
+                <div class="m-panel-b">
+                  <div class="m-bar"><div class="lbl"><span>Program kerja</span><span class="m-muted">72%</span></div><div class="m-prog"><span style="width:72%"></span></div></div>
+                  <div class="m-bar"><div class="lbl"><span>Publikasi &amp; media</span><span class="m-muted">55%</span></div><div class="m-prog"><span style="width:55%"></span></div></div>
+                  <div class="m-bar"><div class="lbl"><span>Operasional</span><span class="m-muted">88%</span></div><div class="m-prog"><span style="width:88%"></span></div></div>
+                  <div class="m-bar"><div class="lbl"><span>Kegiatan insidental</span><span class="m-muted">21%</span></div><div class="m-prog mut"><span style="width:21%"></span></div></div>
+                  <p class="m-muted">Angka pada contoh ini belum diisi karena menunggu data resmi dari Bendahara.</p>
+                </div>
+              </div>
+
+              <div class="m-panel">
+                <div class="m-panel-h">Perlu tindakan <span class="m-muted">5</span></div>
+                <div class="m-panel-b">
+                  <div class="m-row"><div><div class="t">Pengajuan cetak buletin</div><div class="s">Menunggu persetujuan Anda</div></div><span class="m-status warn">Menunggu</span></div>
+                  <div class="m-row"><div><div class="t">Uang muka kegiatan webinar</div><div class="s">Jatuh tempo 3 hari lagi</div></div><span class="m-status err">Segera</span></div>
+                  <div class="m-row"><div><div class="t">Selisih rekonsiliasi Agustus</div><div class="s">Perlu penjelasan</div></div><span class="m-status warn">Diperiksa</span></div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      `
+    },
+
+    W12: {
+      title: 'Contoh 12: Pengajuan & Persetujuan Biaya (B04, B05)',
+      render: () => `
+        <div class="m m-section">
+          <div class="m-topbar" style="margin-bottom:16px;">
+            <div>
+              <div class="m-crumb">Pengajuan FIN-2026-0148 &middot; Divisi Media and Publication</div>
+              <h1 style="font-size:17px;">Cetak Buletin Edisi September</h1>
+            </div>
+            <div style="text-align:right;">
+              <div class="m-status warn">Menunggu persetujuan</div>
+              <div class="m-muted" style="margin-top:4px;">Diajukan 4 Sep 2026</div>
+            </div>
+          </div>
+
+          <div class="m-grid2" style="grid-template-columns:1.5fr 1fr;">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="m-panel">
+                <div class="m-panel-h">Rincian pengajuan</div>
+                <div class="m-panel-b">
+                  <div class="m-kv"><span>Jenis</span><b>Permintaan pembelian</b></div>
+                  <div class="m-kv"><span>Pos anggaran</span><b>Publikasi &amp; media</b></div>
+                  <div class="m-kv"><span>Sumber dana</span><b>Alokasi internal</b></div>
+                  <div class="m-kv"><span>Nominal</span><b>[nominal]</b></div>
+                  <div class="m-kv"><span>Sisa anggaran pos ini</span><b class="m-green">Cukup</b></div>
+                  <div class="m-kv"><span>Penerima</span><b>Percetakan (terverifikasi)</b></div>
+                </div>
+              </div>
+
+              <div class="m-panel">
+                <div class="m-panel-h">Berkas pendukung <span class="m-muted">2 berkas</span></div>
+                <div class="m-panel-b">
+                  <div class="m-row"><div style="display:flex;gap:10px;align-items:center;"><div class="m-thumb" style="width:34px;height:42px;"></div><div><div class="t">Penawaran_Percetakan.pdf</div><div class="s">Lolos pemeriksaan</div></div></div><button class="btn-secondary" style="padding:5px 11px;font-size:11px;">Buka</button></div>
+                  <div class="m-row"><div style="display:flex;gap:10px;align-items:center;"><div class="m-thumb" style="width:34px;height:42px;"></div><div><div class="t">Rencana_Distribusi.pdf</div><div class="s">Lolos pemeriksaan</div></div></div><button class="btn-secondary" style="padding:5px 11px;font-size:11px;">Buka</button></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="m-panel">
+                <div class="m-panel-h">Riwayat persetujuan</div>
+                <div class="m-panel-b">
+                  <div class="m-time"><span class="dot ok"></span><div><div class="t">Diajukan</div><div class="s">Koordinator M&amp;P &middot; 4 Sep</div></div></div>
+                  <div class="m-time"><span class="dot ok"></span><div><div class="t">Diperiksa Bendahara</div><div class="s">Bukti lengkap &middot; 5 Sep</div></div></div>
+                  <div class="m-time"><span class="dot now"></span><div><div class="t">Menunggu persetujuan Ketua</div><div class="s">Di atas batas kewenangan Bendahara</div></div></div>
+                  <div class="m-time"><span class="dot"></span><div><div class="t">Pembayaran</div><div class="s">Belum dijadwalkan</div></div></div>
+                </div>
+              </div>
+
+              <div class="m-panel">
+                <div class="m-panel-h">Keputusan Anda</div>
+                <div class="m-panel-b">
+                  <div class="m-field"><label>Catatan (wajib bila menolak)</label><div class="m-textarea" style="min-height:56px;">Tulis catatan...</div></div>
+                  <button class="btn-primary" style="justify-content:center;">Setujui</button>
+                  <button class="btn-secondary" style="justify-content:center;">Kembalikan untuk perbaikan</button>
+                  <p class="m-muted">Pengaju tidak bisa menyetujui pengajuannya sendiri.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+    },
+
+    W13: {
+      title: 'Contoh 13: Penilaian Kinerja (E04, E06)',
+      render: () => `
+        <div class="m m-section">
+          <div class="m-topbar" style="margin-bottom:16px;">
+            <div>
+              <div class="m-crumb">Siklus Semester I 2026/2027 &middot; tahap Evaluasi</div>
+              <h1 style="font-size:17px;">Penilaian Kinerja Divisi</h1>
+            </div>
+            <span class="m-status warn">Batas isi 15 Sep 2026</span>
+          </div>
+
+          <div class="m-grid2" style="grid-template-columns:1.4fr 1fr;">
+            <div class="m-panel">
+              <div class="m-panel-h">Target &amp; capaian <span class="m-muted">bobot total 100%</span></div>
+              <div class="m-panel-b">
+                <div class="m-bar"><div class="lbl"><span>Ketepatan waktu tugas <em>(bobot 30%)</em></span><span class="m-muted">82%</span></div><div class="m-prog"><span style="width:82%"></span></div></div>
+                <div class="m-bar"><div class="lbl"><span>Tugas selesai &amp; diterima <em>(bobot 30%)</em></span><span class="m-muted">75%</span></div><div class="m-prog"><span style="width:75%"></span></div></div>
+                <div class="m-bar"><div class="lbl"><span>Kelengkapan bukti kerja <em>(bobot 25%)</em></span><span class="m-muted">90%</span></div><div class="m-prog"><span style="width:90%"></span></div></div>
+                <div class="m-bar"><div class="lbl"><span>Kehadiran rapat <em>(bobot 15%)</em></span><span class="m-muted">Belum ada data</span></div><div class="m-prog mut"><span style="width:0%"></span></div></div>
+                <p class="m-muted">Indikator tanpa data ditandai "belum ada data", tidak dihitung sebagai nol.</p>
+              </div>
+            </div>
+
+            <div class="m-panel">
+              <div class="m-panel-h">Lembar penilaian</div>
+              <div class="m-panel-b">
+                <div class="m-field"><label>Yang dinilai</label><div class="m-input">Nabila Rahma &middot; Anggota</div></div>
+                <div class="m-field">
+                  <label>Nilai menurut rubrik</label>
+                  <div class="m-rate"><span>1</span><span>2</span><span class="on">3</span><span>4</span><span>5</span></div>
+                </div>
+                <div class="m-field"><label>Alasan penilaian (wajib)</label><div class="m-textarea" style="min-height:60px;">Tulis alasan berdasarkan bukti yang ditinjau...</div></div>
+                <button class="btn-primary" style="justify-content:center;">Kirim penilaian</button>
+                <p class="m-muted">Penilai yang punya konflik kepentingan tidak boleh menilai orang ini.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+    },
+
+    W14: {
+      title: 'Contoh 14: Serah Terima Jabatan (H02, H03)',
+      render: () => `
+        <div class="m m-section">
+          <div class="m-topbar" style="margin-bottom:14px;">
+            <div>
+              <div class="m-crumb">Periode 2025/2026 ke 2026/2027 &middot; Sekretaris</div>
+              <h1 style="font-size:17px;">Paket Serah Terima Jabatan</h1>
+            </div>
+            <span class="m-status warn">4 dari 9 item diterima</span>
+          </div>
+
+          <div class="m-prog" style="margin-bottom:16px;"><span style="width:44%"></span></div>
+
+          <div class="m-grid2" style="grid-template-columns:1.5fr 1fr;">
+            <div class="m-panel">
+              <div class="m-panel-h">Daftar item <span class="m-muted">9 item</span></div>
+              <div class="m-panel-b">
+                <div class="m-row"><div><div class="t">Arsip surat masuk &amp; keluar</div><div class="s">142 berkas &middot; wajib</div></div><span class="m-status ok">Diterima</span></div>
+                <div class="m-row"><div><div class="t">Notulen rapat pleno</div><div class="s">18 dokumen &middot; wajib</div></div><span class="m-status ok">Diterima</span></div>
+                <div class="m-row"><div><div class="t">Daftar kontak mitra</div><div class="s">Buku alamat kelembagaan</div></div><span class="m-status ok">Diterima</span></div>
+                <div class="m-row"><div><div class="t">Tugas yang masih berjalan</div><div class="s">6 tugas belum selesai &middot; wajib</div></div><span class="m-status warn">Perlu klarifikasi</span></div>
+                <div class="m-row"><div><div class="t">Akun dan hak akses</div><div class="s">Peralihan akses &middot; wajib</div></div><span class="m-status">Menunggu</span></div>
+                <div class="m-row"><div><div class="t">Inventaris barang sekretariat</div><div class="s">Belum dilampirkan</div></div><span class="m-status err">Belum siap</span></div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="m-panel">
+                <div class="m-panel-h">Item yang ditandai</div>
+                <div class="m-panel-b">
+                  <div style="background:var(--warning-bg);border:1px solid var(--warning-border);border-radius:10px;padding:11px;">
+                    <strong style="font-size:11.5px;color:var(--warning);">Tugas yang masih berjalan</strong>
+                    <p style="margin-top:4px;font-size:12px;">Pengurus baru meminta kejelasan penanggung jawab untuk 2 tugas yang tenggatnya sudah lewat.</p>
+                  </div>
+                  <div class="m-field"><label>Tanggapan pengurus lama</label><div class="m-textarea" style="min-height:52px;">Tulis penjelasan...</div></div>
+                  <button class="btn-primary" style="justify-content:center;">Kirim tanggapan</button>
+                </div>
+              </div>
+
+              <div class="m-panel">
+                <div class="m-panel-h">Penutupan</div>
+                <div class="m-panel-b">
+                  <p style="font-size:12px;color:var(--text-secondary);">Paket belum bisa ditutup selama masih ada item wajib yang belum diterima.</p>
+                  <button class="btn-secondary" style="justify-content:center;">Tutup serah terima</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+    },
+
+    W15: {
+      title: 'Contoh 15: Pusat Notifikasi & Preferensi (W05, N01)',
+      render: () => `
+        <div class="m m-section">
+          <div class="m-topbar" style="margin-bottom:14px;">
+            <div>
+              <div class="m-crumb">7 belum dibaca</div>
+              <h1 style="font-size:17px;">Pusat Notifikasi</h1>
+            </div>
+            <span class="m-seg"><span class="on">Semua</span><span>Belum dibaca</span><span>Perlu tindakan</span></span>
+          </div>
+
+          <div class="m-grid2" style="grid-template-columns:1.6fr 1fr;">
+            <div class="m-panel">
+              <div class="m-panel-h">Hari ini</div>
+              <div class="m-panel-b">
+                <div class="m-notif unread"><span class="dot"></span><div><div class="t">Bukti tugas menunggu diperiksa</div><div class="s">Laporan Triwulan &middot; dari Ahmad &middot; 18:12</div></div><span class="m-status warn">Perlu tindakan</span></div>
+                <div class="m-notif unread"><span class="dot"></span><div><div class="t">Pengajuan biaya perlu persetujuan</div><div class="s">Cetak buletin &middot; dari Bendahara &middot; 16:40</div></div><span class="m-status warn">Perlu tindakan</span></div>
+                <div class="m-notif"><span class="dot"></span><div><div class="t">Rapat pleno dimulai 20:00 Kairo</div><div class="s">Pengingat &middot; 15:00</div></div><span class="m-status">Info</span></div>
+                <div class="m-notif"><span class="dot"></span><div><div class="t">Notulen rapat sudah final</div><div class="s">Sekretaris &middot; kemarin</div></div><span class="m-status">Info</span></div>
+              </div>
+            </div>
+
+            <div class="m-panel">
+              <div class="m-panel-h">Preferensi</div>
+              <div class="m-panel-b">
+                <div class="m-toggle"><span>Ringkasan harian lewat email</span><i class="on"></i></div>
+                <div class="m-toggle"><span>Pengingat tenggat tugas</span><i class="on"></i></div>
+                <div class="m-toggle"><span>Pengumuman umum</span><i></i></div>
+                <div class="m-toggle locked"><span>Persetujuan &amp; keamanan akun</span><i class="on"></i></div>
+                <p class="m-muted">Notifikasi persetujuan dan keamanan bersifat wajib, jadi tidak bisa dimatikan.</p>
+                <div class="m-field"><label>Jam tenang</label><div class="m-input">23:00 sampai 06:00 waktu Kairo</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
     }
+  };
+
+  const WF_SHELL = {
+    W1: 'public', W2: 'app', W3: 'app', W4: 'app', W5: 'app', W6: 'app', W7: 'app', W8: 'app',
+    W9: 'plain', W10: 'app', W11: 'app', W12: 'app', W13: 'app', W14: 'app', W15: 'app'
   };
 
   function renderWireframe(id) {
@@ -905,6 +1261,7 @@ function initWireframeStudio() {
 
     if (wfTitleBadge) wfTitleBadge.textContent = wf.title;
     wfContentArea.innerHTML = wf.render();
+    if (simFrame) simFrame.setAttribute('data-shell', WF_SHELL[id] || 'app');
 
     wfButtons.forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-wf') === id);
@@ -923,6 +1280,7 @@ function initWireframeStudio() {
       btn.classList.add('active');
       const dev = btn.getAttribute('data-dev');
       simFrame.className = `simulated-screen-frame ${dev}`;
+      simFrame.setAttribute('data-shell', WF_SHELL[activeWfId] || 'app');
     });
   });
 

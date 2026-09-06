@@ -1075,10 +1075,98 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; }
 .sim-chrome-spacer { width: 52px; flex-shrink: 0; }
 .simulated-screen-frame.mobile .sim-chrome { display: none; }
 
+.sim-screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--surface);
+}
+
 .sim-body {
   flex: 1;
   background: var(--surface);
   overflow: hidden;
+}
+
+/* Rangka ponsel: bezel gelap, status bar, bar bawah, home indicator */
+.sim-statusbar,
+.sim-bottomnav,
+.sim-home { display: none; }
+
+.simulated-screen-frame.mobile {
+  max-width: 372px;
+  background: #17161A;
+  border: none;
+  border-radius: 38px;
+  padding: 11px;
+  box-shadow: var(--shadow-lg);
+}
+.simulated-screen-frame.mobile .sim-screen {
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.simulated-screen-frame.mobile .sim-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 20px 7px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.sim-icons { display: flex; align-items: center; gap: 5px; }
+.sim-icons i {
+  display: block;
+  background: var(--text-primary);
+  opacity: 0.75;
+}
+.sim-icons i.sig { width: 13px; height: 9px; clip-path: polygon(0 100%,20% 100%,20% 62%,0 62%,0 100%,33% 100%,33% 42%,53% 42%,53% 100%,66% 100%,66% 20%,86% 20%,86% 100%,100% 100%,100% 0,100% 100%); }
+.sim-icons i.wifi { width: 11px; height: 9px; border-radius: 11px 11px 0 0; }
+.sim-icons i.batt { width: 18px; height: 9px; border-radius: 2px; }
+
+.simulated-screen-frame.mobile[data-shell="app"] .sim-bottomnav {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  padding: 8px 6px 4px;
+  background: var(--surface);
+  border-top: 1px solid var(--hairline);
+  flex-shrink: 0;
+}
+.sim-bottomnav span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+.sim-bottomnav span svg { width: 18px; height: 18px; stroke-width: 1.75; }
+.sim-bottomnav span.on { color: var(--accent); font-weight: 600; }
+
+.simulated-screen-frame.mobile .sim-home {
+  display: block;
+  height: 16px;
+  background: var(--surface);
+  flex-shrink: 0;
+  position: relative;
+}
+.simulated-screen-frame.mobile .sim-home::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  transform: translateX(-50%);
+  width: 108px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--text-tertiary);
+  opacity: 0.55;
 }
 
 /* -------- Kit UI tiruan (mock) -------- */
@@ -1314,15 +1402,195 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; }
 .m-bubble.ai { align-self: flex-start; background: var(--surface-secondary); border: 1px solid var(--hairline); border-bottom-left-radius: 4px; }
 .m-bubble.ai .m-muted { color: var(--text-tertiary); }
 
+/* cegah isi grid memaksa lebar melebihi bingkai */
+.m-main, .m-panel, .m-panel-b, .m-col, .m-stat, .m-tcard, .m-card,
+.m-grid2 > *, .m-grid3 > *, .m-board > *, .m-stats > *, .m-row > * { min-width: 0; }
+.m-row .t, .m-tcard .t, .m-notif .t { overflow-wrap: anywhere; }
+
+/* halaman masuk */
+.m-auth { display: grid; grid-template-columns: 1fr 1fr; min-height: 540px; }
+.m-auth-brand {
+  background: var(--canvas-tint);
+  border-right: 1px solid var(--hairline);
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.m-auth-brand i {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: var(--accent); color: #fff;
+  display: grid; place-items: center;
+  font-size: 12px; font-weight: 600; font-style: normal;
+}
+.m-auth-brand h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+.m-auth-brand p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.m-auth-points { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 7px; margin-top: 6px; }
+.m-auth-points li {
+  font-size: 12px; color: var(--text-secondary);
+  padding-left: 16px; position: relative;
+}
+.m-auth-points li::before {
+  content: ""; position: absolute; left: 0; top: 7px;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+}
+.m-auth-form { padding: 32px; display: flex; align-items: center; justify-content: center; }
+.m-authbox { width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 12px; }
+.m-authstep { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent); font-weight: 600; }
+.m-authbox h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+.m-link { font-size: 12px; color: var(--accent); text-align: center; }
+.m-divider { display: flex; align-items: center; gap: 10px; margin: 4px 0; }
+.m-divider::before, .m-divider::after { content: ""; flex: 1; height: 1px; background: var(--hairline); }
+.m-divider span { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); font-weight: 600; }
+.m-otp { display: flex; gap: 6px; }
+.m-otp span {
+  flex: 1; height: 40px;
+  border: 1px solid var(--border-decor); border-radius: 9px;
+  display: grid; place-items: center;
+  font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.m-otp span.on { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle); }
+
+/* pilihan tampilan kecil */
+.m-seg { display: inline-flex; background: var(--surface-secondary); border-radius: 9px; padding: 2px; gap: 2px; }
+.m-seg span { font-size: 11px; padding: 5px 10px; border-radius: 7px; color: var(--text-secondary); }
+.m-seg span.on { background: var(--surface); color: var(--text-primary); font-weight: 600; box-shadow: var(--shadow-xs); }
+
+/* papan tugas */
+.m-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: start; }
+.m-col { background: var(--canvas-tint); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.m-col-h { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: var(--text-secondary); padding: 0 2px 2px; }
+.m-col-h span { color: var(--text-tertiary); }
+.m-tcard { background: var(--surface); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.m-tcard.err { border-color: var(--error-border); }
+.m-tcard .t { font-size: 12px; font-weight: 550; line-height: 1.4; }
+.m-tcard .s { font-size: 10.5px; color: var(--text-tertiary); }
+.m-red { color: var(--error) !important; }
+.m-green { color: var(--success); }
+
+/* kartu angka ringkas */
+.m-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.m-stat { border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 3px; border: 1px solid var(--hairline); }
+.m-stat .lbl { font-size: 11px; color: var(--text-secondary); font-weight: 550; }
+.m-stat .val { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); }
+.m-stat .sub { font-size: 10.5px; color: var(--text-tertiary); }
+.m-stat.s1 { background: var(--pastel-lilac); }
+.m-stat.s2 { background: var(--pastel-peach); }
+.m-stat.s3 { background: var(--pastel-sky); }
+.m-stat.s4 { background: var(--pastel-mint); }
+
+/* batang perbandingan */
+.m-bar { display: flex; flex-direction: column; gap: 5px; }
+.m-bar .lbl { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; }
+.m-bar .lbl em { font-style: normal; color: var(--text-tertiary); font-size: 11px; }
+
+/* pasangan label dan isi */
+.m-kv { display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; padding: 6px 0; border-bottom: 1px solid var(--hairline); }
+.m-kv:last-child { border-bottom: none; }
+.m-kv span { color: var(--text-secondary); }
+.m-kv b { font-weight: 600; text-align: right; }
+
+/* garis waktu persetujuan */
+.m-time { display: flex; gap: 11px; align-items: flex-start; }
+.m-time .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--surface-tertiary); margin-top: 3px; flex-shrink: 0; }
+.m-time .dot.ok { background: var(--success); }
+.m-time .dot.now { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle); }
+.m-time .t { font-size: 12.5px; font-weight: 550; }
+.m-time .s { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
+
+/* skala penilaian */
+.m-rate { display: flex; gap: 6px; }
+.m-rate span {
+  flex: 1; height: 34px; border: 1px solid var(--border-decor); border-radius: 9px;
+  display: grid; place-items: center; font-size: 13px; font-weight: 600; color: var(--text-secondary);
+}
+.m-rate span.on { background: var(--accent); border-color: var(--accent); color: var(--text-on-accent); }
+
+/* daftar notifikasi */
+.m-notif { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; border: 1px solid var(--border-subtle); border-radius: 10px; }
+.m-notif > div { flex: 1; }
+.m-notif .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-decor); margin-top: 5px; flex-shrink: 0; }
+.m-notif.unread { background: var(--canvas-tint); }
+.m-notif.unread .dot { background: var(--accent); }
+.m-notif .t { font-size: 12.5px; font-weight: 550; line-height: 1.4; }
+.m-notif .s { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+/* sakelar preferensi */
+.m-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12.5px; padding: 7px 0; }
+.m-toggle i { width: 34px; height: 19px; border-radius: 999px; background: var(--surface-tertiary); position: relative; flex-shrink: 0; }
+.m-toggle i::after { content: ""; position: absolute; top: 2px; left: 2px; width: 15px; height: 15px; border-radius: 50%; background: #fff; box-shadow: var(--shadow-xs); }
+.m-toggle i.on { background: var(--accent); }
+.m-toggle i.on::after { left: 17px; }
+.m-toggle.locked { opacity: 0.75; }
+
 /* penyesuaian ukuran di dalam bingkai */
 .simulated-screen-frame.tablet .m-app,
 .simulated-screen-frame.mobile .m-app { grid-template-columns: 1fr; }
 .simulated-screen-frame.tablet .m-aside,
 .simulated-screen-frame.mobile .m-aside { display: none; }
 .simulated-screen-frame.tablet .m-grid3 { grid-template-columns: 1fr 1fr; }
+.simulated-screen-frame.tablet .m-board { grid-template-columns: 1fr 1fr; }
+.simulated-screen-frame.tablet .m-stats { grid-template-columns: 1fr 1fr; }
+.simulated-screen-frame.tablet .m-auth { grid-template-columns: 1fr; min-height: 0; }
+.simulated-screen-frame.tablet .m-auth-brand { border-right: none; border-bottom: 1px solid var(--hairline); }
+
+/* -------- Mode HP: semua dibuat ringkas -------- */
 .simulated-screen-frame.mobile .m-grid3,
-.simulated-screen-frame.mobile .m-grid2 { grid-template-columns: 1fr; }
+.simulated-screen-frame.mobile .m-grid2,
+.simulated-screen-frame.mobile .m-board,
+.simulated-screen-frame.mobile .m-auth { grid-template-columns: 1fr !important; }
+.simulated-screen-frame.mobile .m-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
 .simulated-screen-frame.mobile .m-navlinks { display: none; }
+
+.simulated-screen-frame.mobile .m { font-size: 12.5px; }
+.simulated-screen-frame.mobile .m-section { padding: 16px 14px; }
+.simulated-screen-frame.mobile .m-main { padding: 14px; gap: 13px; }
+.simulated-screen-frame.mobile .m-webnav { padding: 11px 14px; gap: 10px; }
+.simulated-screen-frame.mobile .m-webactions .btn-primary { padding: 7px 11px; font-size: 11.5px; }
+
+.simulated-screen-frame.mobile .m-hero { padding: 28px 18px 26px; }
+.simulated-screen-frame.mobile .m-hero h1 { font-size: 1.32rem; max-width: none; margin-bottom: 8px; }
+.simulated-screen-frame.mobile .m-hero p { font-size: 12.5px; margin-bottom: 16px; }
+.simulated-screen-frame.mobile .m-cta { flex-direction: column; }
+.simulated-screen-frame.mobile .m-cta .btn-primary,
+.simulated-screen-frame.mobile .m-cta .btn-secondary { width: 100%; padding: 11px 14px; }
+
+.simulated-screen-frame.mobile .m-sec-head { margin-bottom: 11px; }
+.simulated-screen-frame.mobile .m-sec-head h2 { font-size: 13.5px; }
+.simulated-screen-frame.mobile .m-card { padding: 12px; gap: 6px; border-radius: 12px; }
+.simulated-screen-frame.mobile .m-card h3 { font-size: 12.5px; }
+.simulated-screen-frame.mobile .m-card p { font-size: 11.5px; }
+.simulated-screen-frame.mobile .m-thumb { height: 74px; }
+
+.simulated-screen-frame.mobile .m-topbar { gap: 8px; }
+.simulated-screen-frame.mobile .m-topbar h1 { font-size: 15px; }
+.simulated-screen-frame.mobile .m-crumb { font-size: 10.5px; }
+
+.simulated-screen-frame.mobile .m-panel { border-radius: 12px; }
+.simulated-screen-frame.mobile .m-panel-h { padding: 10px 12px; font-size: 12px; }
+.simulated-screen-frame.mobile .m-panel-b { padding: 11px 12px; gap: 8px; }
+.simulated-screen-frame.mobile .m-row { padding: 9px 10px; border-radius: 9px; gap: 8px; }
+.simulated-screen-frame.mobile .m-row .t { font-size: 12px; }
+.simulated-screen-frame.mobile .m-alert { padding: 10px 12px; font-size: 12px; border-radius: 10px; }
+
+.simulated-screen-frame.mobile .m-stat { padding: 11px; border-radius: 12px; }
+.simulated-screen-frame.mobile .m-stat .val { font-size: 16px; }
+.simulated-screen-frame.mobile .m-col { padding: 9px; }
+.simulated-screen-frame.mobile .m-tabs { overflow-x: auto; scrollbar-width: none; }
+.simulated-screen-frame.mobile .m-tabs::-webkit-scrollbar { display: none; }
+.simulated-screen-frame.mobile .m-tab { white-space: nowrap; font-size: 11.5px; padding: 7px 10px; }
+
+.simulated-screen-frame.mobile .m-auth-brand { display: none; }
+.simulated-screen-frame.mobile .m-auth-form { padding: 22px 18px; }
+.simulated-screen-frame.mobile .m-authbox { max-width: none; }
+.simulated-screen-frame.mobile .m-otp span { height: 36px; font-size: 14px; }
+
+.simulated-screen-frame.mobile .m-dim { padding: 18px 12px; }
+.simulated-screen-frame.mobile .m-dialog { padding: 16px; border-radius: 14px; }
+.simulated-screen-frame.mobile .m-bubble { max-width: 92%; font-size: 12px; }
+.simulated-screen-frame.mobile .m-seg span { padding: 4px 8px; font-size: 10.5px; }
+.simulated-screen-frame.mobile .m-kv { font-size: 12px; }
 
 /* Tombol */
 .btn-primary, .btn-secondary, .btn-destructive {
