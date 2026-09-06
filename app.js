@@ -37,7 +37,11 @@ const ALL_SCREENS = [
   { id: 'A09', name: 'Permintaan Akses Khusus', category: 'Fondasi', role: 'Pengurus / Koordinator', source: 'R14', purpose: 'Mengajukan izin sementara untuk membuka dokumen atau tugas tertentu, dengan batas waktu.', controls: 'Wajib menyebutkan alasan dan disetujui bertingkat. Izin otomatis habis sendiri.', db: 'access_grants, audit_logs' },
   { id: 'A10', name: 'Akses Darurat', category: 'Fondasi', role: 'Ketua / Sekjend', source: 'R14-15', purpose: 'Prosedur darurat untuk membuka akses saat terjadi kejadian genting.', controls: 'Muncul peringatan di seluruh sistem, ada hitung mundur, dan diperiksa setelah kejadian.', db: 'emergency_access_events, audit_logs' },
   { id: 'A11', name: 'Catatan Riwayat Keamanan', category: 'Fondasi', role: 'Auditor / Pimpinan', source: 'A15-20', purpose: 'Catatan lengkap aktivitas: siapa, melakukan apa, kapan, dan hasilnya.', controls: 'Catatan ini tidak bisa dihapus atau diubah siapa pun. Bagian sensitif disamarkan.', db: 'audit_logs, security_events' },
-  { id: 'A12', name: 'Pengaturan Sistem Global', category: 'Fondasi', role: 'Admin Teknis', source: 'D15, A22', purpose: 'Pengaturan umum: pemberitahuan, batas ukuran file, lama penyimpanan, dan daftar kategori.', controls: 'Perubahan yang berdampak luas perlu ringkasan dampak dan konfirmasi terpisah.', db: 'audit_logs' },
+  { id: 'A12', name: 'Pengaturan Sistem Global', category: 'Fondasi', role: 'Admin Sistem', source: 'D15, A22', purpose: 'Pengaturan umum: pemberitahuan, batas ukuran file, lama penyimpanan, dan daftar kategori.', controls: 'Perubahan yang berdampak luas perlu ringkasan dampak dan konfirmasi terpisah.', db: 'audit_logs' },
+  { id: 'A13', name: 'Registri Konfigurasi Sistem', category: 'Fondasi', role: 'Admin Sistem', source: 'ADM', purpose: 'Daftar semua pengaturan sistem beserta nomor versinya dan status draf atau sudah berlaku.', controls: 'Setiap perubahan pengaturan tercatat lengkap dengan nilai sebelum dan sesudahnya.', db: 'configurations, audit_logs' },
+  { id: 'A14', name: 'Kebijakan Persetujuan', category: 'Fondasi', role: 'Pimpinan / Admin Sistem', source: 'ADM, LIFE', purpose: 'Menetapkan siapa menyetujui apa, batas nominal, dan siapa penyetuju penggantinya.', controls: 'Pengaju tidak boleh menjadi penyetuju atas pengajuannya sendiri.', db: 'approval_policies, roles' },
+  { id: 'A15', name: 'Kebijakan Penyimpanan & Retensi', category: 'Fondasi', role: 'Pimpinan / Admin Sistem', source: 'ADM, DICT', purpose: 'Berapa lama tiap jenis catatan disimpan, kapan boleh diarsipkan, dan mana yang tidak boleh dihapus.', controls: 'Catatan yang sedang diaudit atau bersengketa ditahan dan tidak bisa dihapus.', db: 'retention_policies, archives' },
+  { id: 'A16', name: 'Cadangan & Pemulihan Data', category: 'Fondasi', role: 'Admin Sistem', source: 'ADM, HANDOFF', purpose: 'Jadwal pencadangan data, hasil uji pemulihan, dan riwayatnya.', controls: 'Cadangan wajib terenkripsi dan pemulihannya diuji berkala, bukan hanya dijanjikan.', db: 'backup_jobs, audit_logs' },
 
   // Workspace & Tugas (W01 - W05, T01 - T11)
   { id: 'W01', name: 'Dashboard Pengurus', category: 'Workspace', role: 'Semua Pengurus', source: 'U7', purpose: 'Ringkasan cepat: beban kerja, rapat hari ini, dan pemberitahuan penting.', controls: 'Tanpa grafik hiasan. Grafik kinerja hanya muncul bila konteks periodenya jelas.', db: 'tasks, meetings, notifications' },
@@ -92,17 +96,48 @@ const ALL_SCREENS = [
   { id: 'S04', name: 'Detail Pengaduan & Catatan', category: 'Layanan', role: 'Penindak Lanjut Aduan', source: 'D13', purpose: 'Menangani aduan sampai selesai, memisahkan tegas "catatan internal" dan "kabar untuk pelapor".', controls: 'Kabar untuk pelapor wajib dipratinjau dulu sebelum dikirim ke nomor kode pelapor.', db: 'complaints, complaint_updates, tracking_tokens' },
   { id: 'S05', name: 'Pengumuman Internal', category: 'Komunikasi', role: 'Sekjend / Humas', source: 'B9, M E', purpose: 'Menyiarkan pengumuman penting ke seluruh pengurus atau divisi tertentu.', controls: 'Sasaran divisinya jelas; daftar penerima ditampilkan dulu sebelum dikirim.', db: 'notifications, public_content' },
   { id: 'S06', name: 'Buku Kontak & Mitra Relasi', category: 'Komunikasi', role: 'Humas / Pimpinan', source: 'M D', purpose: 'Buku alamat kelembagaan: PPMI, KBRI, organisasi kekeluargaan dan kedaerahan.', controls: 'Nomor pribadi dilindungi; menambah kontak baru lewat pemeriksaan pengurus.', db: 'users, audit_logs' },
+  { id: 'S07', name: 'Antrean Formulir Masuk', category: 'Layanan', role: 'Petugas Layanan', source: 'FORM', purpose: 'Kiriman formulir yang belum dipilah, lengkap dengan persetujuan privasi dari pengirimnya.', controls: 'Kiriman tidak boleh diubah tanpa jejak. Identitas pengirim disamarkan pada daftar.', db: 'form_submissions, tracking_tokens' },
+  { id: 'S08', name: 'Berkas Bukti Kasus', category: 'Layanan', role: 'Penindak Lanjut Aduan', source: 'CASE', purpose: 'Kumpulan bukti satu kasus beserta sumber, pengunggah, dan waktu unggahnya.', controls: 'Bukti tidak dapat dihapus selama kasus masih berjalan, disengketakan, atau sedang diaudit.', db: 'case_evidence, files' },
+  { id: 'S09', name: 'Penutupan & Pembukaan Ulang Kasus', category: 'Layanan', role: 'Pimpinan / Reviewer', source: 'CASE, LIFE', purpose: 'Menutup kasus dengan ringkasan dan alasan, atau membukanya kembali bila ada bukti baru.', controls: 'Penutupan perlu persetujuan. Pembukaan ulang wajib beralasan dan tercatat permanen.', db: 'cases, case_actions, audit_logs' },
 
-  // Evaluasi, Handover & AI (E01 - E03, H01 - H03, I01 - I03)
+  // Keuangan (B01 - B09)
+  { id: 'B01', name: 'Dasbor Keuangan', category: 'Keuangan', role: 'Pimpinan / Bendahara', source: 'FIN', purpose: 'Ringkasan anggaran, realisasi, posisi kas, kewajiban yang belum selesai, dan status periode keuangan.', controls: 'Nominal sensitif hanya terlihat oleh pihak yang berwenang.', db: 'financial_period, budget, financial_transaction' },
+  { id: 'B02', name: 'Anggaran & Revisinya', category: 'Keuangan', role: 'Bendahara / Pengusul', source: 'FIN', purpose: 'Menyusun anggaran per periode, program, atau sumber dana, lengkap dengan riwayat revisinya.', controls: 'Revisi tidak menghapus versi lama. Setiap perubahan lewat persetujuan berjenjang.', db: 'budget, budget_line, fund' },
+  { id: 'B03', name: 'Sumber Dana', category: 'Keuangan', role: 'Bendahara', source: 'FIN', purpose: 'Daftar sumber dana beserta batasan penggunaannya dan penanggung jawabnya.', controls: 'Dana yang terikat peruntukan tidak boleh dipakai untuk keperluan lain.', db: 'fund' },
+  { id: 'B04', name: 'Pengajuan & Klaim Biaya', category: 'Keuangan', role: 'Semua Pengurus', source: 'FIN', purpose: 'Formulir pengajuan biaya, pembelian, uang muka, atau penggantian dana pribadi.', controls: 'Sistem mengecek sisa anggaran sebelum pengajuan diteruskan ke pemeriksa.', db: 'financial_request' },
+  { id: 'B05', name: 'Detail Transaksi', category: 'Keuangan', role: 'Bendahara / Pemeriksa', source: 'FIN', purpose: 'Riwayat satu transaksi: status, persetujuan, bukti, pembayaran, dan rekonsiliasinya.', controls: 'Transaksi yang sudah dibukukan hanya bisa dikoreksi lewat catatan penyesuaian baru.', db: 'financial_transaction, payment' },
+  { id: 'B06', name: 'Antrean Pembayaran', category: 'Keuangan', role: 'Bendahara', source: 'FIN', purpose: 'Daftar transaksi yang sudah disetujui dan menunggu dibayar, beserta bukti pembayarannya.', controls: 'Pengaju tidak boleh sekaligus menjadi penyetuju dan pembayar transaksi yang sama.', db: 'payment, financial_transaction' },
+  { id: 'B07', name: 'Rekonsiliasi Kas & Bank', category: 'Keuangan', role: 'Bendahara / Pemeriksa', source: 'FIN', purpose: 'Mencocokkan catatan internal dengan rekening koran atau hasil hitungan kas.', controls: 'Selisih dicatat sebagai pengecualian dengan penanggung jawab dan batas waktu penyelesaian.', db: 'reconciliation' },
+  { id: 'B08', name: 'Laporan Keuangan', category: 'Keuangan', role: 'Pimpinan / Bendahara / Auditor', source: 'FIN', purpose: 'Anggaran dibanding realisasi, posisi kas, penggunaan dana, dan kewajiban yang belum selesai.', controls: 'Laporan selalu mencantumkan tanggal batas data dan status periodenya.', db: 'budget, financial_transaction' },
+  { id: 'B09', name: 'Audit Keuangan Internal', category: 'Keuangan', role: 'Auditor', source: 'FIN', purpose: 'Rencana audit, temuan, tanggapan pihak terkait, tindakan perbaikan, dan verifikasi penutupannya.', controls: 'Auditor hanya bisa membaca, tidak mengubah transaksi. Dilarang mengaudit transaksi buatannya sendiri.', db: 'audit_plan, audit_finding, corrective_action' },
+
+  // Notifikasi & Komunikasi (N01 - N04)
+  { id: 'N01', name: 'Preferensi Notifikasi', category: 'Notifikasi', role: 'Semua Pengurus', source: 'NOTIF', purpose: 'Mengatur saluran pengiriman, kategori, ringkasan harian, dan jam tenang.', controls: 'Notifikasi yang sifatnya wajib tidak dapat dimatikan.', db: 'notification_preferences' },
+  { id: 'N02', name: 'Penyusun Siaran Pengumuman', category: 'Notifikasi', role: 'Sekjend / Humas', source: 'NOTIF', purpose: 'Menyusun pengumuman: sasaran penerima, bahasa, template, jadwal kirim, dan pratinjau.', controls: 'Daftar penerima wajib dipratinjau dulu sebelum pengumuman dikirim.', db: 'notifications, public_content' },
+  { id: 'N03', name: 'Template Pesan', category: 'Notifikasi', role: 'Admin Sistem', source: 'NOTIF', purpose: 'Daftar template pesan beserta versi, variabel isian, pratinjau, dan status persetujuannya.', controls: 'Mengubah template tidak mengubah pesan yang sudah terlanjur terkirim.', db: 'notification_templates' },
+  { id: 'N04', name: 'Pemantau Pengiriman', category: 'Notifikasi', role: 'Admin Sistem', source: 'NOTIF', purpose: 'Status pengiriman per saluran, antrean, sebab kegagalan, dan percobaan ulang.', controls: 'Isi yang sensitif tidak ditampilkan pada pratinjau notifikasi.', db: 'communication_log, notifications' },
+
+  // Evaluasi, Handover & AI (E01 - E08, H01 - H06, I01 - I06)
   { id: 'E01', name: 'Laporan Kinerja Pengurus & Divisi', category: 'Evaluasi', role: 'Pimpinan / Koordinator', source: 'D18, TK21', purpose: 'Statistik penyelesaian tugas: jumlah selesai, ketepatan waktu, dan keabsahan bukti kerja.', controls: 'Data yang belum ada dibedakan jelas dari nilai nol. Dihitung per periode aktif.', db: 'performance_scores, tasks' },
   { id: 'E02', name: 'Perbandingan Antar Divisi & Ekspor', category: 'Evaluasi', role: 'Ketua / Sekjend', source: 'U15, R9', purpose: 'Membandingkan kinerja antar bagian organisasi dan mengekspor laporan resmi.', controls: 'Sementara ini hanya untuk pimpinan tertinggi, selama aturannya masih ditinjau.', db: 'performance_scores, audit_logs' },
   { id: 'E03', name: 'Pengajuan Koreksi Nilai Kinerja', category: 'Evaluasi', role: 'Koordinator', source: 'TK21', purpose: 'Mengajukan keberatan bila ada kendala di luar kendali yang mempengaruhi angka kinerja.', controls: 'Koreksi tidak menimpa angka asli; alasan keberatan tetap disimpan.', db: 'performance_scores, audit_logs' },
+  { id: 'E04', name: 'Siklus & Target Kinerja', category: 'Evaluasi', role: 'Pimpinan / Kepala Divisi', source: 'PERF', purpose: 'Menetapkan periode penilaian, indikator yang dipakai, bobotnya, dan dari mana datanya diambil.', controls: 'Setelah siklus berjalan, definisi indikator dikunci agar penilaian tetap adil.', db: 'performance_cycle, performance_target' },
+  { id: 'E05', name: 'Pencatatan Capaian', category: 'Evaluasi', role: 'Semua Pengurus', source: 'PERF', purpose: 'Mengisi angka capaian beserta penjelasan singkat dan bukti pendukungnya.', controls: 'Data yang belum diisi tidak dianggap nol, melainkan ditandai belum ada.', db: 'measurement, files' },
+  { id: 'E06', name: 'Ruang Evaluasi', category: 'Evaluasi', role: 'Evaluator', source: 'PERF', purpose: 'Memberi penilaian berdasarkan rubrik, disertai catatan dan bukti yang ditinjau.', controls: 'Evaluator yang punya konflik kepentingan tidak boleh menilai orang tersebut.', db: 'evaluation' },
+  { id: 'E07', name: 'Kalibrasi Nilai', category: 'Evaluasi', role: 'Panel Kalibrasi', source: 'PERF', purpose: 'Menyelaraskan penilaian antar penilai agar standarnya setara.', controls: 'Nilai sebelum dan sesudah kalibrasi dicatat beserta alasannya; bukti asli tidak diubah.', db: 'calibration, evaluation' },
+  { id: 'E08', name: 'Rencana Perbaikan & Sanggah', category: 'Evaluasi', role: 'Pengurus / Reviewer', source: 'PERF', purpose: 'Rencana perbaikan bertahap dan jalur mengajukan keberatan atas hasil penilaian.', controls: 'Penilai awal tidak boleh menjadi satu-satunya pemutus keberatan atas nilainya sendiri.', db: 'pip, dispute' },
   { id: 'H01', name: 'Arsip Periode Sebelumnya', category: 'Handover', role: 'Pimpinan / Pengurus', source: 'M O', purpose: 'Membuka dokumen dan keputusan dari kepengurusan sebelumnya, dengan penyaringan.', controls: 'Pengurus baru tidak otomatis mendapat semua akses arsip lama.', db: 'archives, periods' },
   { id: 'H02', name: 'Susun Paket Serah Terima', category: 'Handover', role: 'Pengurus Demisioner', source: 'D17', purpose: 'Merangkum pekerjaan yang masih berjalan, dokumen penting, inventaris, dan catatan kunci.', controls: 'Kelengkapan paket diperiksa dulu sebelum diserahkan ke kepengurusan baru.', db: 'handovers, archives' },
   { id: 'H03', name: 'Terima & Cek Serah Terima', category: 'Handover', role: 'Pengurus Periode Baru', source: 'U23, D17', purpose: 'Daftar periksa penerimaan item satu per satu: "Diterima" atau "Perlu Klarifikasi".', controls: 'Paket belum dianggap selesai sebelum semua poin penting dicek.', db: 'handovers, audit_logs' },
+  { id: 'H04', name: 'Panduan Bertahap Serah Terima', category: 'Handover', role: 'Pengurus Demisioner', source: 'HAND', purpose: 'Menuntun penyusunan paket serah terima langkah demi langkah agar tidak ada yang terlewat.', controls: 'Item yang ditandai penting harus terisi sebelum paket bisa diajukan.', db: 'handovers' },
+  { id: 'H05', name: 'Daftar Tanggung Jawab Berjalan', category: 'Handover', role: 'Pengurus Demisioner', source: 'HAND', purpose: 'Inventaris tugas, dokumen, keputusan, dan kewajiban yang masih berjalan saat pergantian.', controls: 'Tanggung jawab harus punya pemilik baru; tidak boleh menggantung tanpa penanggung jawab.', db: 'handover_items, tasks' },
+  { id: 'H06', name: 'Rencana Peralihan Akses', category: 'Handover', role: 'Admin Sistem / Sekretaris', source: 'HAND, RECON', purpose: 'Mengatur kapan akses pengurus lama dicabut dan akses pengurus baru diaktifkan.', controls: 'Akses lama dicabut setelah akses baru terbukti aktif, agar tidak ada celah kosong.', db: 'access_grants, audit_logs' },
   { id: 'I01', name: 'Tanya Jawab Asisten AI', category: 'AI', role: 'Semua Pengurus', source: 'U16, D19', purpose: 'Tanya jawab cepat soal aturan organisasi, SOP, dan ringkasan rapat.', controls: 'AI hanya membaca dokumen yang boleh diakses pengguna. Selalu mencantumkan sumber.', db: 'ai_conversations, ai_messages, ai_sources' },
   { id: 'I02', name: 'Alat Bantu Analisis Kajian', category: 'AI', role: 'Tim Kajian / Pimpinan', source: 'B11', purpose: 'Membandingkan dokumen kebijakan, menemukan celah, dan menyusun kerangka argumen.', controls: 'Semua hasilnya diberi label "saran AI"; keputusan tetap di tangan manusia.', db: 'ai_conversations, ai_messages' },
-  { id: 'I03', name: 'Tinjau & Jalankan Usulan AI', category: 'AI', role: 'Pengurus Berwenang', source: 'M M, D19', purpose: 'Halaman persetujuan untuk perubahan yang disarankan AI, misalnya membuat draf tugas.', controls: 'Wajib dikonfirmasi manusia sebelum dijalankan. Izin dicek ulang saat dikirim.', db: 'ai_actions, audit_logs' }
+  { id: 'I03', name: 'Tinjau & Jalankan Usulan AI', category: 'AI', role: 'Pengurus Berwenang', source: 'M M, D19', purpose: 'Halaman persetujuan untuk perubahan yang disarankan AI, misalnya membuat draf tugas.', controls: 'Wajib dikonfirmasi manusia sebelum dijalankan. Izin dicek ulang saat dikirim.', db: 'ai_actions, audit_logs' },
+  { id: 'I04', name: 'Riwayat Permintaan AI', category: 'AI', role: 'Semua Pengurus', source: 'AI', purpose: 'Daftar permintaan ke AI beserta tujuannya, sumber yang dipakai, dan status peninjauannya.', controls: 'Setiap pemakaian AI tercatat, termasuk tingkat kerahasiaan data yang disertakan.', db: 'ai_conversations, ai_messages' },
+  { id: 'I05', name: 'Registri Model & Pola Perintah', category: 'AI', role: 'Admin Sistem', source: 'AI', purpose: 'Daftar model dan pola perintah yang disetujui dipakai, lengkap dengan nomor versinya.', controls: 'Perubahan pola perintah dicatat agar hasil lama tetap bisa ditelusuri.', db: 'ai_prompts, audit_logs' },
+  { id: 'I06', name: 'Dasbor Tata Kelola AI', category: 'AI', role: 'Pimpinan / Admin Sistem', source: 'AI', purpose: 'Ringkasan pemakaian AI, pelanggaran kebijakan, dan hasil peninjauan output oleh manusia.', controls: 'AI tidak pernah menjadi penentu keputusan akhir; hasilnya selalu berlabel usulan.', db: 'ai_actions, audit_logs' }
 ];
 
 // --- 2. DATA MASTER: 13 DOKUMEN SPESIFIKASI SUMBER (DOWNLOADS/*.DOCX) ---
@@ -119,7 +154,22 @@ const SOURCE_DOCUMENTS = [
   { code: 'ME', file: 'Granular_Module_Specification_MEET_KPI_v1.0.docx', title: 'Granular MEET Meetings & Decisions v1.0', scope: 'Bagian 3-17', purpose: 'Rincian kalender rapat waktu Kairo, absensi mandiri, penguncian notulen final, voting tertutup, dan tugas tindak lanjut.' },
   { code: 'DO', file: 'Granular_Module_Specification_DOC_KPI_v1.0.docx', title: 'Granular DOC Documents & Files v1.0', scope: 'Bagian 3-17', purpose: 'Rincian alur unggah file (diunggah -> diperiksa -> siap/karantina), izin berbagi yang ada batas waktunya, dan pencatatan unduhan.' },
   { code: 'K', file: 'Granular_Module_Specification_KNOW_KPI_v1.0_fixed.docx', title: 'Granular KNOW Knowledge Base v1.0', scope: 'Bagian 2-13', purpose: 'Rincian penyusunan SOP yang mencantumkan sumber sah, penandaan artikel usang, dan pencarian sesuai izin.' },
-  { code: 'C', file: 'Granular_Module_Specification_CMS_PUB_KPI_v1.0.docx', title: 'Granular CMS & PUB Public Web v1.0', scope: 'Bagian 3-27', purpose: 'Rincian alur redaksi dua bahasa yang terpisah, persetujuan per versi teks, dan pencegahan bocornya data rahasia.' }
+  { code: 'C', file: 'Granular_Module_Specification_CMS_PUB_KPI_v1.0.docx', title: 'Granular CMS & PUB Public Web v1.0', scope: 'Bagian 3-27', purpose: 'Rincian alur redaksi dua bahasa yang terpisah, persetujuan per versi teks, dan pencegahan bocornya data rahasia.' },
+
+  { code: 'CASE', file: '13. Granular_Module_Specification_FORM_CASE_KPI_v1.0.docx', title: 'Granular FORM & CASE v1.0', scope: 'Bagian 1-25', purpose: 'Rincian formulir masuk, pemilahan aduan, penanganan kasus, brankas bukti, sampai penutupan dan pembukaan ulang kasus.' },
+  { code: 'NOTIF', file: '14. Granular_Module_Specification_NOTIF_KPI_v1.0.docx', title: 'Granular NOTIF Notifikasi v1.0', scope: 'Bagian 1-21', purpose: 'Rincian pusat notifikasi, preferensi saluran, penyusun siaran, template pesan, dan pemantau pengiriman.' },
+  { code: 'FIN', file: '15. Granular_Module_Specification_FIN_KPI_v1.0.docx', title: 'Granular FIN Keuangan v1.0', scope: 'Bagian 1-38', purpose: 'Modul baru: anggaran, sumber dana, pengajuan biaya, pembayaran, rekonsiliasi kas, laporan, dan audit keuangan internal.' },
+  { code: 'PERF', file: '16. Granular_Module_Specification_PERF_KPI_v1.0.docx', title: 'Granular PERF Kinerja v1.0', scope: 'Bagian 1-24', purpose: 'Rincian siklus kinerja, target dan indikator, pencatatan capaian, evaluasi, kalibrasi nilai, rencana perbaikan, dan sanggah.' },
+  { code: 'AI', file: '17. Granular_Module_Specification_AI_KPI_v1.0.docx', title: 'Granular AI Asisten v1.0', scope: 'Bagian 1-30', purpose: 'Rincian batas kewenangan AI, kewajiban mencantumkan sumber, peninjauan manusia, registri model, dan tata kelolanya.' },
+  { code: 'ADM', file: '18. Granular_Module_Specification_ADMIN_KPI_v1.0.docx', title: 'Granular ADMIN Pengaturan v1.0', scope: 'Bagian 1-29', purpose: 'Rincian pengelolaan organisasi, keanggotaan, peran, konfigurasi, kebijakan persetujuan, retensi, cadangan, dan kesehatan sistem.' },
+  { code: 'HAND', file: '19. Granular_Module_Specification_HAND_KPI_v1.0.docx', title: 'Granular HAND Serah Terima v1.0', scope: 'Bagian 1-31', purpose: 'Rincian paket serah terima, inventaris tanggung jawab, peralihan akses, item belum selesai, dan pemantauan setelah pergantian.' },
+  { code: 'DICT', file: '20. Cross_Module_Data_Dictionary_KPI_v1.0.docx', title: 'Kamus Data Lintas Modul v1.0', scope: 'Bagian 1-21', purpose: 'Menyamakan arti, format, dan pemilik setiap data yang dipakai bersama antar modul, termasuk daftar status resminya.' },
+  { code: 'LIFE', file: '21. Lifecycle_Workflow_Matrix_KPI_v1.0.docx', title: 'Matriks Alur & Status v1.0', scope: 'Bagian 1-21', purpose: 'Alur setiap proses dari pemicu, pelaku, syarat, status, persetujuan, notifikasi, sampai catatan riwayatnya.' },
+  { code: 'INTG', file: '22. Integration_Dependency_Matrix_KPI_v1.0.docx', title: 'Matriks Keterkaitan Antar Modul v1.0', scope: 'Bagian 1-15', purpose: 'Modul mana bergantung pada modul mana, data apa yang mengalir, dan urutan pengerjaan yang disarankan.' },
+  { code: 'RECON', file: '23. Role_Permission_Reconciliation_KPI_v1.0.docx', title: 'Rekonsiliasi Peran & Hak Akses v1.0', scope: 'Bagian 1-19', purpose: 'Struktur organisasi resmi, 13 peran baku, 12 jenis izin, aturan pergantian jabatan, dan batas akses pengembang.' },
+  { code: 'TEST', file: '24. Acceptance_Test_Matrix_KPI_v1.0.docx', title: 'Matriks Uji Terima v1.0', scope: 'Bagian 1-14', purpose: 'Daftar pengujian yang harus lulus sebelum sistem dinyatakan siap: fungsi, izin akses, keamanan, integrasi, dan uji pengguna.' },
+  { code: 'HANDOFF', file: '25. Developer_Handoff_Package_KPI_v1.0.docx', title: 'Paket Serah Terima ke Pengembang v1.0', scope: 'Bagian 1-12', purpose: 'Kewajiban pengembang, batas aksesnya, syarat keamanan, tolok ukur selesai, dan daftar yang harus diserahkan ke KPI.' },
+  { code: 'REVIEW', file: '27. Final_Architecture_Review_KPI_v1.0.docx', title: 'Tinjauan Akhir Arsitektur v1.0', scope: 'Bagian 1-11', purpose: 'Hasil pemeriksaan akhir seluruh dokumen, temuan yang harus diselesaikan, dan keputusan teknis yang wajib dikunci sebelum pengerjaan.' }
 ];
 
 // --- 3. DATA MASTER: 34 TABEL DATABASE & ERD (POSTGRESQL / SUPABASE) ---
@@ -164,7 +214,36 @@ const DATABASE_ENTITIES = [
   { domain: 'Public CMS & Service', table: 'tracking_tokens', pk: 'id (UUID)', fields: 'token_hash, issued_at, expires_at, status', desc: 'Kode untuk melacak aduan tanpa perlu punya akun.' },
 
   { domain: 'Governance & AI', table: 'audit_logs', pk: 'id (UUID)', fields: 'actor_id (FK), action, entity_type, entity_id, before_json, after_json', desc: 'Catatan aktivitas yang tidak bisa diubah atau dihapus siapa pun.' },
-  { domain: 'Governance & AI', table: 'ai_actions', pk: 'id (UUID)', fields: 'user_id (FK), action_type, proposed_payload_json, status, confirmed_by (FK)', desc: 'Persetujuan manusia atas tindakan yang disarankan AI.' }
+  { domain: 'Governance & AI', table: 'ai_actions', pk: 'id (UUID)', fields: 'user_id (FK), action_type, proposed_payload_json, status, confirmed_by (FK)', desc: 'Persetujuan manusia atas tindakan yang disarankan AI.' },
+
+  { domain: 'Keuangan', table: 'financial_period', pk: 'id (UUID)', fields: 'name, start_date, end_date, status (Open/Soft Closed/Closed/Reopened)', desc: 'Periode keuangan; periode tertutup menolak transaksi biasa.' },
+  { domain: 'Keuangan', table: 'fund', pk: 'id (UUID)', fields: 'name, fund_type, restriction_type, currency, opening_balance, owner_id (FK), status', desc: 'Sumber dana beserta batasan penggunaannya.' },
+  { domain: 'Keuangan', table: 'account_category', pk: 'id (UUID)', fields: 'code, name, parent_id (FK), status', desc: 'Kategori atau pos akun keuangan.' },
+  { domain: 'Keuangan', table: 'budget', pk: 'id (UUID)', fields: 'period_id (FK), fund_id (FK), owner_id (FK), version_no, status', desc: 'Dokumen anggaran; revisi membuat versi baru, bukan menimpa.' },
+  { domain: 'Keuangan', table: 'budget_line', pk: 'id (UUID)', fields: 'budget_id (FK), account_id (FK), program, amount, currency', desc: 'Rincian baris anggaran per pos dan program.' },
+  { domain: 'Keuangan', table: 'financial_request', pk: 'id (UUID)', fields: 'type, requester_id (FK), amount, currency, budget_line_id (FK), status', desc: 'Pengajuan biaya, pembelian, uang muka, atau penggantian dana.' },
+  { domain: 'Keuangan', table: 'financial_transaction', pk: 'id (UUID)', fields: 'code, date, account_id (FK), amount, payee_id (FK), evidence_ref, status', desc: 'Pencatatan transaksi; setelah dibukukan hanya bisa dikoreksi lewat penyesuaian baru.' },
+  { domain: 'Keuangan', table: 'payment', pk: 'id (UUID)', fields: 'transaction_id (FK), method, proof_file_id (FK), paid_at, recorded_by (FK)', desc: 'Catatan pembayaran beserta bukti transfernya.' },
+  { domain: 'Keuangan', table: 'vendor_payee', pk: 'id (UUID)', fields: 'name, verification_status, masked_account_details, status', desc: 'Pihak penerima pembayaran; nomor rekening disimpan tersamar.' },
+  { domain: 'Keuangan', table: 'reconciliation', pk: 'id (UUID)', fields: 'account_id (FK), period_id (FK), matched_items, difference, status', desc: 'Pencocokan catatan internal dengan rekening koran atau hitungan kas.' },
+  { domain: 'Keuangan', table: 'audit_plan', pk: 'id (UUID)', fields: 'scope, period_id (FK), auditor_id (FK), status', desc: 'Rencana audit keuangan internal beserta ruang lingkupnya.' },
+  { domain: 'Keuangan', table: 'audit_finding', pk: 'id (UUID)', fields: 'audit_id (FK), severity, condition, owner_id (FK), due_date, status', desc: 'Temuan audit beserta tingkat keparahan dan penanggung jawab tindak lanjutnya.' },
+  { domain: 'Keuangan', table: 'corrective_action', pk: 'id (UUID)', fields: 'finding_id (FK), owner_id (FK), due_date, verification_by (FK), status', desc: 'Tindakan perbaikan atas temuan audit dan verifikasi penutupannya.' },
+
+  { domain: 'Kinerja & Serah Terima', table: 'performance_cycle', pk: 'id (UUID)', fields: 'name, period_id (FK), start_date, end_date, framework, status', desc: 'Siklus penilaian kinerja beserta kerangka penilaiannya.' },
+  { domain: 'Kinerja & Serah Terima', table: 'performance_target', pk: 'id (UUID)', fields: 'cycle_id (FK), subject_id (FK), indicator, baseline, target, weight, status', desc: 'Target dan indikator kinerja per orang atau per divisi.' },
+  { domain: 'Kinerja & Serah Terima', table: 'measurement', pk: 'id (UUID)', fields: 'target_id (FK), value, measured_at, source, evidence_ref, submitted_by (FK)', desc: 'Pencatatan capaian; data yang belum ada tidak dianggap nol.' },
+  { domain: 'Kinerja & Serah Terima', table: 'evaluation', pk: 'id (UUID)', fields: 'cycle_id (FK), evaluator_id (FK), rating, rationale, evidence_ref, status', desc: 'Hasil penilaian beserta alasan dan bukti yang ditinjau.' },
+  { domain: 'Kinerja & Serah Terima', table: 'calibration', pk: 'id (UUID)', fields: 'evaluation_id (FK), value_before, value_after, reason, approver_id (FK)', desc: 'Penyelarasan nilai antar penilai; nilai lama tetap tersimpan.' },
+  { domain: 'Kinerja & Serah Terima', table: 'handover_items', pk: 'id (UUID)', fields: 'handover_id (FK), item_type, source_ref, responsibility, acknowledgement, status', desc: 'Item dalam paket serah terima: tugas, dokumen, keputusan, atau kewajiban.' },
+  { domain: 'Kinerja & Serah Terima', table: 'continuity_risk', pk: 'id (UUID)', fields: 'handover_id (FK), risk, impact, mitigation, owner_id (FK), status', desc: 'Risiko kesinambungan saat pergantian pengurus beserta rencana penanganannya.' },
+
+  { domain: 'Notifikasi & Kasus', table: 'notification_preferences', pk: 'id (UUID)', fields: 'user_id (FK), channel, category, enabled, quiet_hours', desc: 'Pengaturan notifikasi tiap pengguna; notifikasi wajib tidak bisa dimatikan.' },
+  { domain: 'Notifikasi & Kasus', table: 'notification_templates', pk: 'id (UUID)', fields: 'code, version_no, subject, body, variables, approved_by (FK)', desc: 'Template pesan beserta versinya.' },
+  { domain: 'Notifikasi & Kasus', table: 'communication_log', pk: 'id (UUID)', fields: 'sender_id (FK), recipients, channel, sent_at, delivery_status', desc: 'Catatan pengiriman pesan beserta status dan sebab kegagalannya.' },
+  { domain: 'Notifikasi & Kasus', table: 'cases', pk: 'id (UUID)', fields: 'code, case_type, classification, source_ref, lead_officer_id (FK), status', desc: 'Kasus hasil pemilahan aduan; aksesnya terbatas sesuai kebutuhan tugas.' },
+  { domain: 'Notifikasi & Kasus', table: 'case_actions', pk: 'id (UUID)', fields: 'case_id (FK), action_type, actor_id (FK), note, evidence_ref, next_due', desc: 'Tindakan yang dilakukan pada satu kasus beserta buktinya.' },
+  { domain: 'Notifikasi & Kasus', table: 'case_evidence', pk: 'id (UUID)', fields: 'case_id (FK), file_id (FK), source, uploaded_by (FK), uploaded_at', desc: 'Bukti kasus; tidak dapat dihapus selama kasus berjalan atau diaudit.' }
 ];
 
 // --- 4. DATA MASTER: 18 KEPUTUSAN TERBUKA (Q01 - Q18) ---
@@ -186,7 +265,17 @@ const QUESTIONS_DATA = [
   { id: 'Q15', title: 'Dokumen yang Boleh Dibaca AI', cat: 'AI', prop: 'AI hanya boleh membaca dokumen Umum dan Internal yang tidak rahasia.', block: 'Layar I01' },
   { id: 'Q16', title: 'Privasi Buku Kontak', cat: 'Komunikasi', prop: 'Yang ditampilkan hanya email resmi lembaga dan jabatan, bukan nomor pribadi.', block: 'Layar S06' },
   { id: 'Q17', title: 'Logo & Warna Identitas Resmi', cat: 'Branding', prop: 'Memakai tulisan sederhana "KPI PPMI Mesir" dan warna putih-merah yang simpel.', block: 'Seluruh tampilan' },
-  { id: 'Q18', title: 'Zona Waktu Resmi Organisasi', cat: 'Sistem', prop: 'Waktu resmi memakai waktu Kairo, dengan keterangan yang jelas.', block: 'Kalender & Jadwal' }
+  { id: 'Q18', title: 'Zona Waktu Resmi Organisasi', cat: 'Sistem', prop: 'Waktu resmi memakai waktu Kairo, dengan keterangan yang jelas.', block: 'Kalender & Jadwal' },
+  { id: 'Q19', title: 'Awal & Akhir Tahun Keuangan', cat: 'Keuangan', prop: 'Mengikuti periode kepengurusan 2026/2027, kecuali KPI menetapkan tanggal lain.', block: 'Layar B01, B02' },
+  { id: 'Q20', title: 'Mata Uang Utama & Kurs', cat: 'Keuangan', prop: 'Satu mata uang utama dipakai untuk pembukuan; kurs dicatat saat transaksi bila ada mata uang lain.', block: 'Layar B04, B05' },
+  { id: 'Q21', title: 'Batas Nominal Persetujuan', cat: 'Keuangan', prop: 'Perlu daftar batas nominal per jenis transaksi dan siapa penyetujunya.', block: 'Layar B04, A14' },
+  { id: 'Q22', title: 'Pembayaran Besar Perlu Dua Penyetuju?', cat: 'Keuangan', prop: 'Di atas nominal tertentu sebaiknya butuh dua penyetuju; nominalnya menunggu keputusan KPI.', block: 'Layar B06' },
+  { id: 'Q23', title: 'Batas Waktu Pertanggungjawaban Uang Muka', cat: 'Keuangan', prop: 'Uang muka wajib dipertanggungjawabkan dalam batas waktu tertentu sebelum boleh mengajukan lagi.', block: 'Layar B04, B08' },
+  { id: 'Q24', title: 'Penyimpanan Nomor Rekening', cat: 'Keuangan', prop: 'Sistem hanya menyimpan keterangan tersamar, bukan nomor rekening lengkap.', block: 'Layar B03, B06' },
+  { id: 'Q25', title: 'Siapa Boleh Membuka Kembali Periode Tertutup', cat: 'Keuangan', prop: 'Hanya lewat persetujuan pimpinan dengan alasan tertulis dan tercatat.', block: 'Layar B01, B08' },
+  { id: 'Q26', title: 'Lama Penyimpanan Tiap Jenis Catatan', cat: 'Sistem', prop: 'Perlu daftar berapa lama dokumen, transaksi, kasus, dan catatan riwayat disimpan.', block: 'Layar A15' },
+  { id: 'Q27', title: 'Batas Akses Admin Demisioner', cat: 'Akses', prop: 'Ketua/Sekretaris demisioner bisa jadi admin hanya lewat sidang anggota, dan dicabut begitu admin baru ditetapkan.', block: 'Layar A05, H06' },
+  { id: 'Q28', title: 'Bolehkah AI Mendeteksi Kejanggalan Keuangan', cat: 'AI', prop: 'Boleh sebatas menandai untuk diperiksa manusia; AI tidak menyimpulkan adanya pelanggaran.', block: 'Layar I06, B09' }
 ];
 
 // --- 5. INITIALIZATION & UI INTERACTIVITY ---
@@ -870,6 +959,32 @@ function initFlowVisualizer() {
         { num: 4, title: 'Manusia Memeriksa & Mengonfirmasi', desc: 'Pengguna memeriksa isinya lalu menekan tombol konfirmasi untuk menjalankannya.' }
       ],
       rule: 'AI dilarang keras menerbitkan konten atau mengubah data tanpa konfirmasi langsung dari pengurus.'
+    },
+    {
+      id: 'F10',
+      name: 'Keuangan: Anggaran sampai Audit',
+      summary: 'Perjalanan uang dari penyusunan anggaran, pengajuan, pembayaran, pencocokan, sampai diperiksa auditor.',
+      steps: [
+        { num: 1, title: 'Susun & Sahkan Anggaran (B02)', desc: 'Bendahara menyusun anggaran per periode dan sumber dana, lalu diperiksa dan disahkan pimpinan.' },
+        { num: 2, title: 'Ajukan Biaya (B04)', desc: 'Pengurus mengajukan biaya, pembelian, atau uang muka. Sistem mengecek sisa anggaran lebih dulu.' },
+        { num: 3, title: 'Periksa & Setujui (B05)', desc: 'Pemeriksa mengecek kelengkapan bukti, lalu penyetuju mengesahkan sesuai batas kewenangannya.' },
+        { num: 4, title: 'Bayar & Unggah Bukti (B06)', desc: 'Bendahara mencatat pembayaran dan mengunggah bukti transfernya.' },
+        { num: 5, title: 'Cocokkan dengan Rekening (B07)', desc: 'Catatan internal dicocokkan dengan rekening koran atau hitungan kas. Selisih dicatat dan ditindaklanjuti.' },
+        { num: 6, title: 'Diperiksa Auditor (B09)', desc: 'Auditor memeriksa kepatuhan dan kelengkapan bukti, menerbitkan temuan bila ada, lalu memverifikasi perbaikannya.' }
+      ],
+      rule: 'Satu orang tidak boleh mengajukan, menyetujui, dan membayar transaksi yang sama. Transaksi yang sudah dibukukan tidak bisa diubah diam-diam, hanya bisa dikoreksi lewat catatan penyesuaian baru yang ikut tercatat.'
+    },
+    {
+      id: 'F11',
+      name: 'Pergantian Jabatan & Hak Akses',
+      summary: 'Apa yang terjadi pada akses seseorang ketika jabatannya berubah, berakhir, atau digantikan.',
+      steps: [
+        { num: 1, title: 'Keputusan Resmi (M05)', desc: 'Pengangkatan, perpindahan, atau pergantian ditetapkan lewat musyawarah BPH atau sidang anggota KPI.' },
+        { num: 2, title: 'Catat Penugasan Baru (A07)', desc: 'Penugasan lama ditutup dan penugasan baru dibuat. Rangkap jabatan tidak diperbolehkan.' },
+        { num: 3, title: 'Alihkan Akses (H06)', desc: 'Akses pengurus baru diaktifkan, lalu akses pengurus lama dicabut setelah akses baru terbukti berjalan.' },
+        { num: 4, title: 'Serahkan Pekerjaan Berjalan (H05)', desc: 'Tugas, dokumen, dan kewajiban yang belum selesai dipindahkan ke penanggung jawab baru.' }
+      ],
+      rule: 'Akses melekat pada jabatan yang sedang aktif, bukan pada orangnya. Begitu masa jabatan berakhir, akses otomatis gugur meski pekerjaannya belum selesai. Anggota tim dari luar KPI tidak pernah dibuatkan akun.'
     }
   ];
 
