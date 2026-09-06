@@ -934,6 +934,101 @@ function initFlowVisualizer() {
   const menuButtons = document.querySelectorAll('.flow-menu-btn');
   const flowContainer = document.getElementById('active-flow-display');
 
+  // Pertanyaan rinci per alur, diambil dari bagian "keputusan yang harus dikunci"
+  // pada dokumen kebutuhan. Kode di belakang menunjukkan dokumen sumbernya.
+  const FLOW_ASKS = {
+    F01: [
+      { q: 'Berapa lama sesi login boleh bertahan sebelum pengurus harus masuk ulang?', src: 'AUTH' },
+      { q: 'Verifikasi dua langkah wajib untuk semua pengurus, atau hanya jabatan tertentu saja?', src: 'AUTH' },
+      { q: 'Kode verifikasi dikirim lewat apa: aplikasi authenticator, email, atau WhatsApp?', src: 'AUTH' },
+      { q: 'Setelah berapa kali salah kata sandi akun dikunci sementara, dan berapa lama kuncinya?', src: 'AUTH' },
+      { q: 'Kalau seseorang mengganti kata sandi, apakah semua perangkat lain otomatis dikeluarkan?', src: 'AUTH' },
+      { q: 'Berapa lama catatan riwayat keamanan disimpan sebelum boleh diarsipkan?', src: 'AUTH, ADM' }
+    ],
+    F02: [
+      { q: 'Kalau semua sub-tugas selesai, tugas induknya otomatis diajukan selesai, atau tetap menunggu pelaksana mengajukan sendiri?', src: 'TK' },
+      { q: 'Tugas yang lewat tenggat: statusnya diganti menjadi "Terlambat", atau status kerjanya tetap dan hanya diberi penanda terlambat?', src: 'TK' },
+      { q: 'Mengubah tenggat dan mengganti pelaksana: cukup keputusan koordinator, atau perlu persetujuan di atasnya?', src: 'TK' },
+      { q: 'Bukti kerja wajib untuk semua jenis tugas, atau hanya untuk tugas tertentu saja?', src: 'TK' },
+      { q: 'Kalau tugas telat berulang kali, apa yang terjadi: naik ke atasan, atau hanya ditampilkan lebih menonjol?', src: 'TK' },
+      { q: 'Siapa yang berhak membatalkan tugas dan mengarsipkannya?', src: 'TK, LIFE' }
+    ],
+    F03: [
+      { q: 'Jenis file apa saja yang boleh diunggah, dan berapa ukuran maksimalnya?', src: 'DO' },
+      { q: 'Dokumen tingkat kerahasiaan apa yang wajib diberi cap air saat diunduh?', src: 'DO' },
+      { q: 'Berapa lama izin berbagi berlaku secara bawaan sebelum otomatis kedaluwarsa?', src: 'DO' },
+      { q: 'Boleh membuat tautan berbagi yang bisa dibuka tanpa login? Kalau boleh, untuk tingkat kerahasiaan apa saja?', src: 'DO' },
+      { q: 'Siapa yang berhak menurunkan tingkat kerahasiaan sebuah dokumen?', src: 'DO, RECON' },
+      { q: 'Berapa lama dokumen yang sudah diarsipkan disimpan sebelum boleh dihapus?', src: 'DO, ADM' }
+    ],
+    F04: [
+      { q: 'Berapa jumlah minimal peserta agar rapat dianggap sah?', src: 'ME' },
+      { q: 'Hasil voting ditampilkan sebagai angka saja, atau termasuk siapa memilih apa?', src: 'ME' },
+      { q: 'Siapa yang berhak mengesahkan notulen menjadi final?', src: 'ME' },
+      { q: 'Notulen final yang perlu dikoreksi: dibuka kembali, atau dibuat dokumen tambahan terpisah?', src: 'ME, LIFE' },
+      { q: 'Rapat rahasia di kalender bersama: tampil sebagai "acara tertutup", atau tidak tampil sama sekali?', src: 'ME' },
+      { q: 'Kalau jadwal rapat bentrok, boleh tetap dijadwalkan dengan alasan, atau langsung diblokir?', src: 'ME' }
+    ],
+    F05: [
+      { q: 'Siapa yang berhak memberi persetujuan akhir sebelum konten terbit ke publik?', src: 'C' },
+      { q: 'Konten berisiko tinggi perlu satu atau dua tingkat persetujuan?', src: 'C, RECON' },
+      { q: 'Kalau lampiran artikel berubah menjadi rahasia setelah terbit, artikelnya otomatis ditarik atau hanya diberi peringatan?', src: 'C' },
+      { q: 'Sampai berapa lama sebelum jadwal terbit, konten masih boleh diubah?', src: 'C' },
+      { q: 'Artikel yang ditarik dari publik: dihapus dari pencarian, atau tetap bisa dibuka lewat tautan lama?', src: 'C' }
+    ],
+    F06: [
+      { q: 'Lewat kanal apa saja warga boleh mengirim aduan: formulir website saja, atau termasuk email dan pesan?', src: 'CASE' },
+      { q: 'Aduan tanpa nama diterima? Kalau ya, apakah tetap bisa ditindaklanjuti tanpa identitas pelapor?', src: 'CASE' },
+      { q: 'Berapa hari batas waktu tanggapan untuk tiap tingkat urgensi aduan?', src: 'CASE' },
+      { q: 'Siapa yang berhak membuka isi kasus sensitif, dan bagaimana konflik kepentingan ditangani?', src: 'CASE, RECON' },
+      { q: 'Alasan penutupan kasus apa saja yang dianggap sah, dan siapa yang boleh membukanya kembali?', src: 'CASE' },
+      { q: 'Berapa lama berkas kasus dan buktinya disimpan setelah kasus ditutup?', src: 'CASE, ADM' }
+    ],
+    F07: [
+      { q: 'Siklus penilaian kinerja dilakukan tahunan, per semester, atau per triwulan?', src: 'PERF' },
+      { q: 'Indikator apa saja yang dipakai dan berapa bobot masing-masing? Apakah totalnya harus 100%?', src: 'PERF' },
+      { q: 'Siapa penilai untuk tiap peran dan divisi?', src: 'PERF' },
+      { q: 'Apakah penilaian diri sendiri wajib diisi setiap pengurus?', src: 'PERF' },
+      { q: 'Perlu panel kalibrasi untuk menyamakan standar antar penilai?', src: 'PERF' },
+      { q: 'Nilai kinerja punya konsekuensi administratif, atau sekadar bahan informasi?', src: 'PERF' },
+      { q: 'Siapa yang boleh melihat nilai dan catatan penilaian yang bersifat pribadi?', src: 'PERF, RECON' }
+    ],
+    F08: [
+      { q: 'Jenis serah terima apa yang dipakai lebih dulu: antar periode, antar jabatan, atau keduanya?', src: 'HAND' },
+      { q: 'Item apa saja yang dianggap kritis dan wajib beres sebelum serah terima boleh ditutup?', src: 'HAND' },
+      { q: 'Berapa lama batas waktu pengurus baru menerima atau menolak paket serah terima?', src: 'HAND' },
+      { q: 'Boleh menerima sebagian item dulu, atau harus diterima sekaligus?', src: 'HAND' },
+      { q: 'Konfirmasi penerimaan cukup lewat sistem, atau tetap perlu tanda tangan berkas fisik?', src: 'HAND' },
+      { q: 'Item yang masih menggantung setelah serah terima ditutup menjadi tanggung jawab siapa?', src: 'HAND' }
+    ],
+    F09: [
+      { q: 'Siapa penanggung jawab tata kelola AI di KPI?', src: 'AI' },
+      { q: 'Pemakaian AI apa saja yang dibuka di tahap pertama?', src: 'AI' },
+      { q: 'Dokumen tingkat kerahasiaan apa yang boleh diproses AI, dan bolehkah lewat layanan pihak luar?', src: 'AI' },
+      { q: 'Riwayat percakapan dengan AI disimpan? Kalau ya, berapa lama?', src: 'AI' },
+      { q: 'Pemakaian yang mana saja yang wajib ditinjau manusia sebelum hasilnya dipakai?', src: 'AI' },
+      { q: 'Ada batas pemakaian atau batas biaya AI per bulan?', src: 'AI' }
+    ],
+    F10: [
+      { q: 'Pembukuan memakai pencatatan sederhana, atau pencatatan berpasangan seperti akuntansi penuh?', src: 'FIN' },
+      { q: 'Daftar pos anggaran atau kategori biaya apa yang disetujui KPI?', src: 'FIN' },
+      { q: 'Batas nominal persetujuan untuk tiap jenis transaksi, dan siapa penyetujunya?', src: 'FIN' },
+      { q: 'Pembayaran di atas nominal berapa wajib disetujui dua orang?', src: 'FIN' },
+      { q: 'Dokumen wajib untuk tiap jenis transaksi apa saja? Misalnya nota, kuitansi, atau bukti transfer.', src: 'FIN' },
+      { q: 'Berapa hari batas waktu mempertanggungjawabkan uang muka?', src: 'FIN' },
+      { q: 'Vendor atau penerima pembayaran wajib diverifikasi dulu sebelum dibayar?', src: 'FIN' },
+      { q: 'Audit keuangan internal dikerjakan tim terpisah, atau pemeriksa yang ditunjuk saat itu?', src: 'FIN' }
+    ],
+    F11: [
+      { q: 'Siapa yang berwenang menyetujui pengangkatan, pergantian, dan pencabutan akses?', src: 'RECON' },
+      { q: 'Ada masa tenggang setelah masa jabatan berakhir, atau akses langsung mati di hari itu juga?', src: 'RECON' },
+      { q: 'Pelaksana tugas sementara diberi kewenangan penuh, atau dibatasi hanya sebagian?', src: 'RECON' },
+      { q: 'Delegasi kewenangan maksimal berapa lama, dan kewenangan apa yang tidak boleh didelegasikan?', src: 'RECON' },
+      { q: 'Akses darurat: siapa yang boleh mengaktifkan, berlaku berapa lama, dan siapa yang meninjau setelahnya?', src: 'RECON' },
+      { q: 'Seberapa sering hak akses seluruh pengurus ditinjau ulang?', src: 'RECON, ADM' }
+    ]
+  };
+
   const FLOWS = [
     {
       id: 'F01',
@@ -1102,6 +1197,24 @@ function initFlowVisualizer() {
         <strong>Aturan Penting & Penanganan Jika Gagal:</strong><br>
         ${flow.rule}
       </div>
+
+      ${(FLOW_ASKS[flow.id] || []).length ? `
+      <div class="flow-asks">
+        <div class="flow-asks-head">
+          <h3>Yang perlu dijawab KPI untuk alur ini</h3>
+          <span>${FLOW_ASKS[flow.id].length} pertanyaan</span>
+        </div>
+        <p class="flow-asks-note">Alur di atas belum bisa dikunci sebelum pertanyaan berikut dijawab. Jawaban singkat sudah cukup, misalnya angka, nama jabatan, atau pilihan salah satu.</p>
+        <ol class="flow-asks-list">
+          ${FLOW_ASKS[flow.id].map(a => `
+            <li>
+              <span class="ask-text">${a.q}</span>
+              <span class="ask-src">Sumber: ${a.src}</span>
+            </li>
+          `).join('')}
+        </ol>
+      </div>
+      ` : ''}
     `;
   }
 

@@ -1494,6 +1494,89 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; }
 }
 .step-rule-box strong { color: var(--warning); }
 
+/* Pertanyaan rinci per alur kerja */
+.flow-asks {
+  margin-top: var(--space-20);
+  padding-top: var(--space-20);
+  border-top: 1px solid var(--hairline);
+}
+
+.flow-asks-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.flow-asks-head h3 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.flow-asks-head span {
+  font-size: 11.5px;
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-asks-note {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: var(--space-12);
+}
+
+.flow-asks-list {
+  list-style: none;
+  counter-reset: ask;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.flow-asks-list li {
+  counter-increment: ask;
+  position: relative;
+  padding: 12px 14px 12px 42px;
+  background: var(--accent-subtle);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent);
+}
+
+.flow-asks-list li::before {
+  content: counter(ask);
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-size: 10.5px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+}
+
+.flow-asks-list .ask-text {
+  display: block;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.flow-asks-list .ask-src {
+  display: block;
+  margin-top: 4px;
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+}
+
 /* --------------------------------------------------------------------------
    14. WARNA & KOMPONEN
    -------------------------------------------------------------------------- */
