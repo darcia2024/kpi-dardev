@@ -1981,6 +1981,49 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; }
 }
 .question-prop strong { color: var(--text-primary); }
 
+/* jawaban resmi dari KPI atas pertanyaan tersebut */
+.question-answer {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  padding: 12px 14px;
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius-sm);
+}
+.question-answer .answer-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--success);
+  margin-bottom: 5px;
+}
+.question-answer .answer-note {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--success-border);
+}
+
+.question-card.is-answered { border-color: var(--success-border); }
+
+/* ringkasan berapa pertanyaan yang sudah dijawab */
+.questions-progress {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 12px 16px;
+  background: var(--canvas-tint);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-16);
+}
+.questions-progress strong { color: var(--text-primary); }
+
 .question-footer {
   font-size: 11px;
   color: var(--text-tertiary);
@@ -2412,6 +2455,7 @@ body > footer > div {
   .flow-asks-list .ask-text { font-size: 12.5px; }
   .question-ask { padding: 11px 13px; font-size: 13px; }
   .question-prop { padding: 10px 12px; }
+  .question-answer { padding: 10px 12px; font-size: 12.5px; }
 
   .to-top { right: 12px; width: 40px; height: 40px; }
 }

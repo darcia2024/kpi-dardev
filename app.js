@@ -256,9 +256,11 @@ const QUESTIONS_DATA = [
     q: 'Siapa saja yang boleh melihat perbandingan kinerja antar divisi? Cukup Ketua dan Sekjend, atau kepala divisi juga boleh melihat divisinya sendiri?',
     prop: 'Sementara dibuka hanya untuk Ketua dan Sekjend.', block: 'Halaman E02' },
 
-  { id: 'Q03', cat: 'Akses', title: 'Batas Akses Admin Sistem',
-    q: 'Apakah Admin Sistem boleh membaca isi dokumen rahasia, atau hanya boleh mengurus pengaturan sistemnya saja?',
-    prop: 'Admin mengurus sistem, tidak otomatis boleh membaca isi dokumen rahasia.', block: 'Halaman A06, F05' },
+  { id: 'Q03', cat: 'Akses', title: 'Siapa Admin Sistem & Batas Aksesnya',
+    q: 'Admin Sistem adalah petugas yang merawat sistem: mengurus akun, pengaturan, dan cadangan data. Ini peran teknis, bukan jabatan kepengurusan. Siapa yang KPI tunjuk untuk peran ini, dan apakah dia boleh membuka isi dokumen rahasia?',
+    prop: 'Ditunjuk satu orang, bisa dari pengurus atau tim teknis. Kerjanya sebatas pengaturan; isi dokumen rahasia tetap tertutup baginya, dan setiap tindakannya tercatat.', block: 'Halaman A06, F05',
+    ans: 'Peran Admin Sistem dipegang Ketua dan Sekretaris KPI, dan keduanya boleh membuka dokumen rahasia.',
+    ansNote: 'Aksesnya melekat pada jabatan, bukan pada peran adminnya. Setiap pembukaan dokumen rahasia tetap tercatat di riwayat dan bisa diperiksa Auditor.' },
 
   { id: 'Q04', cat: 'Tugas', title: 'Tugas Induk Selesai Otomatis?',
     q: 'Kalau semua sub-tugas sudah selesai, apakah tugas induknya langsung dianggap selesai, atau tetap harus diperiksa dulu?',
@@ -304,13 +306,15 @@ const QUESTIONS_DATA = [
     q: 'Kalau ada data periode lama yang keliru, siapa yang berwenang memperbaikinya dan lewat prosedur apa?',
     prop: 'Hanya lewat berita acara resmi, dan perbaikannya tercatat.', block: 'Halaman A08, H03' },
 
-  { id: 'Q15', cat: 'AI', title: 'Dokumen yang Boleh Dibaca AI',
-    q: 'Dokumen tingkat kerahasiaan apa saja yang boleh dibaca AI?',
-    prop: 'Hanya tingkat Umum dan Internal. Tidak termasuk Terbatas, Rahasia, dan Sangat Rahasia.', block: 'Halaman I01, I06' },
+  { id: 'Q15', cat: 'AI', title: 'Dokumen yang Boleh Dikirim ke AI',
+    q: 'Saat pengurus bertanya ke asisten AI, isi dokumen yang terkait ikut dikirim ke layanan AI supaya jawabannya bersumber. Artinya isi dokumen itu keluar sesaat dari server KPI. Dokumen tingkat kerahasiaan apa saja yang boleh ikut dikirim?',
+    prop: 'Hanya tingkat Umum dan Internal. Terbatas, Rahasia, dan Sangat Rahasia tidak pernah dikirim, dan setiap pemakaian AI tercatat.', block: 'Halaman I01, I06',
+    ans: 'Disetujui. Hanya dokumen Umum dan Internal yang boleh dikirim ke layanan AI.' },
 
-  { id: 'Q16', cat: 'Komunikasi', title: 'Data di Buku Kontak',
-    q: 'Data apa yang boleh ditampilkan di buku kontak pengurus dan mitra?',
-    prop: 'Hanya email resmi lembaga dan jabatan. Nomor HP pribadi tidak ditampilkan.', block: 'Halaman S06' },
+  { id: 'Q16', cat: 'Komunikasi', title: 'Data di Buku Kontak Internal',
+    q: 'Yang dimaksud buku alamat di dalam sistem (halaman S06): daftar kontak pengurus KPI dan lembaga mitra seperti PPMI, KBRI, serta organisasi kekeluargaan. Bukan halaman publik. Data apa yang boleh ditampilkan di sana?',
+    prop: 'Hanya nama, jabatan, dan kontak resmi lembaga. Nomor HP pribadi tidak ditampilkan.', block: 'Halaman S06',
+    ans: 'Disetujui sesuai usulan.' },
 
   { id: 'Q17', cat: 'Identitas', title: 'File Logo Resmi & Warna',
     q: 'Kapan file logo resmi dalam format aslinya bisa kami terima? Dan apakah kode warna merah yang kami pakai sekarang sudah sesuai?',
@@ -1620,7 +1624,7 @@ function initQuestionsTracker() {
   if (!container) return;
 
   container.innerHTML = QUESTIONS_DATA.map(q => `
-    <div class="question-card">
+    <div class="question-card${q.ans ? ' is-answered' : ''}">
       <div class="question-header">
         <span class="question-id">${q.id}</span>
         <span class="badge badge-neutral">${q.cat}</span>
@@ -1633,12 +1637,27 @@ function initQuestionsTracker() {
       <div class="question-prop">
         <strong>Usulan kami:</strong> ${q.prop}
       </div>
+      ${q.ans ? `
+      <div class="question-answer">
+        <span class="answer-label">Jawaban KPI</span>
+        ${q.ans}
+        ${q.ansNote ? `<span class="answer-note">${q.ansNote}</span>` : ''}
+      </div>` : ''}
       <div class="question-footer">
         <span>Terkait: <strong>${q.block}</strong></span>
-        <span style="color: var(--warning); font-weight: 600;">Menunggu jawaban</span>
+        ${q.ans
+          ? '<span style="color: var(--success); font-weight: 600;">Sudah dijawab</span>'
+          : '<span style="color: var(--warning); font-weight: 600;">Menunggu jawaban</span>'}
       </div>
     </div>
   `).join('');
+
+  const summary = document.getElementById('questions-progress');
+  if (summary) {
+    const answered = QUESTIONS_DATA.filter(q => q.ans).length;
+    const total = QUESTIONS_DATA.length;
+    summary.innerHTML = `<strong>${answered} dari ${total}</strong> pertanyaan sudah dijawab KPI. Sisanya ${total - answered} masih menunggu.`;
+  }
 }
 
 // Source Documents Explorer (13 Dokumen)
