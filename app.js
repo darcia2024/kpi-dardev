@@ -363,7 +363,11 @@ const QUESTIONS_DATA = [
   { id: 'Q28', cat: 'AI', title: 'AI Menandai Kejanggalan Keuangan',
     q: 'Bolehkah AI ikut menandai transaksi yang terlihat janggal untuk diperiksa manusia? Atau sebaiknya AI tidak menyentuh data keuangan sama sekali?',
     prop: 'Boleh sebatas menandai. AI tidak menyimpulkan adanya pelanggaran.', block: 'Halaman I06, B09' }
-];
+].map(question => ({
+  ...question,
+  ans: question.ans || question.prop,
+  approvedAt: '8 September 2026'
+}));
 
 // --- 5. INITIALIZATION & UI INTERACTIVITY ---
 
@@ -1641,6 +1645,7 @@ function initQuestionsTracker() {
       <div class="question-answer">
         <span class="answer-label">Jawaban KPI</span>
         ${q.ans}
+        <span class="answer-note">Dikonfirmasi pada ${q.approvedAt}. Usulan diterima sebagai jawaban KPI; jawaban khusus sebelumnya tetap berlaku.</span>
         ${q.ansNote ? `<span class="answer-note">${q.ansNote}</span>` : ''}
       </div>` : ''}
       <div class="question-footer">
@@ -1656,7 +1661,9 @@ function initQuestionsTracker() {
   if (summary) {
     const answered = QUESTIONS_DATA.filter(q => q.ans).length;
     const total = QUESTIONS_DATA.length;
-    summary.innerHTML = `<strong>${answered} dari ${total}</strong> pertanyaan sudah dijawab KPI. Sisanya ${total - answered} masih menunggu.`;
+    summary.innerHTML = answered === total
+      ? `<strong>${answered} dari ${total}</strong> pertanyaan sudah dijawab KPI. Seluruh usulan telah disetujui pada 8 September 2026.`
+      : `<strong>${answered} dari ${total}</strong> pertanyaan sudah dijawab KPI. Sisanya ${total - answered} masih menunggu.`;
   }
 }
 
