@@ -250,7 +250,10 @@ const DATABASE_ENTITIES = [
 const QUESTIONS_DATA = [
   { id: 'Q01', cat: 'Organisasi', title: 'Nama Pengurus & Jabatannya',
     q: 'Kapan daftar nama pengurus beserta jabatannya bisa kami terima? Selama belum ada, sistem masih memakai nama contoh.',
-    prop: 'Sementara memakai kode jabatan standar, bukan nama orang.', block: 'Seluruh sistem' },
+    prop: 'Sementara memakai kode jabatan standar, bukan nama orang.', block: 'Seluruh sistem',
+    ans: 'Pejabat definitif disahkan lewat PKS & PPD tertanggal 17 September 2026: Muhammad Abdullah Mubarak (Ketua KPI), Wildan Akbar Fathurahman (Presiden PPMI), dan Daru Fahmaa Muliawan (Developer).',
+    ansNote: 'Mengikat secara kontraktual. Role struktural organisasi diselaraskan dengan SK Kepengurusan PPMI Mesir 2026–2027.',
+    approvedAt: '17 September 2026' },
 
   { id: 'Q02', cat: 'Kebijakan', title: 'Siapa Boleh Membandingkan Kinerja Divisi',
     q: 'Siapa saja yang boleh melihat perbandingan kinerja antar divisi? Cukup Ketua dan Sekjend, atau kepala divisi juga boleh melihat divisinya sendiri?',
@@ -306,10 +309,12 @@ const QUESTIONS_DATA = [
     q: 'Kalau ada data periode lama yang keliru, siapa yang berwenang memperbaikinya dan lewat prosedur apa?',
     prop: 'Hanya lewat berita acara resmi, dan perbaikannya tercatat.', block: 'Halaman A08, H03' },
 
-  { id: 'Q15', cat: 'AI', title: 'Dokumen yang Boleh Dikirim ke AI',
+  { id: 'Q15', cat: 'AI', title: 'Dokumen yang Boleh Dikirim ke AI & Larangan Training',
     q: 'Saat pengurus bertanya ke asisten AI, isi dokumen yang terkait ikut dikirim ke layanan AI supaya jawabannya bersumber. Artinya isi dokumen itu keluar sesaat dari server KPI. Dokumen tingkat kerahasiaan apa saja yang boleh ikut dikirim?',
     prop: 'Hanya tingkat Umum dan Internal. Terbatas, Rahasia, dan Sangat Rahasia tidak pernah dikirim, dan setiap pemakaian AI tercatat.', block: 'Halaman I01, I06',
-    ans: 'Disetujui. Hanya dokumen Umum dan Internal yang boleh dikirim ke layanan AI.' },
+    ans: 'Dilarang keras memakai data KPI untuk pelatihan/training model AI pihak ketiga (PPD Pasal 3). Hanya dokumen berizin Umum & Internal yang boleh diproses untuk retrieval/RAG berbasis izin granular.',
+    ansNote: 'Ketentuan mengikat dalam Perjanjian Pengolahan Data (PPD Nomor 001/PPD-KPI/IX/2026 Pasal 3 & 4) dan PKS Pasal 10.',
+    approvedAt: '17 September 2026' },
 
   { id: 'Q16', cat: 'Komunikasi', title: 'Data di Buku Kontak Internal',
     q: 'Yang dimaksud buku alamat di dalam sistem (halaman S06): daftar kontak pengurus KPI dan lembaga mitra seperti PPMI, KBRI, serta organisasi kekeluargaan. Bukan halaman publik. Data apa yang boleh ditampilkan di sana?',
@@ -366,8 +371,137 @@ const QUESTIONS_DATA = [
 ].map(question => ({
   ...question,
   ans: question.ans || question.prop,
-  approvedAt: '8 September 2026'
+  approvedAt: question.approvedAt || '8 September 2026'
 }));
+
+// --- 4B. DATA LEGAL & KONTRAK: 4 INSTRUMEN HUKUM (REVISI 17 SEPTEMBER 2026) ---
+const LEGAL_PARTIES = {
+  firstParty: {
+    org: 'Komisi Peduli Interaksi (KPI) PPMI Mesir',
+    roleLabel: 'Pihak Pertama / Pengendali Data & Pemilik Hak Hasil Pengembangan',
+    signatories: [
+      { name: 'Muhammad Abdullah Mubarak', title: 'Ketua Komisi Peduli Interaksi (KPI)', nik: '1471080503020001' },
+      { name: 'Wildan Akbar Fathurahman', title: 'Presiden PPMI Mesir Periode 2026–2027', nik: '3175050105030007' }
+    ]
+  },
+  secondParty: {
+    org: 'Dar Dev (Pengembang Perangkat Lunak Mandiri)',
+    roleLabel: 'Pihak Kedua / Pemroses Data & Pengembang Sistem Informasi',
+    signatories: [
+      { name: 'Daru Fahmaa Muliawan', title: 'Lead Developer / Pemroses Data', nik: '3671100512000002' }
+    ]
+  }
+};
+
+const LEGAL_DOCUMENTS = [
+  {
+    code: 'PPD-001',
+    num: '001/PPD-KPI/IX/2026',
+    title: 'Perjanjian Pengolahan dan Perlindungan Data (Data Processing Agreement)',
+    date: '17 September 2026',
+    scope: 'Tata kelola data pribadi, larangan AI training, dan keamanan server',
+    highlights: [
+      '<strong>Pasal 3 (Larangan Pelatihan Model AI):</strong> Dilarang keras menggunakan data institusional KPI untuk kepentingan pelatihan/training model kecerdasan buatan pihak ketiga (*AI model training ban*). AI hanya boleh dipakai untuk retrieval berizin (RAG) atas dokumen Umum dan Internal.',
+      '<strong>Pasal 5 (Kepemilikan Basis Data Langsung):</strong> Database utama (Supabase / PostgreSQL) dibuat dan dimiliki langsung oleh PIHAK PERTAMA (KPI). Pengembang hanya menerima akses kredensial teknis sementara dengan hak akses paling minim (*least privilege*).',
+      '<strong>Pasal 4 & 7 (Standar Keamanan & Respons Insiden):</strong> Kewajiban enkripsi data saat transit (TLS 1.3) dan saat diam (AES-256). Segala insiden kebocoran keamanan wajib dilaporkan secara tertulis paling lambat 2x24 jam.'
+    ]
+  },
+  {
+    code: 'PKS-002',
+    num: '002/PKS-KPI/IX/2026',
+    title: 'Perjanjian Kerja Sama Pengembangan Sistem Informasi',
+    date: '17 September 2026',
+    scope: 'Nilai kontrak all-in, jadwal 4 fase (4 minggu), domain, dan garansi',
+    highlights: [
+      '<strong>Pasal 5 (Nilai Kontrak All-in):</strong> Total biaya disepakati sebesar Rp14.200.000,- (Empat Belas Juta Dua Ratus Ribu Rupiah) all-in (No. Ref Tagihan: <code>#INV/KPI/2026/017</code>), mencakup seluruh 8 modul sistem informasi, CMS bilingual, dan portal pengurus.',
+      '<strong>Pasal 6 (Jadwal 4 Fase Kontraktual):</strong> Pengerjaan diselesaikan dalam waktu 1 (satu) bulan kalender / 4 minggu terhitung sejak kesepakatan ditandatangani.',
+      '<strong>Pasal 8 & 12 (Domain & Garansi 3 Bulan):</strong> Pengembang menanggung biaya sewa domain resmi <code>.org</code> selama 2 (dua) tahun berturut-turut, serta masa garansi bebas biaya selama 3 bulan pasca serah terima termasuk pendampingan pengkaderan personel KPI.'
+    ]
+  },
+  {
+    code: 'NDA-003',
+    num: '003/NDA-KPI/IX/2026',
+    title: 'Perjanjian Kerahasiaan Informasi (Non-Disclosure Agreement)',
+    date: '17 September 2026',
+    scope: 'Perlindungan kerahasiaan informasi internal, data mahasiswa, dan arsitektur',
+    highlights: [
+      '<strong>Pasal 2 & 3 (Ruang Lingkup Kerahasiaan):</strong> Meliputi seluruh kode sumber (*source code*), konfigurasi server, kredensial basis data, notulen rapat pleno tertutup, data aspirasi pelapor, dan dokumen bertingkat Rahasia/Sangat Rahasia.',
+      '<strong>Pasal 4 (Jangka Waktu Kekal):</strong> Kewajiban menjaga kerahasiaan informasi berlaku sekurang-kurangnya 3 (tiga) tahun pasca perjanjian berakhir, dan berlaku seumur hidup (*perpetual*) khusus untuk kredensial keamanan serta data pribadi anggota.',
+      '<strong>Pasal 6 (Pengecualian Terbatas):</strong> Informasi rahasia hanya boleh dibuka bila diperintahkan oleh putusan peradilan resmi yang berkekuatan hukum tetap, dengan kewajiban memberi tahu pimpinan KPI terlebih dahulu.'
+    ]
+  },
+  {
+    code: 'PHHP-004',
+    num: '004/PHHP-KPI/IX/2026',
+    title: 'Perjanjian Penyerahan Hak Hasil Pengembangan',
+    date: '17 September 2026',
+    scope: 'Pengalihan hak cipta penuh, serah terima source code, repositori, dan integritas sistem',
+    highlights: [
+      '<strong>Pasal 2 (Pengalihan Hak Cipta Mutlak):</strong> Seluruh hak cipta, hak kekayaan intelektual ekonomi, kode program, rancangan antarmuka, dan dokumentasi beralih secara penuh dan eksklusif menjadi milik KPI PPMI Mesir.',
+      '<strong>Pasal 3 (Penyerahan Repositori & Aset):</strong> Pengalihan kepemilikan repositori Git ke akun organisasi resmi KPI, master dump basis data, skrip migrasi, dan konfigurasi lingkungan (*environment*).',
+      '<strong>Pasal 5 (Jaminan Bebas Pintu Belakang):</strong> Jaminan tanpa syarat bahwa sistem bebas dari pintu belakang (*backdoor*), akun siluman (*shadow account*), *logic bomb*, *malware*, atau celah bypass autentikasi yang dapat diakses pengembang pasca BAST.'
+    ]
+  }
+];
+
+const CONTRACT_PHASES = [
+  {
+    phase: 'Fase 1',
+    week: 'Minggu ke-1',
+    title: 'Website Publik & CMS Bilingual',
+    screens: 'P01–P15, C01–C07',
+    badge: 'Fase Kontrak 1',
+    deliverables: [
+      'Beranda publik responsive, profil organisasi, dan struktur kepengurusan interaktif (P01–P04)',
+      'Repositori digital, arsip publikasi, serta portal transparansi (P07–P10)',
+      'Pusat layanan aduan/aspirasi publik dengan generator kode pelacakan anonim (P11–P13)',
+      'CMS Bilingual (ID/EN) mandiri dengan alur persetujuan redaksi sebelum terbit (C01–C07)'
+    ],
+    status: 'Siap Dikerjakan'
+  },
+  {
+    phase: 'Fase 2',
+    week: 'Minggu ke-2',
+    title: 'Portal Pengurus MVP & Manajemen Tugas',
+    screens: 'A01–A04, W01–W05, T01–T11',
+    badge: 'Fase Kontrak 2',
+    deliverables: [
+      'Autentikasi aman pengurus: MFA TOTP, proteksi brute-force, dan audit login (A01–A04)',
+      'Ruang kerja personal: My Workspace & Action Required berbasis wewenang jabatan (W01–W05)',
+      'Manajemen tugas komprehensif: Kanban/Tabel, sub-tugas, pengajuan bukti kerja, dan verifikasi tanpa self-approval (T01–T06)',
+      'Manajemen keterlambatan, pengajuan perpanjangan waktu berizin, dan pembatalan tercatat (T07–T11)'
+    ],
+    status: 'Terkunci Spesifikasi'
+  },
+  {
+    phase: 'Fase 3',
+    week: 'Minggu ke-3',
+    title: 'Operasional Rapat, Berkas & Komunikasi',
+    screens: 'M01–M07, F01–F06, S01–S06',
+    badge: 'Fase Kontrak 3',
+    deliverables: [
+      'Kalender terpadu acuan Waktu Kairo (EET/EEST) dengan deteksi bentrok jadwal rapat (M01–M03)',
+      'Editor notulen rapat berpenguncian versi dan sistem pemungutan suara rahasia (M04–M05)',
+      'Pustaka dokumen dengan pemindaian otomatis, hak akses bertingkat, dan cap air digital (F01–F06)',
+      'Antrean penanganan kasus aduan, formulir dinamis, dan buku kontak kelembagaan resmi (S01–S06)'
+    ],
+    status: 'Terkunci Spesifikasi'
+  },
+  {
+    phase: 'Fase 4',
+    week: 'Minggu ke-4',
+    title: 'Knowledge AI Terkendali, Hardening & Serah Terima',
+    screens: 'K01–K04, E01–E03, H01–H03, I01–I03',
+    badge: 'Fase Kontrak 4 & Handover',
+    deliverables: [
+      'Pusat SOP organisasi & indeks pencarian internal berbasis izin granular (K01–K04)',
+      'Mesin evaluasi kinerja objektif dengan transparansi formula penilaian (E01–E03)',
+      'Asisten AI retrieval berizin (RAG) patuh PPD Pasal 3 tanpa pelatihan model AI pihak ketiga (I01–I03)',
+      'Protokol serah terima digital (BAST), transfer akun organisasi, audit bebas backdoor, dan aktivasi masa garansi 3 bulan (H01–H03, PHHP)'
+    ],
+    status: 'Terkunci Spesifikasi'
+  }
+];
 
 // --- 5. INITIALIZATION & UI INTERACTIVITY ---
 
@@ -380,6 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuestionsTracker();
   initSourceDocsExplorer();
   initErdExplorer();
+  initLegalContracts();
   initThemeToggles();
   initBackToTop();
 });
@@ -1714,6 +1849,90 @@ function initErdExplorer() {
   }
 
   render('ALL');
+}
+
+// Legal & Governance Explorer (4 Dokumen Hukum Revisi 17 September 2026)
+function initLegalContracts() {
+  const partiesContainer = document.getElementById('legal-parties-grid');
+  const docsContainer = document.getElementById('legal-docs-grid');
+  const phasesContainer = document.getElementById('contract-phases-grid');
+
+  if (partiesContainer && typeof LEGAL_PARTIES !== 'undefined') {
+    partiesContainer.innerHTML = `
+      <div class="card" style="border-left: 3px solid var(--accent); background: var(--surface);">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); font-weight: 600; margin-bottom: 4px;">PIHAK PERTAMA (PENGENDALI DATA &amp; PEMILIK HAK)</div>
+        <h3 style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px;">${LEGAL_PARTIES.firstParty.org}</h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">${LEGAL_PARTIES.firstParty.roleLabel}</p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          ${LEGAL_PARTIES.firstParty.signatories.map(s => `
+            <div style="background: var(--surface-secondary); padding: 8px 12px; border-radius: var(--radius-xs); border: 1px solid var(--border-decor);">
+              <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">${s.name}</div>
+              <div style="font-size: 11.5px; color: var(--text-secondary);">${s.title} &bull; NIK: <code style="font-family: var(--font-mono); font-size: 11px;">${s.nik}</code></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      <div class="card" style="border-left: 3px solid var(--border-control); background: var(--surface);">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); font-weight: 600; margin-bottom: 4px;">PIHAK KEDUA (PEMROSES DATA &amp; PENGEMBANG)</div>
+        <h3 style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px;">${LEGAL_PARTIES.secondParty.org}</h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">${LEGAL_PARTIES.secondParty.roleLabel}</p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          ${LEGAL_PARTIES.secondParty.signatories.map(s => `
+            <div style="background: var(--surface-secondary); padding: 8px 12px; border-radius: var(--radius-xs); border: 1px solid var(--border-decor);">
+              <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">${s.name}</div>
+              <div style="font-size: 11.5px; color: var(--text-secondary);">${s.title} &bull; NIK: <code style="font-family: var(--font-mono); font-size: 11px;">${s.nik}</code></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  if (docsContainer && typeof LEGAL_DOCUMENTS !== 'undefined') {
+    docsContainer.innerHTML = LEGAL_DOCUMENTS.map(doc => `
+      <div class="card" style="display: flex; flex-direction: column; gap: 10px;">
+        <div class="card-header-row" style="margin-bottom: 2px;">
+          <span class="screen-code-tag" style="font-size: 12.5px; font-weight: 600;">${doc.code}</span>
+          <span class="badge badge-accent">${doc.date}</span>
+        </div>
+        <div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-tertiary); margin-bottom: 3px;">Nomor: ${doc.num}</div>
+          <h3 style="font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.35;">${doc.title}</h3>
+        </div>
+        <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.45;">${doc.scope}</p>
+        <div style="background: var(--surface-secondary); padding: 12px; border-radius: var(--radius-xs); border: 1px solid var(--border-decor); margin-top: 4px;">
+          <div style="font-size: 11px; text-transform: uppercase; font-weight: 600; color: var(--accent); margin-bottom: 6px;">Ketentuan Kunci Kontraktual:</div>
+          <ul style="padding-left: 18px; margin: 0; font-size: 12px; color: var(--text-primary); display: flex; flex-direction: column; gap: 6px; line-height: 1.45;">
+            ${doc.highlights.map(h => `<li>${h}</li>`).join('')}
+          </ul>
+        </div>
+        <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid var(--hairline); font-size: 11px; color: var(--text-tertiary); display: flex; justify-content: space-between;">
+          <span>Status: <strong>Mengikat Sah</strong></span>
+          <span style="color: var(--success); font-weight: 600;">Terverifikasi Revisi 17 Sep 2026</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  if (phasesContainer && typeof CONTRACT_PHASES !== 'undefined') {
+    phasesContainer.innerHTML = CONTRACT_PHASES.map((p) => `
+      <div class="card" style="display: flex; flex-direction: column; gap: 10px; position: relative;">
+        <div class="card-header-row" style="margin-bottom: 2px;">
+          <span class="badge badge-accent" style="font-weight: 600;">${p.phase} &bull; ${p.week}</span>
+          <span class="badge badge-neutral" style="font-family: var(--font-mono); font-size: 11px;">${p.screens}</span>
+        </div>
+        <h3 style="font-size: 15.5px; font-weight: 600; color: var(--text-primary);">${p.title}</h3>
+        <div style="font-size: 11px; text-transform: uppercase; font-weight: 600; color: var(--text-tertiary);">Deliverable Utama:</div>
+        <ul style="padding-left: 18px; margin: 0; font-size: 12.5px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 5px; line-height: 1.4;">
+          ${p.deliverables.map(d => `<li>${d}</li>`).join('')}
+        </ul>
+        <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid var(--hairline); font-size: 11px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="color: var(--text-tertiary);">Dasar: PKS Pasal 6</span>
+          <span class="badge badge-warning" style="font-size: 10.5px;">${p.status}</span>
+        </div>
+      </div>
+    `).join('');
+  }
 }
 
 // Accessibility & Theme Toggles (persist ke localStorage, hormati preferensi sistem)

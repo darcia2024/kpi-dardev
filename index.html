@@ -41,7 +41,7 @@
             KPI / PPMI Mesir
             <span class="brand-tag">Rancangan untuk Ditinjau</span>
           </div>
-          <div class="brand-sub">Komisi Peduli Interaksi &bull; Dikerjakan oleh Dar Dev</div>
+          <div class="brand-sub">Komisi Peduli Interaksi &bull; Dikerjakan oleh Dar Dev &bull; Pembaruan Legal: 17 September 2026</div>
         </div>
       </div>
 
@@ -95,6 +95,11 @@
       <button class="tab-nav-item" data-tab="sources" data-short="Dokumen">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
         <span>Dokumen &amp; Data</span>
+      </button>
+      <button class="tab-nav-item" data-tab="legal" data-short="Kontrak">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>Kontrak &amp; Legal</span>
+        <span class="badge-count">PKS &bull; PPD</span>
       </button>
     </div>
   </nav>
@@ -994,6 +999,99 @@
       </div>
     </section>
 
+    <!-- PANEL 8: KONTRAK & TATA KELOLA LEGAL (REVISI 17 SEPTEMBER 2026) -->
+    <section id="panel-legal" class="tab-content-panel">
+      <div class="section-headline">
+        <div class="title-area">
+          <h1>Kontrak &amp; Tata Kelola Legal Sistem Informasi</h1>
+          <p>
+            Konsolidasi 4 instrumen hukum definitif tertanggal <strong>17 September 2026</strong> antara KPI PPMI Mesir (Pengendali Data) dan Dar Dev (Pemroses Data). Menjamin kepemilikan mutlak database oleh KPI, larangan penggunaan data untuk pelatihan model AI, jadwal 4 fase implementasi (~4 minggu), dan serah terima penuh bebas dari pintu belakang (*backdoor*).
+          </p>
+        </div>
+      </div>
+
+      <!-- Legal Summary Notice Banner -->
+      <div class="notice-banner" style="background: var(--surface); border: 1px solid var(--accent); border-left: 5px solid var(--accent); border-radius: var(--radius-panel);">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-primary);">
+          <strong style="color: var(--accent); font-size: 14.5px;">Ringkasan Eksekutif Komitmen Legal &amp; Tata Kelola</strong><br>
+          Keempat dokumen legal berikut telah direvisi dan diselaraskan pada <strong>17 September 2026</strong>. Dokumen ini menjadi landasan hukum yang sah dan mengikat bagi seluruh pekerjaan pengembangan sistem, arsitektur data, keamanan kode, serta hak kepemilikan intelektual:
+          <ul style="margin: 8px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px;">
+            <li><strong>Larangan Pelatihan AI (PPD Pasal 3):</strong> Data institusional dan arsip KPI dilarang mutlak digunakan sebagai dataset pelatihan/training model kecerdasan buatan pihak ketiga. AI beroperasi murni untuk retrieval terisolasi (RAG).</li>
+            <li><strong>Kepemilikan Basis Data Langsung (PKS Pasal 10 &amp; PPD Pasal 5):</strong> Akun Supabase/PostgreSQL dibuat dan dikuasai penuh oleh KPI. Pengembang hanya menerima akses kredensial teknis sementara yang dapat dicabut sewaktu-waktu.</li>
+            <li><strong>Jadwal 4 Fase Kontraktual (PKS Pasal 6):</strong> Pengerjaan ditargetkan selesai dalam kurun 1 bulan (4 minggu) terbagi ke dalam 4 deliverable mingguan yang terukur.</li>
+            <li><strong>Jaminan Bebas Backdoor &amp; Serah Terima Mutlak (PHHP Pasal 5):</strong> Pengalihan hak cipta 100%, transfer repositori git ke organisasi KPI, serta jaminan tanpa celah atau akun tersembunyi.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pihak-pihak Resmi yang Menandatangani -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row" style="margin-bottom: 12px;">
+          <div class="card-title">Pihak-Pihak Resmi yang Mengikat Perjanjian</div>
+          <span class="badge badge-accent">Definitif &bull; Sah</span>
+        </div>
+        <div class="card-grid" id="legal-parties-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+          <!-- Injected by app.js -->
+        </div>
+      </div>
+
+      <!-- 4 Dokumen Hukum Utama -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row" style="margin-bottom: 12px;">
+          <div class="card-title">4 Instrumen Hukum Resmi (Revisi 17 September 2026)</div>
+          <span class="badge badge-neutral">Nomor Surat Resmi KPI</span>
+        </div>
+        <div class="card-grid" id="legal-docs-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+          <!-- Injected by app.js -->
+        </div>
+      </div>
+
+      <!-- Jadwal 4 Fase Kontraktual -->
+      <div class="card" style="margin-bottom: var(--space-24);">
+        <div class="card-header-row" style="margin-bottom: 12px;">
+          <div>
+            <div class="card-title">Jadwal 4 Fase Implementasi Kontraktual (PKS Pasal 6)</div>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Durasi pelaksanaan 1 bulan (4 minggu) kalender sejak penandatanganan kesepakatan.</p>
+          </div>
+          <span class="badge badge-warning">Target 4 Minggu</span>
+        </div>
+        <div class="card-grid" id="contract-phases-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+          <!-- Injected by app.js -->
+        </div>
+      </div>
+
+      <!-- Ketentuan Finansial, Domain & Garansi -->
+      <div class="card">
+        <div class="card-header-row" style="margin-bottom: 14px;">
+          <div class="card-title">Ketentuan Finansial, Domain &amp; Jaminan Purna Jual</div>
+          <span class="badge badge-accent">PKS Pasal 5, 8 &amp; 12</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+          <div style="background: var(--surface-secondary); padding: 14px; border-radius: var(--radius-xs); border: 1px solid var(--border-decor);">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600;">Nilai Kontrak All-in</div>
+            <div style="font-size: 18px; font-weight: 600; color: var(--accent); margin: 4px 0;">Rp14.200.000,-</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Mencakup seluruh 8 modul sistem, CMS bilingual, basis data, dan portal pengurus. No. Ref: <code>#INV/KPI/2026/017</code>.</div>
+          </div>
+          <div style="background: var(--surface-secondary); padding: 14px; border-radius: var(--radius-xs); border: 1px solid var(--border-decor);">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600;">Domain Resmi Organisasi</div>
+            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 4px 0;">2 Tahun Penuh</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Biaya pembelian dan sewa nama domain resmi berekstensi <code>.org</code> ditanggung oleh pengembang selama 2 tahun berturut-turut.</div>
+          </div>
+          <div style="background: var(--surface-secondary); padding: 14px; border-radius: var(--radius-xs); border: 1px solid var(--border-decor);">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600;">Garansi &amp; Pemeliharaan</div>
+            <div style="font-size: 18px; font-weight: 600; color: var(--success); margin: 4px 0;">3 Bulan Gratis</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Pemeliharaan dan perbaikan cacat sistem/bug tanpa biaya tambahan pasca BAST, termasuk pendampingan pengkaderan personel KPI.</div>
+          </div>
+          <div style="background: var(--surface-secondary); padding: 14px; border-radius: var(--radius-xs); border: 1px solid var(--border-decor);">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600;">Standar Keamanan Siber</div>
+            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 4px 0;">TLS 1.3 &amp; AES-256</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Enkripsi penuh saat data bergerak dan diam, audit trail kekal (*immutable*), dan respons insiden maksimal 2x24 jam.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   </div><!-- /app-shell -->
@@ -1017,7 +1115,7 @@
         <strong>Komisi Peduli Interaksi (KPI) PPMI Mesir</strong> &bull; Dokumen Rancangan Tampilan &amp; Pengerjaan Website
       </div>
       <div>
-        Dirancang &amp; dikembangkan oleh <strong>Dar Dev</strong> &bull; 5 September 2026 &bull; Status: <em>Rancangan untuk Review</em>
+        Dirancang &amp; dikembangkan oleh <strong>Dar Dev</strong> &bull; Pembaruan: 17 September 2026 (PKS, PPD, NDA, PHHP) &bull; Status: <em>Kontraktual &amp; Siap Eksekusi</em>
       </div>
     </div>
   </footer>
