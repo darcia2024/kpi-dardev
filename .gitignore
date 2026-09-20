@@ -10,3 +10,17 @@ desktop.ini
 
 # Sementara
 *.log
+
+# Node.js / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Environment dan Supabase CLI
+.env
+.env.local
+.env.*.local
+!.env.example
+supabase/.temp/
+supabase/.branches/
