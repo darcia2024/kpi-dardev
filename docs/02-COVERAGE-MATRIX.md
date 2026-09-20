@@ -1,6 +1,6 @@
 # Matriks Cakupan Awal
 
-Status: E00. Matriks ini memetakan setiap kelompok layar ke fase utama. Detail `requirement → task → test → evidence` dibuat saat backlog tiap fase siap.
+Status: E02 dimulai secara lokal TEST. Matriks ini memetakan setiap kelompok layar ke fase utama. Detail `requirement → task → test → evidence` dibuat saat backlog tiap fase siap.
 
 | Kelompok layar | Jumlah | Fase utama | Dependency awal | Bukti penerimaan utama |
 |---|---:|---|---|---|

@@ -245,6 +245,19 @@ h2 {
   background: var(--accent-hover);
 }
 
+.button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.button--quiet {
+  justify-self: start;
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
 .scope-section {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.8fr);
@@ -261,6 +274,64 @@ h2 {
   display: grid;
   gap: 2rem;
   max-width: 52rem;
+}
+
+.auth-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 38rem) minmax(14rem, 0.65fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  align-items: start;
+  padding: clamp(2.5rem, 7vw, 7rem) 0;
+}
+
+.auth-panel,
+.test-note {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.auth-panel {
+  padding: clamp(1.75rem, 5vw, 3.25rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.test-note {
+  padding-top: 1rem;
+  color: var(--text-secondary);
+}
+
+.auth-form {
+  display: grid;
+  gap: 1rem;
+  max-width: 28rem;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.auth-form input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--canvas-tint);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.form-message {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .page-heading {
@@ -311,7 +382,7 @@ h2 {
   .site-nav {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.5rem;
   }
 
@@ -338,5 +409,10 @@ h2 {
   .scope-section {
     grid-template-columns: 1fr;
     padding-top: 2.5rem;
+  }
+
+  .auth-shell {
+    grid-template-columns: 1fr;
+    padding: 2.25rem 0 3.5rem;
   }
 }

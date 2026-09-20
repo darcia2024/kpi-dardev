@@ -16,13 +16,15 @@ test("health endpoint returns a structured configuration error", async () => {
   const previous = {
     KPI_APP_ENV: process.env.KPI_APP_ENV,
     KPI_APP_NAME: process.env.KPI_APP_NAME,
-    KPI_REQUEST_ID_HEADER: process.env.KPI_REQUEST_ID_HEADER
+    KPI_REQUEST_ID_HEADER: process.env.KPI_REQUEST_ID_HEADER,
+    KPI_TEST_AUTH_ENABLED: process.env.KPI_TEST_AUTH_ENABLED
   };
 
   try {
     delete process.env.KPI_APP_ENV;
     process.env.KPI_APP_NAME = "kpi-ppmi-mesir";
     process.env.KPI_REQUEST_ID_HEADER = "x-request-id";
+    process.env.KPI_TEST_AUTH_ENABLED = "true";
 
     const response = GET(new Request("http://localhost/api/v1/health", {
       headers: { "x-request-id": "health-config-error-20260921" }

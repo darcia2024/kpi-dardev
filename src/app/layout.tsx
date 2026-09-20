@@ -25,6 +25,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             </Link>
             <nav aria-label="Navigasi utama" className="site-nav">
               <Link href="/">Beranda</Link>
+              <Link href="/masuk">Masuk</Link>
               <Link href="/portal">Portal pengurus</Link>
             </nav>
             <ThemeToggle />

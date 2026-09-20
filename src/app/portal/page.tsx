@@ -1,18 +1,37 @@
-import { StatePanel } from "@/components/ui/state-panel";
+import { cookies } from "next/headers";
+import Link from "next/link";
+import { SignOutButton } from "@/components/auth/sign-out-button";
+import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth";
 
-export default function PortalPage(): React.JSX.Element {
+export default async function PortalPage(): Promise<React.JSX.Element> {
+  const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
+
+  if (!identity) {
+    return (
+      <div className="portal-shell">
+        <header className="page-heading">
+          <p className="eyebrow">Portal pengurus</p>
+          <h1>Masuk diperlukan</h1>
+          <p>Portal hanya menampilkan ruang kerja setelah sesi TEST yang sah terbentuk.</p>
+        </header>
+        <Link className="button button--primary" href="/masuk">Masuk ke portal</Link>
+      </div>
+    );
+  }
+
   return (
     <div className="portal-shell">
       <header className="page-heading">
         <p className="eyebrow">Portal pengurus</p>
-        <h1>Ruang kerja pengurus</h1>
-        <p>Halaman ini menjadi titik masuk workspace setelah autentikasi dan hak akses selesai dibangun.</p>
+        <h1>Selamat datang, {identity.name}</h1>
+        <p>Sesi TEST aktif dengan role: {identity.roles.join(", ")}.</p>
       </header>
-      <StatePanel
-        description="Belum ada sesi pengurus yang dapat digunakan. Login dan pengelolaan hak akses dikerjakan pada fase berikutnya."
-        kind="empty"
-        title="Portal belum dapat diakses"
-      />
+      <section className="state-panel state-panel--empty">
+        <p className="state-panel__label">Ruang kerja TEST</p>
+        <h2>Modul bisnis belum diaktifkan</h2>
+        <p>Autentikasi dan pembatasan role telah tersedia untuk pengujian lokal. Data organisasi, tugas, dan layanan lain masih menunggu modul serta database KPI.</p>
+        <SignOutButton />
+      </section>
     </div>
   );
 }

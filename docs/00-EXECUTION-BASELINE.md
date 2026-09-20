@@ -28,7 +28,8 @@ Status: E00 aktif. Dokumen ini menjadi catatan kerja implementasi, bukan perubah
 |---|---|---|
 | E00: baseline, backlog, keputusan | Aktif | Artefak awal dibuat pada checkout ini |
 | E01: fondasi runtime, data, CI | Aktif | Scaffold lokal TEST, migrasi awal, endpoint health, tes, dan CI tersedia. Supabase lokal, backup/restore staging, serta konfigurasi cloud menunggu environment dan keputusan KPI |
-| E02–E14 | Belum mulai | Mengikuti dependency roadmap |
+| E02: akses dan identitas | Aktif secara lokal TEST | Sign-in, MFA, sesi, logout, dan pemeriksaan role tersedia tanpa akun KPI atau Supabase |
+| E03–E14 | Belum mulai | Mengikuti dependency roadmap |
 
 ## Referensi
 
