@@ -1,0 +1,342 @@
+:root {
+  color-scheme: light;
+  --canvas: #f3ecdd;
+  --canvas-tint: #f8f3e8;
+  --surface: #ffffff;
+  --surface-secondary: #f1e9d8;
+  --text-primary: #2a2823;
+  --text-secondary: #6c665a;
+  --text-tertiary: #756e61;
+  --accent: #c4161c;
+  --accent-hover: #a2121a;
+  --accent-subtle: #f8e6e5;
+  --border: #e1d7c2;
+  --focus-ring: #8c151a;
+  --shadow: 0 12px 28px rgb(42 40 35 / 10%);
+  --radius-control: 12px;
+  --radius-panel: 20px;
+  --max-width: 1120px;
+  --font-sans: "Sora", "Segoe UI", Arial, sans-serif;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #191816;
+  --canvas-tint: #201e1b;
+  --surface: #262420;
+  --surface-secondary: #2c2a25;
+  --text-primary: #f3efe6;
+  --text-secondary: #c5beb1;
+  --text-tertiary: #aaa294;
+  --accent: #f0857b;
+  --accent-hover: #f4a199;
+  --accent-subtle: #3a211d;
+  --border: #4b463e;
+  --focus-ring: #ffd3ce;
+  --shadow: 0 12px 28px rgb(0 0 0 / 36%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--canvas);
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  transform: translateY(-160%);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--text-primary);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--canvas-tint);
+}
+
+.site-header__inner {
+  display: grid;
+  grid-template-columns: minmax(13rem, 1fr) auto auto;
+  gap: 1.25rem;
+  align-items: center;
+  width: min(var(--max-width), calc(100% - 3rem));
+  min-height: 4.5rem;
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  gap: 0.7rem;
+  align-items: center;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.brand__mark {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.7rem 0.7rem 0.95rem 0.95rem;
+  background: var(--accent);
+  color: var(--surface);
+  font-weight: 700;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.brand strong {
+  font-size: 0.9rem;
+}
+
+.brand small {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}
+
+.site-nav {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.site-nav a,
+.theme-toggle,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-nav a {
+  color: var(--text-secondary);
+}
+
+.site-nav a:hover {
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+}
+
+.theme-toggle {
+  cursor: pointer;
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.theme-toggle:hover {
+  background: var(--surface-secondary);
+}
+
+.app-main {
+  width: min(var(--max-width), calc(100% - 3rem));
+  margin: 0 auto;
+}
+
+.public-shell,
+.portal-shell {
+  padding: clamp(2.5rem, 6vw, 6.5rem) 0;
+}
+
+.intro-panel {
+  display: grid;
+  gap: 1.4rem;
+  max-width: 48rem;
+  padding: clamp(1.75rem, 5vw, 4.25rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  max-width: 16ch;
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.intro-panel__lead,
+.page-heading > p,
+.scope-section > p,
+.state-panel > p:not(.state-panel__label) {
+  max-width: 62ch;
+  color: var(--text-secondary);
+}
+
+.button--primary {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+.button--primary:hover {
+  background: var(--accent-hover);
+}
+
+.scope-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.8fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+  padding: clamp(2.25rem, 6vw, 6rem) 0 0;
+}
+
+.scope-section h2 {
+  margin-top: 0.55rem;
+}
+
+.portal-shell {
+  display: grid;
+  gap: 2rem;
+  max-width: 52rem;
+}
+
+.page-heading {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.page-heading h1 {
+  max-width: 24ch;
+}
+
+.state-panel {
+  display: grid;
+  gap: 0.7rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
+
+.state-panel--empty {
+  border-left: 4px solid var(--accent);
+}
+
+.state-panel__label {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .site-header__inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.65rem;
+    width: min(100% - 2rem, var(--max-width));
+    padding: 0.65rem 0;
+  }
+
+  .site-nav {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .site-nav a {
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .theme-toggle {
+    min-height: 2.75rem;
+    padding-inline: 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  .app-main {
+    width: min(100% - 2rem, var(--max-width));
+  }
+
+  .public-shell,
+  .portal-shell {
+    padding: 2.25rem 0 3.5rem;
+  }
+
+  .scope-section {
+    grid-template-columns: 1fr;
+    padding-top: 2.5rem;
+  }
+}

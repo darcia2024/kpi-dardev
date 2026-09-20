@@ -1,6 +1,6 @@
 # Backlog E01: Fondasi Aplikasi
 
-Status: dirinci, belum Ready. Setiap task menjadi Ready setelah keputusan fondasi terkait disetujui dan dependensinya selesai.
+Status: implementasi lokal sedang berjalan. Setiap task menjadi Ready untuk layanan institusi setelah keputusan fondasi terkait disetujui dan dependensinya selesai.
 
 | ID | Hasil | Dependensi | Kriteria selesai |
 |---|---|---|---|
@@ -19,7 +19,7 @@ Status: dirinci, belum Ready. Setiap task menjadi Ready setelah keputusan fondas
 | E01-T01 | Selesai lokal | Next.js, TypeScript strict, build reproducible, dan lockfile tersedia |
 | E01-T02 | Selesai lokal | `.env.example` dan validator environment membatasi runtime pada local, staging, atau production tanpa memuat secret |
 | E01-T03 | Selesai awal | Struktur `src/platform` dan endpoint health v1 dengan error terstruktur serta request ID tersedia |
-| E01-T04 | Belum mulai | Menunggu pilihan penerapan antislop sebelum pekerjaan UI dimulai |
+| E01-T04 | Selesai awal | Shell publik dan portal, navigasi keyboard, pengalih tema, layout mobile, serta komponen empty/loading/error tersedia. Tampilan diuji pada browser lokal. |
 | E01-T05 | Selesai awal | Migrasi SQL dan seed TEST untuk organisasi, periode, konfigurasi, dan audit tersedia; belum dieksekusi karena Docker/Supabase CLI belum tersedia |
 | E01-T06 | Selesai awal | Workflow CI serta perintah typecheck, test, dan build tersedia |
 | E01-T07 | Sebagian | Health endpoint dan correlation ID tersedia; backup/restore staging menunggu layanan yang disetujui |
@@ -28,7 +28,7 @@ Status: dirinci, belum Ready. Setiap task menjadi Ready setelah keputusan fondas
 
 1. E01-T01 dan E01-T02 membuka pekerjaan lain.
 2. E01-T03 dan E01-T05 berjalan setelah fondasi runtime/data siap.
-3. E01-T04 berjalan setelah arah UI dikonfirmasi. Tidak ada halaman produk final sebelum itu.
+3. E01-T04 menyediakan shell fondasi. Halaman produk final mengikuti kesiapan autentikasi, hak akses, dan modul bisnis.
 4. E01-T06 berjalan sejak task pertama dan menjadi wajib sebelum review.
 5. E01-T07 selesai sebelum modul bisnis memakai staging.
 
