@@ -138,68 +138,123 @@
     <div class="absolute inset-0 bg-noise opacity-80"></div>
   </div>
 
-  <!-- Top Floating Island Navbar -->
-  <header class="fixed top-4 inset-x-0 z-50 px-4 md:px-6 flex justify-center pointer-events-none">
-    <nav class="pointer-events-auto w-full max-w-5xl bg-white/80 backdrop-blur-xl border border-stone-200/70 shadow-[0_8px_30px_rgba(0,0,0,0.06)] rounded-full px-4 py-2.5 flex items-center justify-between transition-all duration-300">
+  <!-- Top Dexina Navbar -->
+  <header class="sticky top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200/80 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
       
       <!-- Brand Logo & Title -->
-      <a href="beranda.html" class="flex items-center gap-2.5 group">
-        <div class="w-8 h-9 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-          <svg viewBox="0 0 44 50" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-sm">
-            <defs>
-              <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#E4232B"/>
-                <stop offset="0.55" stop-color="#C4161C"/>
-                <stop offset="1" stop-color="#7C1417"/>
-              </linearGradient>
-            </defs>
-            <path d="M9 4Q4 4 4 9L4 23C4 36 11 44 22 47C33 44 40 36 40 23L40 9Q40 4 35 4Z" fill="url(#shieldGrad)"/>
-            <circle cx="18" cy="15" r="5.4" fill="#fff"/>
-            <path d="M18 21C11.5 21 8 26.5 8 33.5C8 39 11 43 15.5 45C14 40 14.5 34 16 29C17.2 25 19.5 22.5 22.5 21.8C21.3 21.3 19.8 21 18 21Z" fill="#fff"/>
-            <circle cx="30" cy="20.5" r="3.8" fill="#fff"/>
-            <path d="M30 24.5C25.5 24.5 23 28.5 23 33.5C23 37.5 25 40.5 28 42C27 38 27.3 33.5 28.5 30C29.4 27 31 25.4 33.2 24.9C32.3 24.6 31.2 24.5 30 24.5Z" fill="#fff"/>
+      <a href="beranda.html" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl bg-crimson-50 border border-crimson-200/70 flex items-center justify-center text-crimson-600 transition-transform duration-300 group-hover:scale-105">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" />
           </svg>
         </div>
         <div class="flex flex-col">
-          <span class="font-bold text-xs tracking-tight text-stone-900 group-hover:text-crimson-600 transition-colors">KPI / PPMI Mesir</span>
-          <span class="text-[10px] text-stone-500 font-medium tracking-wide">Komisi Peduli Interaksi</span>
+          <span class="font-extrabold text-base tracking-tight text-stone-900 group-hover:text-crimson-600 transition-colors">KPI PPMI Mesir</span>
         </div>
       </a>
 
       <!-- Center Nav Links (Desktop) -->
-      <div class="hidden md:flex items-center gap-1 text-xs font-medium text-stone-600">
-        <a href="#tentang" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Tentang</a>
-        <a href="#layanan" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Layanan</a>
-        <a href="#pencegahan" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Pencegahan</a>
-        <a href="#prosedur" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Prosedur</a>
-        <a href="#prinsip" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Prinsip</a>
-      </div>
+      <nav class="hidden md:flex items-center gap-1 text-sm font-medium text-stone-600">
+        <a href="#tentang" class="px-3.5 py-2 rounded-full hover:text-stone-900 hover:bg-stone-100 transition-all">Tentang kami</a>
+        <a href="#pencegahan" class="px-3.5 py-2 rounded-full hover:text-stone-900 hover:bg-stone-100 transition-all">Edukasi</a>
+        <a href="#prosedur" class="px-3.5 py-2 rounded-full hover:text-stone-900 hover:bg-stone-100 transition-all">Alur Telaah</a>
+        <a href="#prinsip" class="px-3.5 py-2 rounded-full hover:text-stone-900 hover:bg-stone-100 transition-all">Prinsip</a>
+        <a href="index.html" class="px-3.5 py-2 rounded-full hover:text-stone-900 hover:bg-stone-100 transition-all">Spesifikasi</a>
+        <a href="index.html#panel-legal" class="px-3.5 py-2 rounded-full hover:text-stone-900 hover:bg-stone-100 transition-all flex items-center gap-1">
+          <span>Portal</span>
+          <svg class="w-3.5 h-3.5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+      </nav>
 
-      <!-- Right Actions: Cairo Clock & CTA -->
-      <div class="flex items-center gap-2">
-        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-stone-100/80 border border-stone-200/60 rounded-full text-[11px] font-mono text-stone-600" title="Waktu Resmi Kairo (EET)">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <!-- Right Actions: Cairo Clock & CTA Button -->
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 border border-stone-200/80 rounded-full text-xs font-mono text-stone-700" title="Waktu Resmi Kairo (EET)">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span id="nav-cairo-clock">18:15 Kairo</span>
         </div>
-        
-        <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200/80 border border-stone-200 rounded-full px-3 py-1.5 transition-all" title="Buka Dokumen Spesifikasi Sistem">
-          <svg class="w-3.5 h-3.5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          <span class="hidden lg:inline">Spesifikasi</span>
-        </a>
 
-        <a href="#aspirasi" class="inline-flex items-center gap-1 text-xs font-semibold text-white bg-crimson-600 hover:bg-crimson-700 active:scale-95 shadow-sm rounded-full px-3.5 py-1.5 transition-all duration-200">
-          <span>Aspirasi</span>
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </a>
+        <button onclick="openAspirasiModal()" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-white bg-crimson-600 hover:bg-crimson-700 active:scale-95 shadow-sm hover:shadow-md rounded-full px-5 py-2.5 transition-all duration-200">
+          <span>Sampaikan aspirasi</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
       </div>
-    </nav>
+    </div>
   </header>
 
   <!-- Main Container -->
-  <main class="relative z-10 pt-28 md:pt-36 pb-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28 md:space-y-36">
+  <main class="relative z-10 pt-8 sm:pt-12 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32">
 
     <!-- ==========================================================================
-         SECTION 1: HERO & TENTANG KPI (Gambar 1 Redesign)
+         SECTION 1: DEXINA-INSPIRED HERO & PHOTOGRAPHIC BANNER
+         ========================================================================== -->
+    <section class="space-y-10 sm:space-y-12">
+      
+      <!-- Eyebrow Pill -->
+      <div class="reveal-init inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-stone-200 shadow-xs">
+        <span class="w-2.5 h-2.5 rounded-full bg-crimson-600"></span>
+        <span class="text-xs font-bold tracking-wider text-stone-700 uppercase">BADAN SEMI OTONOM PPMI MESIR</span>
+      </div>
+
+      <!-- 2-Column Asymmetric Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+        
+        <!-- Left: Huge Typography Headline -->
+        <div class="reveal-init delay-100 lg:col-span-7">
+          <h1 class="text-4xl sm:text-6xl lg:text-[4.75rem] font-extrabold tracking-tight text-stone-900 leading-[1.04]">
+            Menjaga interaksi<br />
+            melalui edukasi &amp;<br />
+            penelaahan adil
+          </h1>
+        </div>
+
+        <!-- Right: Top Note with Arrow & Bottom Actions -->
+        <div class="reveal-init delay-150 lg:col-span-5 flex flex-col justify-between h-full space-y-8 pt-2">
+          
+          <!-- Top Note with Big Arrow -->
+          <div class="space-y-2 max-w-md">
+            <span class="text-3xl font-extrabold text-stone-900 leading-none">&#x2197;</span>
+            <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+              Kanal aspirasi &amp; telaah informasi aktif. Memiliki situasi atau masukan yang perlu disampaikan? Tuliskan melalui kanal resmi.
+            </p>
+          </div>
+
+          <!-- Bottom Action Block -->
+          <div class="space-y-5 max-w-md">
+            <p class="text-sm sm:text-base text-stone-600 leading-relaxed">
+              KPI hadir sebagai ruang edukasi, pencegahan, dan penelaahan objektif demi menjaga norma, etika, serta martabat seluruh mahasiswa dan pelajar Indonesia di Mesir.
+            </p>
+            
+            <div class="flex items-center gap-3 flex-wrap">
+              <button onclick="openAspirasiModal()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-crimson-600 hover:bg-crimson-700 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
+                <span>Sampaikan aspirasi</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+
+              <a href="#tentang" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-stone-50 border border-stone-300 hover:border-stone-900 text-stone-800 font-semibold text-sm transition-all">
+                <span>Kenali KPI</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Photographic Hero Banner (Dexina Discussion Visual) -->
+      <div class="reveal-init delay-200 relative w-full rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden border border-stone-200 shadow-lg bg-stone-100">
+        <img src="hero-discussion.jpg" alt="Mahasiswa Masisir berdiskusi dan mengkaji materi akademik di perpustakaan Kairo" class="w-full max-h-[620px] object-cover" />
+        <div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-stone-900/80 backdrop-blur-md text-white text-xs font-medium">
+          <span class="w-2 h-2 rounded-full bg-crimson-500"></span>
+          <span>Komisi Peduli Interaksi &bull; PPMI Mesir Periode 2026&ndash;2027</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 2: TENTANG KPI & RUANG KERJA
          ========================================================================== -->
     <section id="tentang" class="space-y-16 md:space-y-20">
       
