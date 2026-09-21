@@ -1,0 +1,915 @@
+/* ==========================================================================
+   DEXINA-INSPIRED EDITORIAL DESIGN SYSTEM FOR KPI PPMI MESIR
+   Clean White Canvas, Monumental Typography, Double-Action Hero & Bento Cards
+   ========================================================================== */
+
+/* Header Dexina Styling */
+.site-header--dexina {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #ffffff;
+  border-bottom: 1px solid #f1ece8;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+
+.site-header__container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 16px clamp(16px, 3.5vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Brand */
+.dexina-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #111827;
+}
+
+.dexina-brand__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #fdf2f2;
+  border: 1px solid #fbd5d5;
+  color: #c4161c;
+}
+
+.dexina-brand__text strong {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #111827;
+}
+
+/* Center Nav */
+.dexina-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dexina-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #4b5563;
+  text-decoration: none;
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+
+.dexina-nav__link:hover {
+  color: #111827;
+  background-color: #f7f5f2;
+}
+
+.dexina-nav__chevron {
+  color: #9ca3af;
+  margin-top: 1px;
+}
+
+/* Right Actions */
+.dexina-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dexina-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: #f9f7f4;
+  border: 1px solid #ebe5df;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #57534e;
+  font-feature-settings: "tnum";
+}
+
+.dexina-clock__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+  animation: pulse 2s infinite;
+}
+
+.dexina-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  background: #e0242b;
+  color: #ffffff !important;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(224, 36, 43, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dexina-btn-primary:hover {
+  background: #c4161c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(224, 36, 43, 0.35);
+}
+
+.dexina-theme-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.dexina-menu-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 8px;
+  color: #111827;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   DEXINA HERO SECTION
+   ========================================================================== */
+.dexina-hero {
+  background: #ffffff;
+  padding: clamp(32px, 5vw, 56px) 0 clamp(48px, 6vw, 72px);
+}
+
+.dexina-hero__inner {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3.5vw, 40px);
+}
+
+/* Eyebrow Pill */
+.dexina-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  margin-bottom: clamp(24px, 3.5vw, 40px);
+}
+
+.dexina-eyebrow__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #e0242b;
+}
+
+.dexina-eyebrow__text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #374151;
+  text-transform: uppercase;
+}
+
+/* 2-Column Hero Grid */
+.dexina-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.92fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+/* Left Column: Big Headline */
+.dexina-hero__h1 {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-weight: 800;
+  color: #0f172a;
+  font-size: clamp(2.8rem, 5.8vw, 5.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+/* Right Column */
+.dexina-hero__right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  gap: 36px;
+  padding-top: 8px;
+}
+
+/* Top Note with Big Arrow */
+.dexina-hero__note {
+  max-width: 380px;
+}
+
+.dexina-hero__note-arrow {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.dexina-hero__note p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Bottom Action Block */
+.dexina-hero__action-block {
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dexina-hero__lead {
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Buttons */
+.dexina-hero__buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dexina-btn-red {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: 9999px;
+  background: #e0242b;
+  color: #ffffff !important;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 3px 12px rgba(224, 36, 43, 0.28);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dexina-btn-red:hover {
+  background: #c4161c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(224, 36, 43, 0.38);
+}
+
+.dexina-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #0f172a !important;
+  border: 1px solid #d1d5db;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dexina-btn-outline:hover {
+  border-color: #0f172a;
+  background: #f9fafb;
+  transform: translateY(-2px);
+}
+
+/* Full-width Photographic Banner */
+.dexina-hero__media {
+  position: relative;
+  width: 100%;
+  border-radius: clamp(20px, 3vw, 32px);
+  overflow: hidden;
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.12);
+  border: 1px solid #ece7e3;
+  background: #f4ede8;
+}
+
+.dexina-hero__img {
+  width: 100%;
+  height: auto;
+  max-height: 620px;
+  object-fit: cover;
+  display: block;
+}
+
+.dexina-hero__media-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.dexina-hero__media-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+
+/* ==========================================================================
+   BODY SECTIONS STYLING
+   ========================================================================== */
+.dexina-section {
+  padding: clamp(64px, 8vw, 110px) 0;
+  background: #ffffff;
+}
+
+.dexina-section__container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3.5vw, 40px);
+}
+
+.dexina-pill-label {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: #fdf2f2;
+  color: #c4161c;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  border: 1px solid #fbd5d5;
+}
+
+.dexina-pill-label--white {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.dexina-section__head {
+  max-width: 780px;
+  margin-bottom: 40px;
+}
+
+.dexina-section__title {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #0f172a;
+  line-height: 1.12;
+  margin: 0 0 16px;
+}
+
+.dexina-section__sub {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Manifesto Section */
+.dexina-manifesto {
+  background: #fbf9f6;
+  border-top: 1px solid #f0eae4;
+  border-bottom: 1px solid #f0eae4;
+}
+
+.dexina-manifesto__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: end;
+}
+
+.dexina-manifesto__h2 {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #0f172a;
+  line-height: 1.16;
+  margin: 0;
+}
+
+.dexina-manifesto__desc {
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* 3 Cards Grid */
+.dexina-cards-grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.dexina-card {
+  position: relative;
+  padding: 32px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.dexina-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.dexina-card--featured {
+  background: #fdf2f2;
+  border-color: #f8b4b4;
+}
+
+.dexina-card__icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #f4ede8;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.dexina-card--featured .dexina-card__icon-wrap {
+  background: #e0242b;
+  color: #ffffff;
+}
+
+.dexina-card__num {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #9ca3af;
+}
+
+.dexina-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px;
+  letter-spacing: -0.025em;
+}
+
+.dexina-card__p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Bento Grid */
+.dexina-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.dexina-bento-card {
+  padding: 36px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 240px;
+  transition: all 0.22s ease;
+}
+
+.dexina-bento-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.08);
+  border-color: #0f172a;
+}
+
+.dexina-bento-card--dark {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.dexina-bento-card--dark .dexina-bento-card__title {
+  color: #ffffff;
+}
+
+.dexina-bento-card--dark .dexina-bento-card__desc {
+  color: #94a3b8;
+}
+
+.dexina-bento-card--dark:hover {
+  background: #1e293b;
+}
+
+.dexina-bento-card--subtle {
+  background: #f8fafc;
+}
+
+.dexina-bento-card__num {
+  font-family: ui-monospace, monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #e0242b;
+  margin-bottom: 14px;
+}
+
+.dexina-bento-card--dark .dexina-bento-card__num {
+  color: #f87171;
+}
+
+.dexina-bento-card__title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  margin: 0 0 10px;
+}
+
+.dexina-bento-card__desc {
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: #4b5563;
+  margin: 0 0 20px;
+}
+
+.dexina-bento-card__action {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #e0242b;
+}
+
+.dexina-bento-card--dark .dexina-bento-card__action {
+  color: #fca5a5;
+}
+
+/* Grid 2 */
+.dexina-grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.dexina-highlight-card {
+  padding: 36px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.dexina-highlight-card--tint {
+  background: #fef7f7;
+  border-color: #fcd9d9;
+}
+
+.dexina-highlight-card__badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e0242b;
+  margin-bottom: 14px;
+}
+
+.dexina-highlight-card__title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  margin: 0 0 12px;
+}
+
+.dexina-highlight-card__desc {
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: #4b5563;
+  margin: 0 0 20px;
+}
+
+.dexina-text-link {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #e0242b;
+  text-decoration: none;
+}
+
+.dexina-text-link:hover {
+  text-decoration: underline;
+}
+
+/* Process Box */
+.dexina-process-box {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 5vw, 64px);
+  padding: clamp(32px, 5vw, 56px);
+  border-radius: 28px;
+  background: #fbf9f6;
+  border: 1px solid #eee7e0;
+}
+
+.dexina-process-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dexina-process-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #f0eae4;
+}
+
+.dexina-step-num {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #fdf2f2;
+  color: #e0242b;
+  font-family: ui-monospace, monospace;
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dexina-process-list h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px;
+}
+
+.dexina-process-list p {
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Principles Grid */
+.dexina-principles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.dexina-principle-card {
+  position: relative;
+  padding: 32px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.dexina-principle-card__num {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.dexina-principle-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fdf2f2;
+  color: #e0242b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.dexina-principle-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 10px;
+}
+
+.dexina-principle-card p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #64748b;
+  margin: 0;
+}
+
+/* CTA Box */
+.dexina-cta-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: clamp(36px, 5vw, 64px);
+  border-radius: 28px;
+  background: #e0242b;
+  color: #ffffff;
+}
+
+.dexina-cta-box__h2 {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin: 0 0 12px;
+  line-height: 1.15;
+}
+
+.dexina-cta-box__p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 620px;
+  margin: 0;
+}
+
+.dexina-btn-white {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #e0242b !important;
+  font-size: 0.94rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.dexina-btn-white:hover {
+  background: #fdf2f2;
+  transform: translateY(-2px);
+}
+
+/* Monumental Wordmark */
+.dexina-wordmark {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: clamp(3.6rem, 10vw, 10.5rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  text-align: center;
+  color: #0f172a;
+  padding: clamp(48px, 8vw, 96px) 16px 32px;
+  line-height: 1;
+}
+
+/* Footer */
+.dexina-footer {
+  border-top: 1px solid #f1ece8;
+  background: #ffffff;
+  padding: 32px 0;
+}
+
+.dexina-footer__inner {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3.5vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.dexina-footer__left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.dexina-footer__left strong {
+  color: #0f172a;
+}
+
+.dexina-footer__right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.dexina-footer__right a {
+  font-size: 0.86rem;
+  color: #4b5563;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.dexina-footer__right a:hover {
+  color: #e0242b;
+}
+
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .dexina-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .dexina-hero__right {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 32px;
+  }
+  .dexina-cards-grid3,
+  .dexina-principles-grid {
+    grid-template-columns: 1fr;
+  }
+  .dexina-manifesto__grid {
+    grid-template-columns: 1fr;
+  }
+  .dexina-process-box {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .dexina-nav,
+  .dexina-clock {
+    display: none;
+  }
+  .dexina-menu-btn {
+    display: flex;
+  }
+  .dexina-hero__right {
+    flex-direction: column;
+  }
+  .dexina-bento-grid,
+  .dexina-grid2 {
+    grid-template-columns: 1fr;
+  }
+  .dexina-cta-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
