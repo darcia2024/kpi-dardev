@@ -15,9 +15,9 @@
 }
 
 .site-header__container {
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 16px clamp(16px, 3.5vw, 40px);
+  max-width: none;
+  width: 100%;
+  padding: 18px clamp(20px, 4.5vw, 72px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -153,14 +153,16 @@
    DEXINA HERO SECTION
    ========================================================================== */
 .dexina-hero {
+  width: 100%;
   background: #ffffff;
-  padding: clamp(32px, 5vw, 56px) 0 clamp(48px, 6vw, 72px);
+  padding: clamp(36px, 4.5vw, 64px) 0 0;
+  overflow-x: clip;
 }
 
 .dexina-hero__inner {
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 0 clamp(16px, 3.5vw, 40px);
+  max-width: none;
+  width: 100%;
+  padding: 0 clamp(20px, 4.5vw, 72px);
 }
 
 /* Eyebrow Pill */
@@ -194,10 +196,10 @@
 /* 2-Column Hero Grid */
 .dexina-hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.92fr);
-  gap: clamp(32px, 5vw, 72px);
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.95fr);
+  gap: clamp(32px, 5vw, 84px);
   align-items: start;
-  margin-bottom: clamp(40px, 5vw, 64px);
+  margin-bottom: clamp(48px, 6vw, 72px);
 }
 
 /* Left Column: Big Headline */
@@ -205,9 +207,9 @@
   font-family: var(--font-plus-jakarta), sans-serif;
   font-weight: 800;
   color: #0f172a;
-  font-size: clamp(2.8rem, 5.8vw, 5.2rem);
-  line-height: 1.04;
-  letter-spacing: -0.045em;
+  font-size: clamp(3.2rem, 6.5vw, 5.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
   text-wrap: balance;
   margin: 0;
 }
@@ -224,12 +226,12 @@
 
 /* Top Note with Big Arrow */
 .dexina-hero__note {
-  max-width: 380px;
+  max-width: 420px;
 }
 
 .dexina-hero__note-arrow {
   display: block;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 800;
   line-height: 1;
   color: #0f172a;
@@ -237,23 +239,23 @@
 }
 
 .dexina-hero__note p {
-  font-size: 0.88rem;
-  line-height: 1.6;
+  font-size: 0.92rem;
+  line-height: 1.65;
   color: #4b5563;
   margin: 0;
 }
 
 /* Bottom Action Block */
 .dexina-hero__action-block {
-  max-width: 440px;
+  max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
 }
 
 .dexina-hero__lead {
-  font-size: 0.96rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.75;
   color: #4b5563;
   margin: 0;
 }
@@ -262,7 +264,7 @@
 .dexina-hero__buttons {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -270,11 +272,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 13px 28px;
+  padding: 14px 30px;
   border-radius: 9999px;
   background: #e0242b;
   color: #ffffff !important;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 3px 12px rgba(224, 36, 43, 0.28);
@@ -291,12 +293,12 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 13px 28px;
+  padding: 14px 30px;
   border-radius: 9999px;
   background: #ffffff;
   color: #0f172a !important;
   border: 1px solid #d1d5db;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -308,44 +310,50 @@
   transform: translateY(-2px);
 }
 
-/* Full-width Photographic Banner */
+/* Full-width Edge-to-Edge Photographic Banner */
 .dexina-hero__media {
   position: relative;
-  width: 100%;
-  border-radius: clamp(20px, 3vw, 32px);
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.12);
-  border: 1px solid #ece7e3;
+  box-shadow: none;
+  border-top: 1px solid #eee7e0;
+  border-bottom: 1px solid #eee7e0;
+  border-left: 0;
+  border-right: 0;
   background: #f4ede8;
 }
 
 .dexina-hero__img {
-  width: 100%;
-  height: auto;
-  max-height: 620px;
+  width: 100vw;
+  height: clamp(520px, 75vh, 920px);
   object-fit: cover;
+  object-position: center 30%;
   display: block;
 }
 
 .dexina-hero__media-badge {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  bottom: clamp(24px, 3.5vw, 44px);
+  left: clamp(24px, 4.5vw, 72px);
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: 9999px;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(14px);
   color: #ffffff;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 600;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
 }
 
 .dexina-hero__media-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #ef4444;
 }
@@ -354,14 +362,14 @@
    BODY SECTIONS STYLING
    ========================================================================== */
 .dexina-section {
-  padding: clamp(64px, 8vw, 110px) 0;
+  padding: clamp(72px, 9vw, 120px) 0;
   background: #ffffff;
 }
 
 .dexina-section__container {
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 0 clamp(16px, 3.5vw, 40px);
+  max-width: none;
+  width: 100%;
+  padding: 0 clamp(20px, 4.5vw, 72px);
 }
 
 .dexina-pill-label {
@@ -829,9 +837,9 @@
 }
 
 .dexina-footer__inner {
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 0 clamp(16px, 3.5vw, 40px);
+  max-width: none;
+  width: 100%;
+  padding: 0 clamp(20px, 4.5vw, 72px);
   display: flex;
   align-items: center;
   justify-content: space-between;
