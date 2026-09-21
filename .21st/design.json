@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "project": {
+    "name": "kpi-ppmi-mesir",
+    "productType": null,
+    "stack": [
+      "nextjs",
+      "react"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "src/app/globals.css"
+    ],
+    "components": [
+      "src/components/ui"
+    ],
+    "assets": [],
+    "instructions": []
+  },
+  "design": {
+    "colorMode": "light",
+    "colors": {
+      "--surface-secondary": {
+        "value": "#2c2a25",
+        "source": "src/app/globals.css"
+      },
+      "--text-primary": {
+        "value": "#f3efe6",
+        "source": "src/app/globals.css"
+      },
+      "--text-secondary": {
+        "value": "#c5beb1",
+        "source": "src/app/globals.css"
+      },
+      "--accent": {
+        "value": "#f0857b",
+        "source": "src/app/globals.css"
+      },
+      "--accent-hover": {
+        "value": "#f4a199",
+        "source": "src/app/globals.css"
+      },
+      "--accent-subtle": {
+        "value": "#3a211d",
+        "source": "src/app/globals.css"
+      },
+      "--border": {
+        "value": "#4b463e",
+        "source": "src/app/globals.css"
+      },
+      "--focus-ring": {
+        "value": "#ffd3ce",
+        "source": "src/app/globals.css"
+      }
+    },
+    "typography": {
+      "--text-tertiary": {
+        "value": "#aaa294",
+        "source": "src/app/globals.css"
+      },
+      "--font-sans": {
+        "value": "\"Plus Jakarta Sans\", \"Segoe UI\", Arial, sans-serif",
+        "source": "src/app/globals.css"
+      }
+    },
+    "spacing": {},
+    "radius": {
+      "--radius-control": {
+        "value": "12px",
+        "source": "src/app/globals.css"
+      },
+      "--radius-panel": {
+        "value": "20px",
+        "source": "src/app/globals.css"
+      }
+    },
+    "shadows": {
+      "--shadow": {
+        "value": "0 12px 28px rgb(0 0 0 / 36%)",
+        "source": "src/app/globals.css"
+      }
+    },
+    "motion": {},
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [
+      "site-header",
+      "state-panel",
+      "theme-toggle"
+    ],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [],
+  "evidence": [
+    {
+      "fact": "components.installed",
+      "source": "src/components/ui"
+    },
+    {
+      "fact": "design.colorMode:light",
+      "source": "src/app/globals.css"
+    },
+    {
+      "fact": "design.tokens",
+      "source": "src/app/globals.css"
+    },
+    {
+      "fact": "project.stack:nextjs",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-09-21T04:31:25.990Z"
+}

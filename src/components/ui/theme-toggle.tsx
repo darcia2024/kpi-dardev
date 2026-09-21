@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { IconMoon, IconSun } from "@tabler/icons-react";
 
 type Theme = "light" | "dark";
 
@@ -38,6 +39,7 @@ export function ThemeToggle(): React.JSX.Element {
       onClick={toggleTheme}
       type="button"
     >
+      {theme === "dark" ? <IconMoon aria-hidden="true" className="nav-icon" size={17} stroke={1.8} /> : <IconSun aria-hidden="true" className="nav-icon" size={17} stroke={1.8} />}
       Tampilan: {theme === "dark" ? "Gelap" : "Terang"}
     </button>
   );

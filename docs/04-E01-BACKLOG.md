@@ -19,7 +19,7 @@ Status: implementasi lokal sedang berjalan. Setiap task menjadi Ready untuk laya
 | E01-T01 | Selesai lokal | Next.js, TypeScript strict, build reproducible, dan lockfile tersedia |
 | E01-T02 | Selesai lokal | `.env.example` dan validator environment membatasi runtime pada local, staging, atau production tanpa memuat secret |
 | E01-T03 | Selesai awal | Struktur `src/platform` dan endpoint health v1 dengan error terstruktur serta request ID tersedia |
-| E01-T04 | Selesai awal | Shell publik dan portal, navigasi keyboard, pengalih tema, layout mobile, serta komponen empty/loading/error tersedia. Tampilan diuji pada browser lokal. |
+| E01-T04 | Selesai awal | Shell publik dan portal, navigasi keyboard, pengalih tema, layout mobile, state TEST, kartu ruang kerja, serta komponen empty/loading/error tersedia. Tampilan diuji pada browser lokal; modul bisnis tetap berupa state jujur sampai fase terkait siap. |
 | E01-T05 | Selesai awal | Migrasi SQL dan seed TEST untuk organisasi, periode, konfigurasi, dan audit tersedia; belum dieksekusi karena Docker/Supabase CLI belum tersedia |
 | E01-T06 | Selesai awal | Workflow CI serta perintah typecheck, test, dan build tersedia |
 | E01-T07 | Sebagian | Health endpoint dan correlation ID tersedia; backup/restore staging menunggu layanan yang disetujui |
