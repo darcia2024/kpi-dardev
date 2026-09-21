@@ -1,41 +1,36 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import Link from "next/link";
 import type { ReactNode } from "react";
-import { SiteHeader } from "@/components/ui/site-header";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import "./globals.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-plus-jakarta",
-  weight: ["400", "500", "600", "700"]
-});
-
 export const metadata: Metadata = {
-  title: "KPI PPMI Mesir | Menjaga Interaksi Masisir dengan Amanah",
-  description: "Ruang resmi Komisi Peduli Interaksi PPMI Mesir untuk edukasi interaksi, informasi publik, dan aspirasi Masisir.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://kpi-dardev.vercel.app"),
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: "KPI PPMI Mesir | Menjaga Interaksi Masisir dengan Amanah",
-    description: "Ruang resmi Komisi Peduli Interaksi PPMI Mesir untuk edukasi interaksi, informasi publik, dan aspirasi Masisir.",
-    type: "website",
-    locale: "id_ID",
-    siteName: "KPI PPMI Mesir"
-  },
-  twitter: {
-    card: "summary",
-    title: "KPI PPMI Mesir | Menjaga Interaksi Masisir dengan Amanah",
-    description: "Ruang resmi KPI PPMI Mesir untuk edukasi interaksi, informasi publik, dan aspirasi Masisir."
-  }
+  title: "KPI PPMI Mesir",
+  description: "Sistem Digital KPI PPMI Mesir"
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>): React.JSX.Element {
   return (
     <html lang="id" suppressHydrationWarning>
-      <body className={plusJakartaSans.variable}>
+      <body>
         <a className="skip-link" href="#main-content">Langsung ke isi</a>
-        <SiteHeader />
+        <header className="site-header">
+          <div className="site-header__inner">
+            <Link className="brand" href="/">
+              <span aria-hidden="true" className="brand__mark">K</span>
+              <span>
+                <strong>KPI PPMI Mesir</strong>
+                <small>Sistem Digital</small>
+              </span>
+            </Link>
+            <nav aria-label="Navigasi utama" className="site-nav">
+              <Link href="/">Beranda</Link>
+              <Link href="/masuk">Masuk</Link>
+              <Link href="/portal">Portal pengurus</Link>
+            </nav>
+            <ThemeToggle />
+          </div>
+        </header>
         <main className="app-main" id="main-content">{children}</main>
       </body>
     </html>

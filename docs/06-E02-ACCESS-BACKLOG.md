@@ -7,7 +7,7 @@ Status: lokal TEST sedang dibangun. Ini bukan autentikasi produksi dan tidak men
 | E02-T01 | Selesai awal | Sign-in, MFA, cookie sesi HTTP-only, logout, dan sesi kedaluwarsa berjalan di local TEST | Kredensial dan kode MFA bersifat fixture TEST dalam memori proses |
 | E02-T02 | Selesai awal | Role `PENGURUS` dan `ADMIN_SISTEM` diuji; endpoint admin menolak role pengurus | Izin belum dipetakan per objek/divisi/periode |
 | E02-T03 | Selesai awal | Migrasi berversi untuk akun, role, assignment, jabatan, dan periode tersedia | Migrasi belum dieksekusi dan belum memiliki RLS policy produksi |
-| E02-T04 | UI selesai awal | Pusat identitas & akses memetakan A04–A11; state yang menunggu policy/service ditandai eksplisit. Mapping jabatan, rate limit, pemulihan MFA, dan konflik kepentingan belum diaktifkan | Menunggu OD-01/OD-02 dan integrasi Supabase |
+| E02-T04 | Belum mulai | Mapping jabatan, masa sesi, rate limit, pemulihan MFA, dan konflik kepentingan menunggu OD-01/OD-02 | Tidak boleh diisi dengan asumsi |
 
 ## Akun uji lokal
 
