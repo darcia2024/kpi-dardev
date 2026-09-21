@@ -738,43 +738,77 @@ function initWireframeStudio() {
 
   const WF_TEMPLATES = {
     W1: {
-      title: 'Contoh 1: Beranda Publik (P01)',
+      title: 'Contoh 1: Beranda Publik (P01) - Redesign Baru',
       render: () => `
-        <div class="m">
+        <div class="m" style="background: var(--canvas);">
+          <div style="background: var(--accent-subtle); border: 1px solid var(--accent); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12px;">
+            <span><strong>✨ Desain Ulang Beranda Publik Telah Tersedia!</strong> Ditingkatkan dengan palet warm luxury, layout bento asimetris &amp; animasi hidup.</span>
+            <a href="beranda.html" target="_blank" style="background: var(--accent); color: #fff; padding: 5px 12px; border-radius: 999px; text-decoration: none; font-weight: 600; white-space: nowrap; flex-shrink: 0;">Buka Halaman Penuh &rarr;</a>
+          </div>
+
           <div class="m-webnav">
             <div class="m-brand"><i>${LOGO_SM}</i> KPI / PPMI Mesir</div>
-            <div class="m-navlinks"><span class="on">Beranda</span><span>Tentang</span><span>Program</span><span>Publikasi</span><span>Data</span><span>Layanan</span></div>
+            <div class="m-navlinks"><span class="on">Beranda</span><span>Tentang</span><span>Layanan</span><span>Pencegahan</span><span>Prosedur</span></div>
             <div class="m-webactions">
-              <span class="m-muted">ID / EN</span>
+              <span class="m-muted">18:15 Kairo</span>
               <button class="btn-primary" style="padding:8px 14px;font-size:12px;">Portal Pengurus</button>
             </div>
           </div>
 
-          <div class="m-hero">
-            <div class="m-eyebrow">Komisi Peduli Interaksi</div>
-            <h1>Menghubungkan gagasan, mengawal integritas mahasiswa</h1>
-            <p>Portal resmi publikasi, keterbukaan data kelembagaan, dan penyampaian aspirasi masyarakat PPMI Mesir.</p>
-            <div class="m-cta">
-              <button class="btn-primary">Sampaikan aspirasi</button>
-              <button class="btn-secondary">Kenali KPI</button>
+          <div class="m-hero" style="text-align: left; padding: 32px 20px;">
+            <div class="m-eyebrow" style="color: var(--accent); font-weight: 700;">TENTANG KPI &bull; BADAN SEMI OTONOM PPMI MESIR</div>
+            <h1 style="font-size: 24px; line-height: 1.25; margin: 8px 0 12px;">Menjaga interaksi Masisir tetap sehat, beradab, dan bertanggung jawab.</h1>
+            <p style="font-size: 13.5px; color: var(--text-secondary); max-width: 600px;">KPI adalah Badan Semi Otonom PPMI Mesir yang bergerak dalam bidang interaksi, sosial, norma, dan etika mahasiswa serta pelajar Indonesia di Mesir.</p>
+            <div class="m-cta" style="justify-content: flex-start; margin-top: 18px;">
+              <a href="beranda.html#aspirasi" class="btn-primary" style="text-decoration:none;">Sampaikan aspirasi</a>
+              <a href="beranda.html#tentang" class="btn-secondary" style="text-decoration:none;">Kenali KPI</a>
+            </div>
+          </div>
+
+          <div class="m-section" style="padding-top: 0;">
+            <div class="m-sec-head"><h2 style="font-size: 16px;">Ruang kerja yang dekat dengan kehidupan Masisir</h2></div>
+            <div class="m-grid3">
+              <div class="m-card" style="border-radius: 16px;">
+                <div style="font-size: 18px; margin-bottom: 6px;">🎓</div>
+                <h3 style="font-size: 14px; margin-bottom: 4px;">Edukasi interaksi</h3>
+                <p style="font-size: 12px; color: var(--text-secondary);">Materi, diskusi, dan forum yang membantu kita memahami norma, etika, dan cara berinteraksi dengan sehat.</p>
+              </div>
+              <div class="m-card" style="border-radius: 16px; border-color: var(--accent); background: var(--surface);">
+                <div style="font-size: 18px; margin-bottom: 6px;">⚖️</div>
+                <h3 style="font-size: 14px; margin-bottom: 4px; color: var(--accent);">Penanganan objektif</h3>
+                <p style="font-size: 12px; color: var(--text-secondary);">Setiap informasi ditelaah secara proporsional, berdasarkan prosedur, kewenangan, dan konteks yang cukup.</p>
+              </div>
+              <div class="m-card" style="border-radius: 16px;">
+                <div style="font-size: 18px; margin-bottom: 6px;">🛡️</div>
+                <h3 style="font-size: 14px; margin-bottom: 4px;">Perlindungan pihak terkait</h3>
+                <p style="font-size: 12px; color: var(--text-secondary);">Martabat, hak, privasi, keamanan, dan kerahasiaan menjadi bagian dari setiap proses KPI.</p>
+              </div>
             </div>
           </div>
 
           <div class="m-section">
-            <div class="m-sec-head"><h2>Kegiatan terbaru</h2><a>Lihat semua</a></div>
-            <div class="m-grid3">
-              <div class="m-card"><div class="m-thumb"></div><h3>Kajian kebijakan pendidikan</h3><p>Diskusi terbuka bersama perwakilan divisi dan mitra kelembagaan.</p><span class="m-muted">2 Sep 2026</span></div>
-              <div class="m-card"><div class="m-thumb"></div><h3>Buletin bulanan edisi 4</h3><p>Rangkuman program kerja dan agenda kepengurusan periode berjalan.</p><span class="m-muted">28 Agu 2026</span></div>
-              <div class="m-card"><div class="m-thumb"></div><h3>Webinar literasi data</h3><p>Pelatihan pengolahan data untuk pengurus divisi media dan riset.</p><span class="m-muted">21 Agu 2026</span></div>
-            </div>
-          </div>
-
-          <div class="m-section">
-            <div class="m-sec-head"><h2>Layanan dan transparansi</h2></div>
-            <div class="m-grid3">
-              <div class="m-card"><h3>Layanan warga</h3><p>Kirim pengaduan atau masukan, lalu lacak perkembangannya lewat nomor token.</p><a style="font-size:12px;color:var(--accent);">Akses layanan</a></div>
-              <div class="m-card"><h3>Publikasi dan riset</h3><p>Kajian strategis, buletin, dan riset kebijakan mahasiswa yang terverifikasi.</p><a style="font-size:12px;color:var(--accent);">Buka repositori</a></div>
-              <div class="m-card"><h3>Data terbuka</h3><p>Indikator realisasi program kerja kepengurusan tanpa manipulasi angka.</p><a style="font-size:12px;color:var(--accent);">Lihat data</a></div>
+            <div class="m-sec-head"><h2 style="font-size: 16px;">Temukan informasi sesuai kebutuhan Anda</h2></div>
+            <div class="m-grid2" style="grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="m-card" style="background: var(--surface-secondary); border-radius: 14px;">
+                <span style="color: var(--accent); font-weight: 700; font-size: 11px;">01 &bull; PROFIL</span>
+                <h4 style="font-size: 13.5px; margin: 4px 0;">Mengenal KPI &amp; PPMI Mesir</h4>
+                <p style="font-size: 11.5px; color: var(--text-secondary);">Kedudukan, mandat, dan prinsip KPI dalam menjaga kualitas interaksi Masisir.</p>
+              </div>
+              <div class="m-card" style="border-radius: 14px;">
+                <span style="color: var(--accent); font-weight: 700; font-size: 11px;">02 &bull; KAJIAN</span>
+                <h4 style="font-size: 13.5px; margin: 4px 0;">Edukasi &amp; pencegahan</h4>
+                <p style="font-size: 11.5px; color: var(--text-secondary);">Diskusi, seminar, kajian, dan kegiatan yang membangun kesadaran interaksi.</p>
+              </div>
+              <div class="m-card" style="border-radius: 14px;">
+                <span style="color: var(--accent); font-weight: 700; font-size: 11px;">03 &bull; ASPIRASI</span>
+                <h4 style="font-size: 13.5px; margin: 4px 0;">Laporan &amp; pengaduan</h4>
+                <p style="font-size: 11.5px; color: var(--text-secondary);">Kanal resmi pengaduan warga dengan perlindungan kode pelacakan anonim.</p>
+              </div>
+              <div class="m-card" style="border-radius: 14px;">
+                <span style="color: var(--accent); font-weight: 700; font-size: 11px;">04 &bull; TATA KELOLA</span>
+                <h4 style="font-size: 13.5px; margin: 4px 0;">Objektif &amp; terlindungi</h4>
+                <p style="font-size: 11.5px; color: var(--text-secondary);">Prinsip independensi, objektivitas, proporsionalitas, dan kerahasiaan.</p>
+              </div>
             </div>
           </div>
         </div>

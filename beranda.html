@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPI PPMI Mesir &bull; Komisi Peduli Interaksi</title>
+  <meta name="description" content="Website resmi Komisi Peduli Interaksi (KPI) PPMI Mesir. Menjaga interaksi Masisir tetap sehat, beradab, dan bertanggung jawab.">
+  
+  <!-- Fonts: Plus Jakarta Sans & Sora -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+          },
+          colors: {
+            canvas: '#FAF8F5',
+            'canvas-tint': '#F4EFEA',
+            crimson: {
+              50: '#FDF2F2',
+              100: '#FBE6E6',
+              200: '#F7C4C4',
+              500: '#E0242B',
+              600: '#C4161C',
+              700: '#A11217',
+              800: '#800E13',
+              900: '#5C080B'
+            },
+            obsidian: {
+              900: '#151312',
+              800: '#1C1917',
+              700: '#292524'
+            }
+          },
+          animation: {
+            'float-slow': 'floatSlow 7s ease-in-out infinite',
+            'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
+            'glow-drift': 'glowDrift 12s ease-in-out infinite alternate'
+          },
+          keyframes: {
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+              '50%': { opacity: '0.7', transform: 'scale(0.97)' }
+            },
+            glowDrift: {
+              '0%': { transform: 'translate(0, 0) scale(1)' },
+              '100%': { transform: 'translate(40px, 30px) scale(1.15)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Noise texture overlay */
+    .bg-noise {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+
+    /* Scroll reveal transitions */
+    .reveal-init {
+      opacity: 0;
+      transform: translateY(28px);
+      filter: blur(4px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter;
+    }
+    .reveal-visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* Delays for staggered children */
+    .delay-100 { transition-delay: 100ms; }
+    .delay-150 { transition-delay: 150ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+    .delay-400 { transition-delay: 400ms; }
+
+    /* Interactive spotlight card effect */
+    .spotlight-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(196, 22, 28, 0.06), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Subtle text gradient shimmer */
+    .text-gradient-shimmer {
+      background: linear-gradient(135deg, #1C1917 0%, #44403C 50%, #C4161C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .text-gradient-monument {
+      background: linear-gradient(180deg, #1C1917 20%, #781014 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-canvas text-stone-900 font-sans antialiased selection:bg-crimson-100 selection:text-crimson-900 relative min-h-screen">
+
+  <!-- Fixed Ambient Background Aura & Noise -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div class="absolute -top-40 right-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-crimson-100/40 via-amber-100/20 to-transparent blur-3xl animate-glow-drift"></div>
+    <div class="absolute top-[45%] -left-32 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-rose-100/30 via-red-50/20 to-transparent blur-3xl"></div>
+    <div class="absolute bottom-20 right-10 w-[650px] h-[650px] rounded-full bg-gradient-to-tl from-crimson-50/50 via-stone-100/40 to-transparent blur-3xl"></div>
+    <div class="absolute inset-0 bg-noise opacity-80"></div>
+  </div>
+
+  <!-- Top Floating Island Navbar -->
+  <header class="fixed top-4 inset-x-0 z-50 px-4 md:px-6 flex justify-center pointer-events-none">
+    <nav class="pointer-events-auto w-full max-w-5xl bg-white/80 backdrop-blur-xl border border-stone-200/70 shadow-[0_8px_30px_rgba(0,0,0,0.06)] rounded-full px-4 py-2.5 flex items-center justify-between transition-all duration-300">
+      
+      <!-- Brand Logo & Title -->
+      <a href="beranda.html" class="flex items-center gap-2.5 group">
+        <div class="w-8 h-9 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+          <svg viewBox="0 0 44 50" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-sm">
+            <defs>
+              <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#E4232B"/>
+                <stop offset="0.55" stop-color="#C4161C"/>
+                <stop offset="1" stop-color="#7C1417"/>
+              </linearGradient>
+            </defs>
+            <path d="M9 4Q4 4 4 9L4 23C4 36 11 44 22 47C33 44 40 36 40 23L40 9Q40 4 35 4Z" fill="url(#shieldGrad)"/>
+            <circle cx="18" cy="15" r="5.4" fill="#fff"/>
+            <path d="M18 21C11.5 21 8 26.5 8 33.5C8 39 11 43 15.5 45C14 40 14.5 34 16 29C17.2 25 19.5 22.5 22.5 21.8C21.3 21.3 19.8 21 18 21Z" fill="#fff"/>
+            <circle cx="30" cy="20.5" r="3.8" fill="#fff"/>
+            <path d="M30 24.5C25.5 24.5 23 28.5 23 33.5C23 37.5 25 40.5 28 42C27 38 27.3 33.5 28.5 30C29.4 27 31 25.4 33.2 24.9C32.3 24.6 31.2 24.5 30 24.5Z" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-xs tracking-tight text-stone-900 group-hover:text-crimson-600 transition-colors">KPI / PPMI Mesir</span>
+          <span class="text-[10px] text-stone-500 font-medium tracking-wide">Komisi Peduli Interaksi</span>
+        </div>
+      </a>
+
+      <!-- Center Nav Links (Desktop) -->
+      <div class="hidden md:flex items-center gap-1 text-xs font-medium text-stone-600">
+        <a href="#tentang" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Tentang</a>
+        <a href="#layanan" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Layanan</a>
+        <a href="#pencegahan" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Pencegahan</a>
+        <a href="#prosedur" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Prosedur</a>
+        <a href="#prinsip" class="px-3 py-1.5 rounded-full hover:text-stone-900 hover:bg-stone-100/80 transition-all">Prinsip</a>
+      </div>
+
+      <!-- Right Actions: Cairo Clock & CTA -->
+      <div class="flex items-center gap-2">
+        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-stone-100/80 border border-stone-200/60 rounded-full text-[11px] font-mono text-stone-600" title="Waktu Resmi Kairo (EET)">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="nav-cairo-clock">18:15 Kairo</span>
+        </div>
+        
+        <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200/80 border border-stone-200 rounded-full px-3 py-1.5 transition-all" title="Buka Dokumen Spesifikasi Sistem">
+          <svg class="w-3.5 h-3.5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span class="hidden lg:inline">Spesifikasi</span>
+        </a>
+
+        <a href="#aspirasi" class="inline-flex items-center gap-1 text-xs font-semibold text-white bg-crimson-600 hover:bg-crimson-700 active:scale-95 shadow-sm rounded-full px-3.5 py-1.5 transition-all duration-200">
+          <span>Aspirasi</span>
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main class="relative z-10 pt-28 md:pt-36 pb-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28 md:space-y-36">
+
+    <!-- ==========================================================================
+         SECTION 1: HERO & TENTANG KPI (Gambar 1 Redesign)
+         ========================================================================== -->
+    <section id="tentang" class="space-y-16 md:space-y-20">
+      
+      <!-- Eyebrow & Main Statement -->
+      <div class="space-y-6 max-w-4xl">
+        <div class="reveal-init inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-50 border border-crimson-200/60 shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-crimson-600 animate-ping"></span>
+          <span class="text-[11px] font-bold tracking-[0.2em] text-crimson-700 uppercase">TENTANG KPI &bull; BADAN SEMI OTONOM PPMI MESIR</span>
+        </div>
+
+        <h1 class="reveal-init delay-100 text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-stone-900 leading-[1.15] text-balance">
+          Menjaga interaksi Masisir tetap <span class="text-gradient-shimmer">sehat, beradab,</span> dan bertanggung jawab.
+        </h1>
+
+        <p class="reveal-init delay-150 text-base sm:text-lg text-stone-600 leading-relaxed max-w-3xl font-normal">
+          KPI adalah Badan Semi Otonom PPMI Mesir yang bergerak dalam bidang interaksi, sosial, norma, dan etika mahasiswa serta pelajar Indonesia di Mesir.
+        </p>
+      </div>
+
+      <!-- Ruang Kerja & 3 Cards Architecture -->
+      <div class="space-y-8 pt-4">
+        
+        <div class="reveal-init delay-200 space-y-2 max-w-2xl">
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
+            Ruang kerja yang dekat dengan kehidupan Masisir.
+          </h2>
+          <p class="text-sm sm:text-base text-stone-600 leading-relaxed">
+            KPI hadir untuk membangun pemahaman, membuka ruang dialog, dan memastikan setiap informasi ditangani dengan proses yang adil.
+          </p>
+        </div>
+
+        <!-- 3 Feature Cards (Double-Bezel Architecture) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Card 1: Edukasi Interaksi -->
+          <div class="reveal-init delay-200 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="spotlight-card bg-white/90 backdrop-blur-md rounded-[calc(2rem-6px)] p-7 h-full flex flex-col justify-between space-y-6 border border-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+              <div>
+                <div class="w-12 h-12 rounded-2xl bg-crimson-50 border border-crimson-100 flex items-center justify-center text-crimson-600 shadow-xs mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <!-- Graduation Hat SVG -->
+                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                  </svg>
+                </div>
+                <h3 class="text-lg font-bold text-stone-900 tracking-tight mb-2 group-hover:text-crimson-600 transition-colors">
+                  Edukasi interaksi
+                </h3>
+                <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  Materi, diskusi, dan forum yang membantu kita memahami norma, etika, dan cara berinteraksi dengan sehat.
+                </p>
+              </div>
+              <div class="pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-crimson-600 group-hover:translate-x-1 transition-transform">
+                <span>Pelajari program edukasi &rarr;</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Penanganan Objektif (Centerpiece - Refined Deep Velvet Crimson) -->
+          <div class="reveal-init delay-300 group bg-crimson-900/10 p-2 rounded-[2rem] border border-crimson-600/20 shadow-lg shadow-crimson-900/5 hover:shadow-xl hover:shadow-crimson-900/10 transition-all duration-300 md:-translate-y-1">
+            <div class="relative overflow-hidden bg-gradient-to-br from-crimson-600 via-crimson-700 to-crimson-800 text-white rounded-[calc(2rem-6px)] p-7 h-full flex flex-col justify-between space-y-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]">
+              <!-- Subtle decorative pattern -->
+              <div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+              
+              <div class="relative z-10">
+                <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xs mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <!-- Scale / Timbangan SVG -->
+                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM7 21h10M12 3v18M3 7h18"/>
+                  </svg>
+                </div>
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-[10px] uppercase font-bold tracking-widest text-white/90 mb-2">
+                  Fokus Penelaahan
+                </div>
+                <h3 class="text-lg font-bold text-white tracking-tight mb-2">
+                  Penanganan objektif
+                </h3>
+                <p class="text-xs sm:text-sm text-crimson-100 leading-relaxed font-light">
+                  Setiap informasi ditelaah secara proporsional, berdasarkan prosedur, kewenangan, dan konteks yang cukup.
+                </p>
+              </div>
+
+              <div class="relative z-10 pt-4 border-t border-white/20 flex items-center justify-between text-xs font-semibold text-white">
+                <span>Alur berkeadilan</span>
+                <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                  &rarr;
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Perlindungan Pihak Terkait -->
+          <div class="reveal-init delay-400 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="spotlight-card bg-white/90 backdrop-blur-md rounded-[calc(2rem-6px)] p-7 h-full flex flex-col justify-between space-y-6 border border-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+              <div>
+                <div class="w-12 h-12 rounded-2xl bg-crimson-50 border border-crimson-100 flex items-center justify-center text-crimson-600 shadow-xs mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <!-- Shield SVG -->
+                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+                <h3 class="text-lg font-bold text-stone-900 tracking-tight mb-2 group-hover:text-crimson-600 transition-colors">
+                  Perlindungan pihak terkait
+                </h3>
+                <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  Martabat, hak, privasi, keamanan, dan kerahasiaan menjadi bagian dari setiap proses KPI.
+                </p>
+              </div>
+              <div class="pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-crimson-600 group-hover:translate-x-1 transition-transform">
+                <span>Kebijakan kerahasiaan &rarr;</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 2: BENTO GRID TEMUKAN INFORMASI (Gambar 2 Redesign)
+         ========================================================================== -->
+    <section id="layanan" class="space-y-10">
+      
+      <div class="reveal-init space-y-3 max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-stone-700 text-[11px] font-bold tracking-wider uppercase">
+          Eksplorasi Portal
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+          Temukan informasi sesuai kebutuhan Anda.
+        </h2>
+        <p class="text-stone-600 text-sm sm:text-base">
+          Akses cepat ke dokumentasi mandat kelembagaan, repositori publikasi edukasi, kanal pengaduan aman, dan asas kerja KPI.
+        </p>
+      </div>
+
+      <!-- Asymmetric Bento Grid (2x2 with Double-Bezel) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Bento 01: Mengenal KPI & PPMI Mesir (Obsidian Velvet Highlight) -->
+        <div class="reveal-init delay-100 group bg-stone-950/[0.04] p-2 rounded-[2rem] border border-stone-900/[0.08] shadow-sm hover:shadow-xl transition-all duration-300">
+          <div class="spotlight-card relative overflow-hidden bg-gradient-to-br from-obsidian-900 via-obsidian-800 to-stone-900 text-white rounded-[calc(2rem-6px)] p-8 sm:p-9 h-full flex flex-col justify-between border border-stone-800 shadow-md">
+            
+            <div class="flex items-center justify-between mb-8">
+              <span class="text-xs font-mono font-bold tracking-widest text-crimson-400 bg-crimson-950/60 px-2.5 py-1 rounded-full border border-crimson-800/40">
+                01 &bull; PROFIL RESMI
+              </span>
+              <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-stone-300 group-hover:text-white group-hover:bg-crimson-600 transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+
+            <div class="space-y-3 my-auto">
+              <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-white group-hover:text-crimson-300 transition-colors">
+                Mengenal KPI &amp; PPMI Mesir
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-300 leading-relaxed font-light">
+                Kenali kedudukan, mandat, dan prinsip KPI dalam menjaga kualitas interaksi Masisir. Memahami dasar legalitas dan ruang lingkup pelayanan.
+              </p>
+            </div>
+
+            <div class="pt-6 mt-8 border-t border-stone-800/80 flex items-center justify-between">
+              <a href="#tentang" class="inline-flex items-center gap-2 text-xs font-semibold text-crimson-400 group-hover:text-crimson-300 transition-colors">
+                <span>Lihat profil organisasi</span>
+                <span class="text-base leading-none group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </a>
+              <span class="text-[11px] text-stone-500 font-mono">BSO PPMI 2026/2027</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 02: Edukasi & Pencegahan -->
+        <div class="reveal-init delay-200 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="spotlight-card bg-white/95 backdrop-blur-md rounded-[calc(2rem-6px)] p-8 sm:p-9 h-full flex flex-col justify-between border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            
+            <div class="flex items-center justify-between mb-8">
+              <span class="text-xs font-mono font-bold tracking-widest text-crimson-600 bg-crimson-50 px-2.5 py-1 rounded-full border border-crimson-100">
+                02 &bull; KAJIAN &amp; FORUM
+              </span>
+              <span class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 group-hover:text-white group-hover:bg-crimson-600 transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+
+            <div class="space-y-3 my-auto">
+              <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-stone-900 group-hover:text-crimson-600 transition-colors">
+                Edukasi &amp; pencegahan
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                Temukan diskusi, seminar, kajian, dan kegiatan yang membangun kesadaran interaksi. Menyediakan panduan praktis interaksi sehari-hari.
+              </p>
+            </div>
+
+            <div class="pt-6 mt-8 border-t border-stone-100 flex items-center justify-between">
+              <a href="#pencegahan" class="inline-flex items-center gap-2 text-xs font-semibold text-crimson-600 group-hover:text-crimson-700 transition-colors">
+                <span>Buka publikasi</span>
+                <span class="text-base leading-none group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </a>
+              <span class="text-[11px] text-stone-400">Arsip Riset Digital</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 03: Laporan & Pengaduan -->
+        <div class="reveal-init delay-300 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="spotlight-card bg-white/95 backdrop-blur-md rounded-[calc(2rem-6px)] p-8 sm:p-9 h-full flex flex-col justify-between border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            
+            <div class="flex items-center justify-between mb-8">
+              <span class="text-xs font-mono font-bold tracking-widest text-crimson-600 bg-crimson-50 px-2.5 py-1 rounded-full border border-crimson-100">
+                03 &bull; KANAL AMAN
+              </span>
+              <span class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 group-hover:text-white group-hover:bg-crimson-600 transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+
+            <div class="space-y-3 my-auto">
+              <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-stone-900 group-hover:text-crimson-600 transition-colors">
+                Laporan &amp; pengaduan
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                Sampaikan informasi melalui kanal resmi untuk ditelaah sesuai mandat dan kewenangan. Dilengkapi kode pelacakan anonim terenkripsi.
+              </p>
+            </div>
+
+            <div class="pt-6 mt-8 border-t border-stone-100 flex items-center justify-between">
+              <a href="#aspirasi" class="inline-flex items-center gap-2 text-xs font-semibold text-crimson-600 group-hover:text-crimson-700 transition-colors">
+                <span>Buka kanal aspirasi</span>
+                <span class="text-base leading-none group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </a>
+              <span class="text-[11px] text-emerald-600 font-medium">&bull; Tracking Anonim</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 04: Objektif & Terlindungi -->
+        <div class="reveal-init delay-400 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="spotlight-card bg-white/95 backdrop-blur-md rounded-[calc(2rem-6px)] p-8 sm:p-9 h-full flex flex-col justify-between border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            
+            <div class="flex items-center justify-between mb-8">
+              <span class="text-xs font-mono font-bold tracking-widest text-crimson-600 bg-crimson-50 px-2.5 py-1 rounded-full border border-crimson-100">
+                04 &bull; TATA KELOLA
+              </span>
+              <span class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 group-hover:text-white group-hover:bg-crimson-600 transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+
+            <div class="space-y-3 my-auto">
+              <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-stone-900 group-hover:text-crimson-600 transition-colors">
+                Objektif &amp; terlindungi
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                Setiap proses memperhatikan objektivitas, proporsionalitas, martabat, privasi, dan kerahasiaan. Terikat kode etik penelaahan independen.
+              </p>
+            </div>
+
+            <div class="pt-6 mt-8 border-t border-stone-100 flex items-center justify-between">
+              <a href="#prosedur" class="inline-flex items-center gap-2 text-xs font-semibold text-crimson-600 group-hover:text-crimson-700 transition-colors">
+                <span>Prinsip kerja KPI</span>
+                <span class="text-base leading-none group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </a>
+              <span class="text-[11px] text-stone-400">Standard Operasional</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 3: PENCEGAHAN, EDUKASI & KERJA SAMA (Gambar 3 Atas)
+         ========================================================================== -->
+    <section id="pencegahan" class="space-y-12">
+      
+      <div class="reveal-init space-y-4 max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-50 border border-crimson-200 text-crimson-700 text-[11px] font-bold tracking-widest uppercase">
+          PENCEGAHAN &amp; EDUKASI
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 leading-tight">
+          Interaksi yang sehat dimulai dari pemahaman.
+        </h2>
+        <p class="text-stone-600 text-sm sm:text-base">
+          Membangun iklim interaksi yang beradab tidak hanya melalui penanganan pasca-kejadian, melainkan lewat penguatan literasi norma dan sinergi kolektif.
+        </p>
+      </div>
+
+      <!-- 2 Cards Asymmetric Comparison -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Card A: Pendidikan Interaksi (Champagne Blush Tint) -->
+        <div class="reveal-init delay-100 group bg-crimson-900/[0.04] p-2 rounded-[2rem] border border-crimson-200/50 shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="spotlight-card bg-gradient-to-br from-crimson-50/60 via-white to-white rounded-[calc(2rem-6px)] p-8 sm:p-9 h-full flex flex-col justify-between space-y-6 border border-crimson-100">
+            <div>
+              <div class="text-[11px] font-bold tracking-widest uppercase text-crimson-700 mb-4">
+                PENDIDIKAN INTERAKSI
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-stone-900 mb-3 group-hover:text-crimson-700 transition-colors">
+                Belajar bersama. Saling menghormati.
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                Pedoman KPI menempatkan pendidikan interaksi sebagai bagian dari pencegahan. Bentuknya dapat berupa diskusi, seminar, pelatihan, lokakarya, dan forum untuk memperkuat pemahaman norma serta etika.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-crimson-100 flex items-center">
+              <a href="#layanan" class="inline-flex items-center gap-1.5 text-xs font-semibold text-crimson-600 hover:text-crimson-700">
+                <span>Buka publikasi &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card B: Kerja Sama -->
+        <div class="reveal-init delay-200 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="spotlight-card bg-white/95 backdrop-blur-md rounded-[calc(2rem-6px)] p-8 sm:p-9 h-full flex flex-col justify-between space-y-6 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            <div>
+              <div class="text-[11px] font-bold tracking-widest uppercase text-stone-500 mb-4">
+                KERJA SAMA KELEMBAGAAN
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-stone-900 mb-3 group-hover:text-crimson-600 transition-colors">
+                Kepedulian tumbuh lewat kebersamaan.
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                KPI berkoordinasi dengan PPMI Mesir, organisasi kekeluargaan, WIHDAH, dan lembaga terkait sesuai kebutuhan serta kewenangan masing-masing untuk menjaga kerukunan dan martabat warga.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-stone-100 flex items-center">
+              <a href="#tentang" class="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-700 hover:text-crimson-600">
+                <span>Kenali mitra KPI &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 4: ALUR PENELAAHAN 3 LANGKAH (Gambar 3 Bawah Redesign)
+         ========================================================================== -->
+    <section id="prosedur" class="py-8">
+      <div class="bg-stone-900/[0.03] p-2.5 sm:p-3 rounded-[2.5rem] border border-stone-900/[0.06] shadow-sm">
+        <div class="bg-white/90 backdrop-blur-xl rounded-[calc(2.5rem-8px)] p-8 sm:p-12 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
+          
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+            
+            <!-- Left Headline Column -->
+            <div class="reveal-init lg:col-span-5 space-y-4 lg:sticky lg:top-28">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-50 text-crimson-700 text-[11px] font-bold tracking-widest uppercase">
+                MEKANISME PENANGANAN
+              </div>
+              <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 leading-tight">
+                Mendengar dengan saksama. Menelaah dengan adil.
+              </h2>
+              <p class="text-sm sm:text-base text-stone-600 leading-relaxed">
+                Setiap laporan dan informasi yang diterima diproses melalui tiga tahapan terstruktur dengan menjamin asas praduga tak bersalah dan perlindungan privasi.
+              </p>
+              
+              <div class="pt-4 hidden lg:block">
+                <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/70 space-y-2">
+                  <div class="flex items-center gap-2 text-xs font-bold text-stone-800">
+                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    <span>Jaminan Kerahasiaan Identitas</span>
+                  </div>
+                  <p class="text-[11px] text-stone-500 leading-relaxed">
+                    Identitas pelapor dan data sensitif dienkripsi penuh dan hanya dibuka atas izin sah dalam koridor kewenangan KPI.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Interactive Stepper Column -->
+            <div class="lg:col-span-7 space-y-4">
+              
+              <!-- Step 01 -->
+              <div class="reveal-init delay-100 group p-6 rounded-2xl bg-stone-50/70 hover:bg-crimson-50/40 border border-stone-200/60 hover:border-crimson-200 transition-all duration-300">
+                <div class="flex items-start gap-4">
+                  <span class="flex-shrink-0 w-10 h-10 rounded-xl bg-white border border-stone-200 group-hover:border-crimson-300 group-hover:bg-crimson-600 group-hover:text-white flex items-center justify-center font-mono font-bold text-sm text-crimson-700 shadow-xs transition-colors">
+                    01
+                  </span>
+                  <div class="space-y-1 pt-1">
+                    <h3 class="text-base sm:text-lg font-bold text-stone-900 group-hover:text-crimson-800 transition-colors">
+                      Penerimaan informasi
+                    </h3>
+                    <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                      Informasi dapat berasal dari laporan, pengaduan, organisasi, maupun pengamatan lapangan melalui formulir resmi bersandi token pelacakan.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 02 -->
+              <div class="reveal-init delay-200 group p-6 rounded-2xl bg-stone-50/70 hover:bg-crimson-50/40 border border-stone-200/60 hover:border-crimson-200 transition-all duration-300">
+                <div class="flex items-start gap-4">
+                  <span class="flex-shrink-0 w-10 h-10 rounded-xl bg-white border border-stone-200 group-hover:border-crimson-300 group-hover:bg-crimson-600 group-hover:text-white flex items-center justify-center font-mono font-bold text-sm text-crimson-700 shadow-xs transition-colors">
+                    02
+                  </span>
+                  <div class="space-y-1 pt-1">
+                    <h3 class="text-base sm:text-lg font-bold text-stone-900 group-hover:text-crimson-800 transition-colors">
+                      Verifikasi awal
+                    </h3>
+                    <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                      Informasi ditelaah untuk memperoleh kejelasan data, kelengkapan bukti, dan menentukan kesesuaiannya dengan mandat dan kewenangan KPI.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 03 -->
+              <div class="reveal-init delay-300 group p-6 rounded-2xl bg-stone-50/70 hover:bg-crimson-50/40 border border-stone-200/60 hover:border-crimson-200 transition-all duration-300">
+                <div class="flex items-start gap-4">
+                  <span class="flex-shrink-0 w-10 h-10 rounded-xl bg-white border border-stone-200 group-hover:border-crimson-300 group-hover:bg-crimson-600 group-hover:text-white flex items-center justify-center font-mono font-bold text-sm text-crimson-700 shadow-xs transition-colors">
+                    03
+                  </span>
+                  <div class="space-y-1 pt-1">
+                    <h3 class="text-base sm:text-lg font-bold text-stone-900 group-hover:text-crimson-800 transition-colors">
+                      Penanganan sesuai prosedur
+                    </h3>
+                    <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                      Langkah tindak lanjut proporsional, mediasi berkeadilan, koordinasi lintas lembaga, atau rekomendasi tertulis dengan tetap menjaga marwah pihak terkait.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 5: TIGA PRINSIP & CTA ASPIRASI (Gambar 4 Redesign)
+         ========================================================================== -->
+    <section id="prinsip" class="space-y-16">
+      
+      <!-- 3 Pillars Header -->
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <div class="reveal-init inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-stone-700 text-[11px] font-bold tracking-wider uppercase">
+          Landasan Nilai
+        </div>
+        <h2 class="reveal-init delay-100 text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+          Tiga prinsip untuk proses yang dapat dipercaya.
+        </h2>
+        <p class="reveal-init delay-150 text-stone-600 text-sm sm:text-base">
+          Setiap langkah operasional KPI berakar pada nilai-nilai yang menjunjung tinggi kebenaran, integritas, dan martabat kemanusiaan.
+        </p>
+      </div>
+
+      <!-- 3 Horizon Pillar Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Pillar 1: Edukatif -->
+        <div class="reveal-init delay-100 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="spotlight-card bg-white/95 backdrop-blur-md rounded-[calc(2rem-6px)] p-7 h-full flex flex-col space-y-4 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            <div class="w-12 h-12 rounded-2xl bg-crimson-50 border border-crimson-100 flex items-center justify-center text-crimson-600 shadow-xs group-hover:scale-110 transition-transform">
+              <!-- Book / Edukatif SVG -->
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-stone-900 tracking-tight group-hover:text-crimson-600 transition-colors">
+              Edukatif
+            </h3>
+            <p class="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
+              Membangun pemahaman dan kemampuan menjalankan interaksi yang sehat, beretika, dan bertanggung jawab di tengah keragaman Masisir.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pillar 2: Objektif -->
+        <div class="reveal-init delay-200 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="spotlight-card bg-white/95 backdrop-blur-md rounded-[calc(2rem-6px)] p-7 h-full flex flex-col space-y-4 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            <div class="w-12 h-12 rounded-2xl bg-crimson-50 border border-crimson-100 flex items-center justify-center text-crimson-600 shadow-xs group-hover:scale-110 transition-transform">
+              <!-- Eye / Objektif SVG -->
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-stone-900 tracking-tight group-hover:text-crimson-600 transition-colors">
+              Objektif
+            </h3>
+            <p class="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
+              Informasi diterima sebagai bahan telaah, bukan langsung dianggap sebagai fakta atau pelanggaran sebelum klarifikasi berimbang.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pillar 3: Menjaga Martabat -->
+        <div class="reveal-init delay-300 group bg-stone-900/[0.03] p-2 rounded-[2rem] border border-stone-900/[0.06] shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="spotlight-card bg-white/95 backdrop-blur-md rounded-[calc(2rem-6px)] p-7 h-full flex flex-col space-y-4 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            <div class="w-12 h-12 rounded-2xl bg-crimson-50 border border-crimson-100 flex items-center justify-center text-crimson-600 shadow-xs group-hover:scale-110 transition-transform">
+              <!-- Shield Check / Martabat SVG -->
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-stone-900 tracking-tight group-hover:text-crimson-600 transition-colors">
+              Menjaga martabat
+            </h3>
+            <p class="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
+              Hak, privasi, keamanan, dan kerahasiaan pihak terkait tetap diperhatikan dalam setiap proses untuk mencegah kerugian sosial.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Heroic CTA Box: Ada situasi yang perlu disampaikan? -->
+      <div id="aspirasi" class="reveal-init delay-200 group bg-crimson-900/[0.04] p-2.5 sm:p-3 rounded-[2.5rem] border border-crimson-200/50 shadow-md">
+        <div class="relative overflow-hidden bg-gradient-to-br from-rose-50 via-white to-red-50/80 rounded-[calc(2.5rem-8px)] p-8 sm:p-12 border border-rose-200/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9)] flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          
+          <div class="space-y-3 max-w-xl">
+            <div class="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-crimson-700 uppercase">
+              <span class="w-1.5 h-1.5 rounded-full bg-crimson-600"></span>
+              HUBUNGI KPI &bull; LAYANAN PENGADUAN
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight leading-tight">
+              Ada situasi yang perlu disampaikan?
+            </h3>
+            <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+              Gunakan kanal resmi. Setiap laporan dan pengaduan akan ditelaah sesuai prosedur, mandat, dan kewenangan KPI dengan jaminan kerahasiaan penuh.
+            </p>
+          </div>
+
+          <!-- Button-in-Button CTA Architecture -->
+          <div class="flex-shrink-0">
+            <button onclick="openAspirasiModal()" class="group/btn inline-flex items-center gap-3 bg-crimson-600 hover:bg-crimson-700 active:scale-[0.98] text-white font-semibold text-sm rounded-full pl-6 pr-2.5 py-3 shadow-md shadow-crimson-600/20 hover:shadow-lg hover:shadow-crimson-600/30 transition-all duration-300">
+              <span>Buka kanal aspirasi</span>
+              <span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white group-hover/btn:translate-x-1 group-hover/btn:-translate-y-0.5 group-hover/btn:bg-white group-hover/btn:text-crimson-600 transition-all duration-300 shadow-xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Monumental Wordmark Outro: "Peduli interaksi." -->
+      <div class="reveal-init delay-300 text-center pt-8 pb-4">
+        <h2 class="text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-extrabold tracking-tighter text-gradient-monument select-none opacity-95 hover:opacity-100 transition-opacity duration-300">
+          Peduli interaksi.
+        </h2>
+        <p class="text-xs sm:text-sm text-stone-500 tracking-widest uppercase mt-4 font-mono">
+          Komisi Peduli Interaksi &bull; PPMI Mesir 2026/2027
+        </p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- App Footer -->
+  <footer class="relative z-10 border-t border-stone-200/80 bg-white/70 backdrop-blur-md py-12 px-4 sm:px-6 lg:px-8 text-xs text-stone-500">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-8 flex-shrink-0">
+          <svg viewBox="0 0 44 50" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <path d="M9 4Q4 4 4 9L4 23C4 36 11 44 22 47C33 44 40 36 40 23L40 9Q40 4 35 4Z" fill="#C4161C"/>
+            <circle cx="18" cy="15" r="5.4" fill="#fff"/>
+            <path d="M18 21C11.5 21 8 26.5 8 33.5C8 39 11 43 15.5 45C14 40 14.5 34 16 29C17.2 25 19.5 22.5 22.5 21.8C21.3 21.3 19.8 21 18 21Z" fill="#fff"/>
+            <circle cx="30" cy="20.5" r="3.8" fill="#fff"/>
+            <path d="M30 24.5C25.5 24.5 23 28.5 23 33.5C23 37.5 25 40.5 28 42C27 38 27.3 33.5 28.5 30C29.4 27 31 25.4 33.2 24.9C32.3 24.6 31.2 24.5 30 24.5Z" fill="#fff"/>
+          </svg>
+        </div>
+        <div>
+          <strong class="text-stone-800 font-semibold">Komisi Peduli Interaksi (KPI) PPMI Mesir</strong>
+          <p class="text-[11px] text-stone-400">Badan Semi Otonom Persatuan Pelajar dan Mahasiswa Indonesia di Mesir</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="hover:text-crimson-600 transition-colors">Portal Desain &amp; Dokumen</a>
+        <a href="index.html#panel-legal" class="hover:text-crimson-600 transition-colors">Tata Kelola Hukum</a>
+        <span class="text-stone-300">&bull;</span>
+        <span>Dirancang oleh <strong class="text-stone-700">Dar Dev</strong></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Interaktif: Kanal Aspirasi & Aduan Cepat -->
+  <div id="aspirasi-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target === this) closeAspirasiModal();">
+    <div class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden transform scale-95 transition-transform duration-300" id="modal-card">
+      
+      <div class="p-6 sm:p-8 space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-crimson-50 border border-crimson-100 text-crimson-700 text-[10px] font-bold uppercase tracking-wider">
+            KANAL ASPIRASI RESMI &bull; P12
+          </div>
+          <button onclick="closeAspirasiModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition-colors" aria-label="Tutup modal">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="space-y-1">
+          <h3 class="text-xl font-bold text-stone-900">Sampaikan Aspirasi atau Pengaduan</h3>
+          <p class="text-xs text-stone-500 leading-relaxed">
+            Data Anda dilindungi oleh Perjanjian Pengolahan Data (PPD-001). Anda akan menerima nomor token unik untuk melacak perkembangan tanpa perlu mendaftar.
+          </p>
+        </div>
+
+        <form onsubmit="event.preventDefault(); submitAspirasiMock();" class="space-y-4 text-xs">
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1.5">Kategori Situasi</label>
+            <select class="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-800 focus:outline-none focus:ring-2 focus:ring-crimson-600/30">
+              <option>Konsultasi &amp; Edukasi Interaksi</option>
+              <option>Pengaduan Dugaan Pelanggaran Norma/Etika</option>
+              <option>Aspirasi &amp; Usulan Kebijakan</option>
+              <option>Permohonan Mediasi Kelembagaan</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1.5">Uraian Ringkas</label>
+            <textarea rows="3" placeholder="Tuliskan pokok persoalan atau hal yang ingin dikonsultasikan secara objektif..." class="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-800 focus:outline-none focus:ring-2 focus:ring-crimson-600/30 placeholder:text-stone-400"></textarea>
+          </div>
+
+          <div class="p-3 bg-stone-50 border border-stone-200 rounded-xl flex items-center justify-between text-[11px] text-stone-600">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="anon-check" checked class="rounded text-crimson-600 focus:ring-crimson-500">
+              <label for="anon-check">Kirimkan dengan identitas tersamar (Anonim)</label>
+            </div>
+            <span class="text-emerald-600 font-semibold font-mono">Token Otomatis</span>
+          </div>
+
+          <div class="pt-2 flex items-center justify-end gap-2">
+            <button type="button" onclick="closeAspirasiModal()" class="px-4 py-2 text-stone-600 hover:bg-stone-100 rounded-full font-medium transition-colors">
+              Batal
+            </button>
+            <button type="submit" class="px-5 py-2 bg-crimson-600 hover:bg-crimson-700 text-white rounded-full font-semibold shadow-sm transition-colors">
+              Kirimkan Laporan &rarr;
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    // Cairo Live Clock
+    function updateCairoClock() {
+      const clockEl = document.getElementById('nav-cairo-clock');
+      if (!clockEl) return;
+      try {
+        const now = new Date();
+        const timeStr = new Intl.DateTimeFormat('id-ID', {
+          timeZone: 'Africa/Cairo',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }).format(now);
+        clockEl.textContent = `${timeStr} Kairo`;
+      } catch (e) {
+        clockEl.textContent = '18:15 Kairo';
+      }
+    }
+    updateCairoClock();
+    setInterval(updateCairoClock, 1000);
+
+    // Staggered Scroll Reveal via IntersectionObserver
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.12
+      };
+
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.reveal-init').forEach(el => {
+        revealObserver.observe(el);
+      });
+
+      // Mouse-driven card spotlight glow
+      const cards = document.querySelectorAll('.spotlight-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
+      });
+    });
+
+    // Modal Handlers
+    function openAspirasiModal() {
+      const modal = document.getElementById('aspirasi-modal');
+      const card = document.getElementById('modal-card');
+      if (!modal || !card) return;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      card.classList.remove('scale-95');
+      card.classList.add('scale-100');
+    }
+
+    function closeAspirasiModal() {
+      const modal = document.getElementById('aspirasi-modal');
+      const card = document.getElementById('modal-card');
+      if (!modal || !card) return;
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      card.classList.add('scale-95');
+      card.classList.remove('scale-100');
+    }
+
+    function submitAspirasiMock() {
+      alert('Aspirasi Anda berhasil dikirimkan secara aman! Nomor token pelacakan Anda: #KP-2026-9182. Simpan token ini untuk memantau status telaah.');
+      closeAspirasiModal();
+    }
+  </script>
+</body>
+</html>
