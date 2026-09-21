@@ -140,7 +140,7 @@
 
   <!-- Top Dexina Navbar -->
   <header class="sticky top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200/80 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
+    <div class="w-full px-4 sm:px-8 lg:px-16 h-20 flex items-center justify-between gap-6">
       
       <!-- Brand Logo & Title -->
       <a href="beranda.html" class="flex items-center gap-3 group">
@@ -183,12 +183,12 @@
   </header>
 
   <!-- Main Container -->
-  <main class="relative z-10 pt-8 sm:pt-12 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32">
+  <main class="relative z-10 pt-8 sm:pt-12 pb-24 w-full px-4 sm:px-8 lg:px-16 space-y-24 md:space-y-32 overflow-x-clip">
 
     <!-- ==========================================================================
          SECTION 1: DEXINA-INSPIRED HERO & PHOTOGRAPHIC BANNER
          ========================================================================== -->
-    <section class="space-y-10 sm:space-y-12">
+    <section class="space-y-10 sm:space-y-14">
       
       <!-- Eyebrow Pill -->
       <div class="reveal-init inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-stone-200 shadow-xs">
@@ -197,11 +197,11 @@
       </div>
 
       <!-- 2-Column Asymmetric Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
         
         <!-- Left: Huge Typography Headline -->
         <div class="reveal-init delay-100 lg:col-span-7">
-          <h1 class="text-4xl sm:text-6xl lg:text-[4.75rem] font-extrabold tracking-tight text-stone-900 leading-[1.04]">
+          <h1 class="text-4xl sm:text-6xl lg:text-[5.25rem] font-extrabold tracking-tight text-stone-900 leading-[1.02]">
             Menjaga interaksi<br />
             melalui edukasi &amp;<br />
             penelaahan adil
@@ -213,25 +213,25 @@
           
           <!-- Top Note with Big Arrow -->
           <div class="space-y-2 max-w-md">
-            <span class="text-3xl font-extrabold text-stone-900 leading-none">&#x2197;</span>
-            <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+            <span class="text-3xl sm:text-4xl font-extrabold text-stone-900 leading-none">&#x2197;</span>
+            <p class="text-sm text-stone-600 leading-relaxed">
               Kanal aspirasi &amp; telaah informasi aktif. Memiliki situasi atau masukan yang perlu disampaikan? Tuliskan melalui kanal resmi.
             </p>
           </div>
 
           <!-- Bottom Action Block -->
           <div class="space-y-5 max-w-md">
-            <p class="text-sm sm:text-base text-stone-600 leading-relaxed">
+            <p class="text-base text-stone-600 leading-relaxed">
               KPI hadir sebagai ruang edukasi, pencegahan, dan penelaahan objektif demi menjaga norma, etika, serta martabat seluruh mahasiswa dan pelajar Indonesia di Mesir.
             </p>
             
             <div class="flex items-center gap-3 flex-wrap">
-              <button onclick="openAspirasiModal()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-crimson-600 hover:bg-crimson-700 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
+              <button onclick="openAspirasiModal()" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-crimson-600 hover:bg-crimson-700 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
                 <span>Sampaikan aspirasi</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
               </button>
 
-              <a href="#tentang" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-stone-50 border border-stone-300 hover:border-stone-900 text-stone-800 font-semibold text-sm transition-all">
+              <a href="#tentang" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white hover:bg-stone-50 border border-stone-300 hover:border-stone-900 text-stone-800 font-semibold text-sm transition-all">
                 <span>Kenali KPI</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
               </a>
@@ -242,11 +242,11 @@
 
       </div>
 
-      <!-- Photographic Hero Banner (Dexina Discussion Visual) -->
-      <div class="reveal-init delay-200 relative w-full rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden border border-stone-200 shadow-lg bg-stone-100">
-        <img src="hero-discussion.jpg" alt="Mahasiswa Masisir berdiskusi dan mengkaji materi akademik di perpustakaan Kairo" class="w-full max-h-[620px] object-cover" />
-        <div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-stone-900/80 backdrop-blur-md text-white text-xs font-medium">
-          <span class="w-2 h-2 rounded-full bg-crimson-500"></span>
+      <!-- Photographic Hero Banner (Dexina Discussion Visual Full-Bleed) -->
+      <div class="reveal-init delay-200 relative w-screen -mx-4 sm:-mx-8 lg:-mx-16 border-y border-stone-200 bg-stone-100 overflow-hidden shadow-none">
+        <img src="hero-discussion.jpg" alt="Mahasiswa Masisir berdiskusi dan mengkaji materi akademik di perpustakaan Kairo" class="w-full h-[60vh] sm:h-[75vh] min-h-[520px] max-h-[900px] object-cover object-[center_30%]" />
+        <div class="absolute bottom-6 left-6 sm:bottom-10 sm:left-16 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-stone-900/85 backdrop-blur-md text-white text-xs font-semibold shadow-lg">
+          <span class="w-2.5 h-2.5 rounded-full bg-crimson-500"></span>
           <span>Komisi Peduli Interaksi &bull; PPMI Mesir Periode 2026&ndash;2027</span>
         </div>
       </div>
