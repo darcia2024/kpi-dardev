@@ -24,7 +24,7 @@ export function SignInForm(): React.JSX.Element {
     });
     const body = await response.json();
     setPending(false);
-    if (!response.ok) return setMessage("Email atau kata sandi TEST tidak sesuai.");
+    if (!response.ok) return setMessage("Email atau kata sandi tidak sesuai.");
     setChallengeId(body.challengeId);
     setStep("mfa");
   }
@@ -40,21 +40,21 @@ export function SignInForm(): React.JSX.Element {
       body: JSON.stringify({ challengeId, code: form.get("code") })
     });
     setPending(false);
-    if (!response.ok) return setMessage("Kode MFA TEST tidak sesuai atau sudah kedaluwarsa.");
+    if (!response.ok) return setMessage("Kode verifikasi tidak sesuai atau sudah kedaluwarsa.");
     router.replace("/portal");
     router.refresh();
   }
 
   return step === "credentials" ? (
     <form className="auth-form" onSubmit={submitCredentials}>
-      <label>Email TEST<input autoComplete="username" name="email" required type="email" /></label>
-      <label>Kata sandi TEST<input autoComplete="current-password" name="password" required type="password" /></label>
+      <label>Email<input autoComplete="username" name="email" required type="email" /></label>
+      <label>Kata sandi<input autoComplete="current-password" name="password" required type="password" /></label>
       {message ? <p className="form-message" role="alert">{message}</p> : null}
       <button className="button button--primary" disabled={pending} type="submit">{pending ? "Memeriksa" : "Lanjut ke MFA"}</button>
     </form>
   ) : (
     <form className="auth-form" onSubmit={submitMfa}>
-      <label>Kode MFA TEST<input autoComplete="one-time-code" inputMode="numeric" maxLength={6} name="code" pattern="[0-9]{6}" required /></label>
+      <label>Kode verifikasi<input autoComplete="one-time-code" inputMode="numeric" maxLength={6} name="code" pattern="[0-9]{6}" required /></label>
       {message ? <p className="form-message" role="alert">{message}</p> : null}
       <button className="button button--primary" disabled={pending} type="submit">{pending ? "Memverifikasi" : "Masuk ke portal"}</button>
     </form>

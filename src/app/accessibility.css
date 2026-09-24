@@ -1,0 +1,19 @@
+/* Shared interaction safeguards for public and internal screens. */
+:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+:where(a, button, input, select, textarea):focus-visible { position: relative; z-index: 2; }
+:where(input, select, textarea):focus-visible { border-color: var(--focus-ring) !important; box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 22%, transparent); }
+:where(button, [role="button"], a) { touch-action: manipulation; }
+.kp-nav a, .kp-button, .kp-public-button, .button, .row-action, .workspace-card__link, .kp-text-link { min-height: 44px; }
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+@media (prefers-contrast: more) {
+  :root { --border: #6e525c; --text-secondary: #4d3940; }
+  :root[data-theme="dark"] { --border: #a88a94; --text-secondary: #f1dce2; }
+  :where(button, input, select, textarea) { border-width: 2px !important; }
+}
+@media (forced-colors: active) {
+  :focus-visible { outline-color: Highlight; }
+  .kp-lightbox { background: Canvas; }
+}

@@ -7,6 +7,7 @@ export type ErrorCode =
   | "CONFIGURATION_INVALID"
   | "INTERNAL_ERROR"
   | "MFA_REQUIRED"
+  | "SCANNER_UNAVAILABLE"
   | "TEST_AUTH_DISABLED";
 
 export function errorResponse(code: ErrorCode, requestId: string, status: number): NextResponse {

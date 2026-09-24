@@ -1,0 +1,35 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { usePortalResource } from "@/components/portal/api-client";
+import { requiredActions, searchWorkspace } from "@/lib/workspace-selectors";
+
+type Task = { id: string; title: string; ownerAccountId: string; status: "IN_PROGRESS" | "BLOCKED" | "IN_REVIEW" | "ACCEPTED" | "ARCHIVED"; dependencyTaskIds?: string[]; dueAt?: string; updatedAt: string };
+type Meeting = { id: string; title: string; startsAt: string; participantAccountIds: string[] };
+type Asset = { id: string; fileName: string };
+type Activity = { id: string; action: string; kind: "task" | "meeting"; targetId: string; title: string; createdAt: string; isMine: boolean };
+const activityLabels: Record<string, string> = { TASK_CREATED: "Tugas dibuat", TASK_SUBMITTED: "Tugas diajukan", TASK_ACCEPTED: "Tugas diterima", TASK_RETURNED: "Tugas dikembalikan", MEETING_MINUTES_REVISED: "Notulen diperbarui", MEETING_MINUTES_FINALIZED: "Notulen difinalkan", MEETING_FOLLOW_UP_CREATED: "Tindak lanjut dibuat" };
+
+export function WorkspaceOverview({ accountId, canReview, canSubmit }: { accountId: string; canReview: boolean; canSubmit: boolean }): React.JSX.Element {
+  const tasks = usePortalResource<Task>("/api/v1/tasks", "tasks");
+  const meetings = usePortalResource<Meeting>("/api/v1/meetings", "meetings");
+  const assets = usePortalResource<Asset>("/api/v1/documents", "assets");
+  const activity = usePortalResource<Activity>("/api/v1/portal/feed", "events");
+  const [query, setQuery] = useState("");
+  const mine = tasks.items.filter((task) => task.ownerAccountId === accountId && task.status !== "ACCEPTED" && task.status !== "ARCHIVED");
+  const blockers = mine.filter((task) => task.status === "BLOCKED" || task.dependencyTaskIds?.some((id) => tasks.items.find((item) => item.id === id)?.status !== "ACCEPTED"));
+  const review = canReview ? tasks.items.filter((task) => task.status === "IN_REVIEW" && task.ownerAccountId !== accountId) : [];
+  const upcoming = meetings.items.filter((meeting) => meeting.participantAccountIds.includes(accountId) && new Date(meeting.startsAt).getTime() >= Date.now()).sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  const active = tasks.items.filter((task) => task.status === "IN_PROGRESS" || task.status === "BLOCKED" || task.status === "IN_REVIEW");
+  const matches = searchWorkspace(query, tasks.items, meetings.items, assets.items);
+  const actions = requiredActions(tasks.items, accountId, canSubmit, canReview);
+  return <div className="workspace-overview">
+    <section className="task-summary" aria-label="Ringkasan pekerjaan saya"><div><span className="task-summary__value">{mine.length}</span><span>Pekerjaan saya</span></div><div><span className="task-summary__value">{review.length}</span><span>Menunggu review saya</span></div><div><span className="task-summary__value">{blockers.length}</span><span>Terhalang prasyarat</span></div><div><span className="task-summary__value">{upcoming.length}</span><span>Rapat mendatang</span></div></section>
+    <div className="workspace-overview__grid"><section className="workspace-overview__panel"><div className="workspace-overview__heading"><div><p className="eyebrow">Action Required</p><h2>Tindakan untuk akun Anda</h2></div><Link href="/portal/tugas">Lihat tugas →</Link></div>{tasks.loading ? <p>Memuat tugas…</p> : tasks.error ? <p role="alert">{tasks.error} <button onClick={() => void tasks.reload()} type="button">Coba lagi</button></p> : actions.length ? <ul>{actions.slice(0, 8).map((action) => <li key={action.id}><Link href={action.href}><strong>{action.title}</strong></Link><span>{action.description}</span></li>)}</ul> : <p>Belum ada tindakan untuk akun ini.</p>}</section>
+    <section className="workspace-overview__panel"><div className="workspace-overview__heading"><div><p className="eyebrow">Keputusan & agenda</p><h2>Perlu perhatian</h2></div><Link href="/portal/rapat">Lihat rapat →</Link></div>{review.length ? <ul>{review.slice(0, 4).map((task) => <li key={task.id}><strong>{task.title}</strong><span>Menunggu review tugas</span></li>)}</ul> : <p>Tidak ada review tugas yang menunggu akun ini.</p>}{meetings.loading ? <p>Memuat agenda…</p> : meetings.error ? <p role="alert">{meetings.error}</p> : upcoming[0] ? <div className="workspace-overview__meeting"><strong>{upcoming[0].title}</strong><span>{new Date(upcoming[0].startsAt).toLocaleString("id-ID", { timeZone: "Africa/Cairo", dateStyle: "medium", timeStyle: "short" })} · waktu Kairo</span></div> : <p>Tidak ada rapat mendatang yang tercatat.</p>}</section></div>
+    <div className="workspace-overview__grid"><section className="workspace-overview__panel"><div className="workspace-overview__heading"><div><p className="eyebrow">Temukan pekerjaan</p><h2>Cari tugas, rapat, dan dokumen</h2></div></div><label className="task-search">Kata kunci<input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Minimal dua karakter" /></label>{query.trim().length >= 2 && (matches.length ? <ul>{matches.map((item) => <li key={item.id}><Link href={item.href}><strong>{item.label}</strong></Link><span>{item.kind}</span></li>)}</ul> : <p>Tidak ada hasil pada objek yang dapat diakses akun ini.</p>)}</section><section className="workspace-overview__panel"><div className="workspace-overview__heading"><div><p className="eyebrow">Periode pratinjau</p><h2>Sebaran tugas aktif</h2></div></div><ul><li><strong>{active.filter((task) => task.ownerAccountId === accountId).length} tugas saya</strong><span>Dari {active.length} tugas aktif yang berizin untuk akun ini</span></li><li><strong>{active.filter((task) => task.ownerAccountId !== accountId).length} tugas akun lain</strong><span>Perincian hanya berdasarkan data tugas pratinjau yang tersedia</span></li></ul></section></div>
+    <section className="workspace-overview__panel" aria-labelledby="workspace-activity-title"><div className="workspace-overview__heading"><div><p className="eyebrow">Aktivitas kerja</p><h2 id="workspace-activity-title">Perubahan terbaru</h2></div><button className="button button--quiet" onClick={() => void activity.reload()} type="button">Muat ulang</button></div>{activity.loading ? <p role="status">Memuat aktivitas…</p> : activity.error ? <p role="alert">{activity.error}</p> : activity.items.length ? <ul>{activity.items.slice(0, 8).map((event) => <li key={event.id}><Link href={event.kind === "task" ? "/portal/tugas" : "/portal/rapat"}><strong>{activityLabels[event.action] ?? event.action.replaceAll("_", " ")} · {event.title}</strong></Link><span>{new Date(event.createdAt).toLocaleString("id-ID", { timeZone: "Africa/Cairo" })} · {event.isMine ? "Oleh saya" : "Pengurus lain"}</span></li>)}</ul> : <p>Belum ada aktivitas pada pekerjaan yang dapat Anda lihat.</p>}</section>
+    <p className="task-footnote">Ringkasan memakai data pratinjau yang tersedia. Tenggat, overdue, dan kapasitas tim resmi belum dapat dihitung karena kontrak data tersebut belum tersedia.</p>
+  </div>;
+}

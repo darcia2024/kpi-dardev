@@ -1,402 +1,98 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { IconArrowRight, IconArrowUpRight, IconBook2, IconHeartHandshake, IconShieldCheck, IconScale, IconMessageCircle, IconUsers, IconCheck, IconPlus } from "@tabler/icons-react";
 import { LandingMotion } from "@/components/public/landing-motion";
-import "./landing.css";
-import {
-  IconArrowRight,
-  IconArrowUpRight,
-  IconBook2,
-  IconEye,
-  IconScale,
-  IconSchool,
-  IconShieldCheck
-} from "@tabler/icons-react";
+import { publicDivisions } from "@/lib/public-organization";
 
+const responsibilities = [
+  { icon: IconBook2, title: "Edukasi & pencegahan", description: "Membantu Masisir memahami norma, etika, dan tanggung jawab dalam berinteraksi melalui pendidikan serta publikasi.", tag: "Membangun pemahaman" },
+  { icon: IconMessageCircle, title: "Pengawasan & informasi", description: "Mengamati persoalan interaksi dan menerima informasi untuk diverifikasi sesuai lingkup kewenangan KPI.", tag: "Mengenali persoalan" },
+  { icon: IconScale, title: "Penanganan sesuai prosedur", description: "Menelaah dan menangani persoalan secara objektif serta proporsional, dengan menghormati hak setiap pihak.", tag: "Menjaga keadilan" }
+];
+const steps = [
+  ["Informasi diterima", "Laporan, pengaduan, atau informasi dari organisasi menjadi bahan awal untuk ditelaah."],
+  ["Kejelasan diperiksa", "Verifikasi awal membantu memahami konteks dan menentukan kesesuaian dengan mandat KPI."],
+  ["Ditangani sesuai prosedur", "Klarifikasi dan pemeriksaan dilakukan sesuai kebutuhan, kewenangan, serta hak pihak terkait."],
+  ["Informasi dijaga", "Akses terhadap informasi terbatas diberikan sesuai kewenangan dan kebutuhan penanganan."]
+];
+const questions = [
+  ["Apa itu KPI PPMI Mesir?", "Komisi Peduli Interaksi (KPI) merupakan Badan Semi Otonom PPMI Mesir. Sesuai mandat organisasi, KPI menjalankan pencegahan, edukasi, pengawasan, penerimaan informasi, dan penanganan persoalan interaksi di lingkungan PPMI Mesir."],
+  ["Apakah KPI hanya menangani permasalahan?", "Tidak. Pencegahan dan pendidikan interaksi merupakan bagian penting dari mandat KPI. Bentuknya dapat berupa penyuluhan, diskusi, seminar, kajian, publikasi, dan kerja sama antarlembaga."],
+  ["Apakah laporan yang diterima berarti pelanggaran sudah terbukti?", "Tidak. Informasi yang diterima merupakan bahan telaah. Kejelasan, konteks, dan kewenangan perlu diperiksa terlebih dahulu. Proses tetap memperhatikan objektivitas dan praduga tidak bersalah."],
+  ["Bagaimana KPI memperlakukan informasi pribadi?", "Pedoman KPI mengatur perlindungan informasi dan pembatasan akses sesuai kewenangan. Kerahasiaan, keamanan, hak, dan martabat pihak terkait menjadi prinsip dalam setiap proses."],
+  ["Apakah formulir aspirasi di situs ini sudah menerima laporan resmi?", "Belum. Halaman aspirasi saat ini menampilkan pratinjau alur pengiriman dan pelacakan. Penanganan nyata belum diaktifkan. Jangan mengirim informasi sensitif melalui formulir pratinjau."],
+  ["Dengan siapa KPI berkoordinasi?", "KPI berkoordinasi dengan PPMI Mesir, organisasi kekeluargaan, WIHDAH, dan lembaga terkait sesuai kebutuhan dan kewenangan masing-masing. Koordinasi tetap memperhatikan independensi fungsional dan kerahasiaan."]
+];
 export default function HomePage(): React.JSX.Element {
-  return (
-    <div className="landing-page kpi-editorial dexina-style">
-      <LandingMotion />
-
-      {/* =========================================================================
-          DEXINA HERO SECTION
-          ========================================================================= */}
-      <section className="dexina-hero" aria-labelledby="page-title">
-        <div className="dexina-hero__inner">
-          
-          {/* Eyebrow Pill */}
-          <div className="dexina-eyebrow">
-            <span className="dexina-eyebrow__dot">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="10" />
-              </svg>
-            </span>
-            <span className="dexina-eyebrow__text">BADAN SEMI OTONOM PPMI MESIR</span>
-          </div>
-
-          {/* 2-Column Asymmetric Grid */}
-          <div className="dexina-hero__grid">
-            
-            {/* Left Column: Massive Headline */}
-            <div className="dexina-hero__left">
-              <h1 id="page-title" className="dexina-hero__h1">
-                Menjaga interaksi<br />
-                melalui edukasi &amp;<br />
-                penelaahan adil
-              </h1>
-            </div>
-
-            {/* Right Column: Top Micro-note & Bottom Editorial Actions */}
-            <div className="dexina-hero__right">
-              
-              {/* Top Micro-note with Big Arrow */}
-              <div className="dexina-hero__note">
-                <span className="dexina-hero__note-arrow" aria-hidden="true">&#x2197;</span>
-                <p>
-                  Kanal aspirasi &amp; telaah informasi aktif. Memiliki situasi atau masukan yang perlu disampaikan? Tuliskan melalui kanal resmi.
-                </p>
-              </div>
-
-              {/* Bottom Paragraph & Action Buttons */}
-              <div className="dexina-hero__action-block">
-                <p className="dexina-hero__lead">
-                  KPI hadir sebagai ruang edukasi, pencegahan, dan penelaahan objektif demi menjaga norma, etika, serta martabat seluruh mahasiswa dan pelajar Indonesia di Mesir.
-                </p>
-                <div className="dexina-hero__buttons">
-                  <Link className="dexina-btn-red" href="/publik/aspirasi">
-                    <span>Sampaikan aspirasi</span>
-                    <IconArrowRight aria-hidden="true" size={17} stroke={2.2} />
-                  </Link>
-                  <Link className="dexina-btn-outline" href="/#tentang">
-                    <span>Kenali KPI</span>
-                    <IconArrowRight aria-hidden="true" size={17} stroke={2.2} />
-                  </Link>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* Full-width High-Impact Photographic Banner */}
-          <div className="dexina-hero__media">
-            <Image
-              src="/images/hero-discussion.jpg"
-              alt="Warga Masisir berdiskusi dan mengkaji materi akademik di perpustakaan Kairo"
-              width={1360}
-              height={765}
-              priority
-              className="dexina-hero__img"
-            />
-            <div className="dexina-hero__media-badge">
-              <span className="dexina-hero__media-dot" />
-              <span>Komisi Peduli Interaksi &bull; PPMI Mesir Periode 2026&ndash;2027</span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION: TENTANG KPI & MANIFESTO
-          ========================================================================= */}
-      <section id="tentang" className="dexina-section dexina-manifesto" aria-labelledby="manifesto-title">
-        <div className="dexina-section__container">
-          <div className="dexina-pill-label">TENTANG KPI</div>
-          <div className="dexina-manifesto__grid">
-            <h2 id="manifesto-title" className="dexina-manifesto__h2">
-              Menjaga interaksi Masisir tetap sehat, beradab, dan bertanggung jawab.
-            </h2>
-            <p className="dexina-manifesto__desc">
-              KPI adalah Badan Semi Otonom PPMI Mesir yang bergerak dalam bidang interaksi, sosial, norma, dan etika mahasiswa serta pelajar Indonesia di Mesir dengan penelaahan independen dan berkeadilan.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION: MANDAT & RUANG KERJA (3 CARDS)
-          ========================================================================= */}
-      <section className="dexina-section" aria-labelledby="focus-title">
-        <div className="dexina-section__container">
-          <div className="dexina-section__head">
-            <div className="dexina-pill-label">MANDAT KPI</div>
-            <h2 id="focus-title" className="dexina-section__title">
-              Ruang kerja yang dekat dengan kehidupan Masisir.
-            </h2>
-            <p className="dexina-section__sub">
-              KPI hadir untuk membangun pemahaman, membuka ruang dialog, dan memastikan setiap informasi ditangani dengan proses yang adil.
-            </p>
-          </div>
-
-          <div className="dexina-cards-grid3">
-            <article className="dexina-card">
-              <div className="dexina-card__icon-wrap">
-                <IconSchool size={24} stroke={1.8} />
-              </div>
-              <span className="dexina-card__num">01</span>
-              <h3 className="dexina-card__title">Edukasi interaksi</h3>
-              <p className="dexina-card__p">
-                Materi, diskusi, dan forum yang membantu kita memahami norma, etika, dan cara berinteraksi dengan sehat.
-              </p>
-            </article>
-
-            <article className="dexina-card dexina-card--featured">
-              <div className="dexina-card__icon-wrap">
-                <IconScale size={24} stroke={1.8} />
-              </div>
-              <span className="dexina-card__num">02</span>
-              <h3 className="dexina-card__title">Penanganan objektif</h3>
-              <p className="dexina-card__p">
-                Setiap informasi ditelaah secara proporsional, berdasarkan prosedur, kewenangan, dan konteks yang cukup.
-              </p>
-            </article>
-
-            <article className="dexina-card">
-              <div className="dexina-card__icon-wrap">
-                <IconShieldCheck size={24} stroke={1.8} />
-              </div>
-              <span className="dexina-card__num">03</span>
-              <h3 className="dexina-card__title">Perlindungan pihak terkait</h3>
-              <p className="dexina-card__p">
-                Martabat, hak, privasi, keamanan, dan kerahasiaan menjadi bagian dari setiap proses KPI.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION: BENTO DISCOVERY GRID (4 CARDS)
-          ========================================================================= */}
-      <section className="dexina-section" aria-labelledby="catalog-title">
-        <div className="dexina-section__container">
-          <div className="dexina-section__head">
-            <div className="dexina-pill-label">JELAJAHI SITUS</div>
-            <h2 id="catalog-title" className="dexina-section__title">
-              Temukan informasi sesuai kebutuhan Anda.
-            </h2>
-          </div>
-
-          <div className="dexina-bento-grid">
-            
-            <Link className="dexina-bento-card dexina-bento-card--dark" href="/publik">
-              <div className="dexina-bento-card__num">01 &bull; PROFIL</div>
-              <h3 className="dexina-bento-card__title">Mengenal KPI &amp; PPMI Mesir</h3>
-              <p className="dexina-bento-card__desc">
-                Kenali kedudukan, mandat, dan prinsip KPI dalam menjaga kualitas interaksi Masisir.
-              </p>
-              <span className="dexina-bento-card__action">Lihat profil organisasi &rarr;</span>
-            </Link>
-
-            <Link className="dexina-bento-card" href="/publik/publikasi">
-              <div className="dexina-bento-card__num">02 &bull; KAJIAN</div>
-              <h3 className="dexina-bento-card__title">Edukasi &amp; pencegahan</h3>
-              <p className="dexina-bento-card__desc">
-                Temukan diskusi, seminar, kajian, dan kegiatan yang membangun kesadaran interaksi.
-              </p>
-              <span className="dexina-bento-card__action">Buka publikasi &rarr;</span>
-            </Link>
-
-            <Link className="dexina-bento-card" href="/publik/aspirasi">
-              <div className="dexina-bento-card__num">03 &bull; ASPIRASI</div>
-              <h3 className="dexina-bento-card__title">Laporan &amp; pengaduan</h3>
-              <p className="dexina-bento-card__desc">
-                Sampaikan informasi melalui kanal resmi untuk ditelaah sesuai mandat dan kewenangan.
-              </p>
-              <span className="dexina-bento-card__action">Buka kanal aspirasi &rarr;</span>
-            </Link>
-
-            <div className="dexina-bento-card dexina-bento-card--subtle">
-              <div className="dexina-bento-card__num">04 &bull; TATA KELOLA</div>
-              <h3 className="dexina-bento-card__title">Objektif &amp; terlindungi</h3>
-              <p className="dexina-bento-card__desc">
-                Setiap proses memperhatikan objektivitas, proporsionalitas, martabat, privasi, dan kerahasiaan.
-              </p>
-              <span className="dexina-bento-card__action">Prinsip kerja KPI &rarr;</span>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION: PENCEGAHAN & EDUKASI (2 CARDS)
-          ========================================================================= */}
-      <section id="pencegahan" className="dexina-section" aria-labelledby="updates-title">
-        <div className="dexina-section__container">
-          <div className="dexina-section__head">
-            <div className="dexina-pill-label">PENCEGAHAN &amp; EDUKASI</div>
-            <h2 id="updates-title" className="dexina-section__title">
-              Interaksi yang sehat dimulai dari pemahaman.
-            </h2>
-          </div>
-
-          <div className="dexina-grid2">
-            <article className="dexina-highlight-card dexina-highlight-card--tint">
-              <span className="dexina-highlight-card__badge">Pendidikan interaksi</span>
-              <h3 className="dexina-highlight-card__title">Belajar bersama. Saling menghormati.</h3>
-              <p className="dexina-highlight-card__desc">
-                Pedoman KPI menempatkan pendidikan interaksi sebagai bagian dari pencegahan. Bentuknya dapat berupa diskusi, seminar, pelatihan, lokakarya, dan forum untuk memperkuat pemahaman norma serta etika.
-              </p>
-              <Link className="dexina-text-link" href="/publik/publikasi">
-                Buka publikasi &rarr;
-              </Link>
-            </article>
-
-            <article className="dexina-highlight-card">
-              <span className="dexina-highlight-card__badge">Kerja sama kelembagaan</span>
-              <h3 className="dexina-highlight-card__title">Kepedulian tumbuh lewat kebersamaan.</h3>
-              <p className="dexina-highlight-card__desc">
-                KPI berkoordinasi dengan PPMI Mesir, organisasi kekeluargaan, WIHDAH, dan lembaga terkait sesuai kebutuhan serta kewenangan masing-masing untuk menjaga keharmonisan warga.
-              </p>
-              <Link className="dexina-text-link" href="/publik">
-                Kenali mitra KPI &rarr;
-              </Link>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION: ALUR PROSEDUR 4 TAHAP
-          ========================================================================= */}
-      <section id="prosedur" className="dexina-section" aria-labelledby="process-title">
-        <div className="dexina-section__container">
-          <div className="dexina-process-box">
-            
-            <div className="dexina-process-left">
-              <div className="dexina-pill-label">MEKANISME KERJA</div>
-              <h2 id="process-title" className="dexina-section__title">
-                Mendengar dengan saksama. Menelaah dengan adil.
-              </h2>
-              <p className="dexina-section__sub">
-                Ringkasan prinsip penerimaan informasi dalam pedoman KPI. Laporan yang diterima belum berarti suatu pelanggaran terbukti, melainkan diproses secara objektif dan berimbang.
-              </p>
-            </div>
-
-            <div className="dexina-process-right">
-              <ol className="dexina-process-list">
-                <li>
-                  <span className="dexina-step-num">01</span>
-                  <div>
-                    <h4>Penerimaan informasi</h4>
-                    <p>Informasi dapat berasal dari laporan, pengaduan, organisasi, maupun pengamatan lapangan secara terstruktur.</p>
-                  </div>
-                </li>
-                <li>
-                  <span className="dexina-step-num">02</span>
-                  <div>
-                    <h4>Verifikasi awal</h4>
-                    <p>Informasi ditelaah untuk memperoleh kejelasan data dan menentukan kesesuaiannya dengan kewenangan KPI.</p>
-                  </div>
-                </li>
-                <li>
-                  <span className="dexina-step-num">03</span>
-                  <div>
-                    <h4>Penanganan sesuai prosedur</h4>
-                    <p>Klarifikasi dan pemeriksaan dilakukan sesuai kebutuhan dengan memperhatikan hak pihak terkait dan praduga tidak bersalah.</p>
-                  </div>
-                </li>
-                <li>
-                  <span className="dexina-step-num">04</span>
-                  <div>
-                    <h4>Perlindungan informasi</h4>
-                    <p>Informasi terbatas dikelola sesuai kewenangan. Kerahasiaan identitas dan martabat pihak terkait dilindungi penuh.</p>
-                  </div>
-                </li>
-              </ol>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION: TIGA PRINSIP
-          ========================================================================= */}
-      <section id="prinsip" className="dexina-section" aria-labelledby="principles-title">
-        <div className="dexina-section__container">
-          <div className="dexina-section__head">
-            <div className="dexina-pill-label">CARA KAMI BEKERJA</div>
-            <h2 id="principles-title" className="dexina-section__title">
-              Tiga prinsip untuk proses yang dapat dipercaya.
-            </h2>
-          </div>
-
-          <div className="dexina-principles-grid">
-            <div className="dexina-principle-card">
-              <div className="dexina-principle-card__num">01</div>
-              <div className="dexina-principle-card__icon">
-                <IconBook2 size={24} stroke={1.8} />
-              </div>
-              <h3>Edukatif</h3>
-              <p>Membangun pemahaman dan kemampuan menjalankan interaksi yang sehat, beretika, dan bertanggung jawab antar-sesama mahasiswa.</p>
-            </div>
-
-            <div className="dexina-principle-card">
-              <div className="dexina-principle-card__num">02</div>
-              <div className="dexina-principle-card__icon">
-                <IconEye size={24} stroke={1.8} />
-              </div>
-              <h3>Objektif</h3>
-              <p>Informasi diterima sebagai bahan telaah, bukan langsung dianggap sebagai fakta atau vonis sebelum verifikasi berimbang.</p>
-            </div>
-
-            <div className="dexina-principle-card">
-              <div className="dexina-principle-card__num">03</div>
-              <div className="dexina-principle-card__icon">
-                <IconShieldCheck size={24} stroke={1.8} />
-              </div>
-              <h3>Menjaga martabat</h3>
-              <p>Hak, privasi, keamanan, dan kerahasiaan pihak terkait tetap diperhatikan secara ketat dalam setiap tahapan proses.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION: CTA BOX & MONUMENTAL WORDMARK
-          ========================================================================= */}
-      <section className="dexina-section" aria-labelledby="cta-title">
-        <div className="dexina-section__container">
-          <div className="dexina-cta-box">
-            <div>
-              <div className="dexina-pill-label dexina-pill-label--white">HUBUNGI KPI</div>
-              <h2 id="cta-title" className="dexina-cta-box__h2">
-                Ada situasi yang perlu disampaikan?
-              </h2>
-              <p className="dexina-cta-box__p">
-                Gunakan kanal resmi. Setiap laporan dan pengaduan akan ditelaah sesuai prosedur, mandat, dan kewenangan KPI dengan jaminan perlindungan data.
-              </p>
-            </div>
-            <Link className="dexina-btn-white" href="/publik/aspirasi">
-              <span>Buka kanal aspirasi</span>
-              <IconArrowRight size={17} stroke={2.4} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Monumental Wordmark Outro */}
-      <div className="dexina-wordmark" aria-hidden="true">
-        Peduli interaksi.
+  return <div className="kp-site">
+    <LandingMotion />
+    <section className="kp-hero" aria-labelledby="page-title">
+      <div className="kp-wrap kp-hero-top">
+        <p className="kp-eyebrow"><span /> Komisi Peduli Interaksi · PPMI Mesir</p>
+        <h1 id="page-title">Menjaga interaksi.<br /><span>Melindungi martabat.</span></h1>
+        <p className="kp-hero-lead">KPI PPMI Mesir mengedukasi, mengawasi, menerima informasi, dan menangani persoalan interaksi mahasiswa serta pelajar Indonesia di Mesir sesuai mandat organisasi.</p>
+        <div className="kp-actions"><Link className="kp-button kp-button--red" href="/publik">Kenali KPI <IconArrowRight aria-hidden="true" size={18} /></Link><Link className="kp-button kp-button--outline" href="/publik/layanan">Lihat layanan & informasi <IconArrowUpRight aria-hidden="true" size={18} /></Link></div>
       </div>
+      <div className="kp-wrap kp-visual" aria-label="Ringkasan visual pedoman dan prinsip kerja KPI">
+        <div className="kp-visual-caption"><span className="kp-eyebrow">Berangkat dari kepedulian</span><p>Pemahaman yang baik.<br />Proses yang berimbang.<br />Martabat yang terjaga.</p><a href="#prinsip">Kenali prinsip kami <IconArrowUpRight size={18} aria-hidden="true" /></a></div>
+        <Link className="kp-publication" href="/publik/publikasi" aria-label="Buka publikasi dan edukasi KPI">
+          <div className="kp-publication-brand"><Image src="/brand/kpi-ppmi-mesir-logo.png" alt="" width={42} height={42} /><span>Komisi Peduli Interaksi<br />PPMI Mesir</span></div>
+          <div><span className="kp-publication-label">Ringkasan pedoman</span><h2>Peduli.<br />Pahami.<br />Hormati.</h2></div>
+          <div className="kp-publication-foot"><span>Nilai dan prinsip<br />interaksi Masisir</span><IconArrowUpRight size={27} aria-hidden="true" /></div>
+        </Link>
+        <div className="kp-principle-preview"><div className="kp-preview-label"><IconShieldCheck size={22} stroke={1.6} aria-hidden="true" /><span>Landasan setiap proses</span></div><h3>Setiap pihak berhak<br />diperlakukan dengan hormat.</h3><ul>{["Objektif dalam menelaah", "Proporsional dalam bertindak", "Menjaga kerahasiaan"].map(t => <li key={t}><IconCheck size={17} aria-hidden="true" />{t}</li>)}</ul><span className="kp-preview-note">Dirangkum dari Buku Pedoman KPI</span></div>
+      </div>
+      <div className="kp-wrap kp-hero-links"><Link href="/publik"><IconUsers aria-hidden="true" size={21} /><span>Kenali organisasi</span><IconArrowUpRight aria-hidden="true" size={18} /></Link><Link href="/publik/publikasi"><IconBook2 aria-hidden="true" size={21} /><span>Edukasi & publikasi</span><IconArrowUpRight aria-hidden="true" size={18} /></Link><Link href="/publik/aspirasi"><IconMessageCircle aria-hidden="true" size={21} /><span>Pahami alur aspirasi</span><IconArrowUpRight aria-hidden="true" size={18} /></Link></div>
+    </section>
 
-      {/* Footer */}
-      <footer className="dexina-footer">
-        <div className="dexina-footer__inner">
-          <div className="dexina-footer__left">
-            <strong>KPI PPMI Mesir</strong>
-            <span>Badan Semi Otonom PPMI Mesir Periode 2026&ndash;2027</span>
-          </div>
-          <div className="dexina-footer__right">
-            <Link href="/publik">Informasi Publik</Link>
-            <Link href="/publik/aspirasi">Kanal Aspirasi</Link>
-            <Link href="/portal">Portal Pengurus</Link>
+    <section className="kp-wrap kp-section kp-about" id="tentang" aria-labelledby="about-title"><div><p className="kp-eyebrow">01 / Tentang KPI</p><h2 id="about-title">Mandat yang jelas<br />untuk interaksi Masisir.</h2></div><div className="kp-about-copy"><p>Kehidupan Masisir mempertemukan beragam latar belakang, kebiasaan, dan cara pandang. Tata interaksi yang sehat membutuhkan pemahaman bersama serta mekanisme yang jelas ketika persoalan muncul.</p><p>Sebagai Badan Semi Otonom PPMI Mesir, KPI menjalankan pencegahan, edukasi, pengawasan, penerimaan informasi, dan penanganan persoalan interaksi sesuai ketentuan organisasi. Setiap langkah harus menghormati hak dan martabat pihak terkait.</p><Link className="kp-text-link" href="/publik">Baca profil dan mandat KPI <IconArrowUpRight size={18} aria-hidden="true" /></Link></div><div className="kp-about-strip"><span>Bagian dari PPMI Mesir</span><span>Bekerja sesuai mandat organisasi</span><span>Menghormati hak setiap pihak</span></div></section>
+
+    <section className="kp-divisions" id="divisi" aria-labelledby="divisions-title">
+      <div className="kp-wrap kp-divisions-head"><p className="kp-eyebrow">Tiga divisi, satu subbidang</p><h2 id="divisions-title">Bergerak bersama<br />dalam satu amanah.</h2><p>Media & Publikasi berada di bawah Pencegahan & Edukasi. Keempat unit kerja saling melengkapi dari penelaahan hingga pendidikan dan publikasi.</p></div>
+      <div className="kp-wrap kp-division-grid">
+        {publicDivisions.map((division) => <Link className="kp-division-card" href={`/publik/divisi/${division.slug}`} key={division.slug}>
+          <div className="kp-division-mark"><Image src={division.mark} alt={`Lambang ${division.name}`} fill sizes="(max-width: 520px) 112px, 136px" /></div>
+          <div><span>{division.englishName}</span><h3>{division.name}</h3><p>{division.summary}</p><strong className="kp-division-card__link">Lihat profil <IconArrowUpRight size={16} aria-hidden="true" /></strong></div>
+        </Link>)}
+      </div>
+    </section>
+
+    <section className="kp-role-band" id="peran" aria-labelledby="role-title"><div className="kp-wrap kp-section"><div className="kp-section-head"><div><p className="kp-eyebrow">02 / Peran kami</p><h2 id="role-title">Mencegah persoalan.<br />Menangani sesuai mandat.</h2></div><p>KPI bekerja melalui edukasi, pengawasan, dan penanganan yang objektif. Kewenangan selalu disertai prosedur dan tanggung jawab.</p></div><div className="kp-role-grid">{responsibilities.map(({icon:Icon,title,description,tag},i) => <article className="kp-role" key={title}><div className="kp-role-top"><Icon size={28} stroke={1.5} aria-hidden="true" /><span>0{i+1}</span></div><span className="kp-role-tag">{tag}</span><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>
+
+    <section className="kp-wrap kp-section kp-education" id="edukasi" aria-labelledby="education-title"><div className="kp-education-art"><span className="kp-eyebrow">Pendidikan interaksi</span><IconHeartHandshake className="kp-education-icon" size={108} stroke={.9} aria-hidden="true" /><h3>Belajar memahami.<br />Terbiasa menghormati.</h3><div className="kp-format-list"><span>Diskusi</span><span>Kajian</span><span>Seminar</span><span>Lokakarya</span></div></div><div><p className="kp-eyebrow">03 / Pencegahan & edukasi</p><h2 id="education-title">Interaksi yang sehat<br />dimulai dari pemahaman.</h2><p className="kp-body">Pendidikan interaksi membantu kita mengenali norma, memahami batas, dan menghormati orang lain dalam kehidupan sehari-hari.</p><ul className="kp-editorial-list"><li><strong>Belajar dan berdialog</strong><p>Diskusi, seminar, pelatihan, dan forum untuk memperkuat pemahaman norma serta etika.</p></li><li><strong>Pengetahuan yang dapat dibagikan</strong><p>Penyuluhan, sosialisasi, kampanye, kajian, dan publikasi sebagai bagian dari pencegahan.</p></li></ul><Link className="kp-text-link" href="/publik/publikasi">Jelajahi edukasi & publikasi <IconArrowUpRight size={18} aria-hidden="true" /></Link></div></section>
+
+    <section className="kp-activity-band" id="kegiatan" aria-labelledby="activity-title">
+      <div className="kp-wrap kp-section">
+        <div className="kp-activity-head">
+          <div><p className="kp-eyebrow">04 / Jejak kegiatan</p><h2 id="activity-title">Kepedulian yang hadir<br />di ruang-ruang nyata.</h2></div>
+          <p>Mandat KPI dijalankan melalui pertemuan, dialog, edukasi, dan kerja bersama. Dokumentasi ini merekam sebagian proses belajar dan bertumbuh bersama Masisir.</p>
+        </div>
+        <div className="kp-activity-grid">
+          <figure className="kp-activity-main">
+            <div className="kp-activity-image"><Image src="/images/kegiatan/forum-kpi-bersama.jpeg" alt="Peserta kegiatan KPI berfoto bersama setelah pertemuan" fill sizes="(max-width: 820px) 100vw, 66vw" /></div>
+            <figcaption><span>Ruang kebersamaan</span><p>Pertemuan menjadi tempat menyatukan pemahaman dan menjaga hubungan antarsesama.</p></figcaption>
+          </figure>
+          <div className="kp-activity-side">
+            <figure><div className="kp-activity-image"><Image src="/images/kegiatan/diskusi-kelembagaan.jpeg" alt="Peserta mengikuti diskusi KPI dalam sebuah forum" fill sizes="(max-width: 820px) 100vw, 32vw" /></div><figcaption><span>Koordinasi</span><p>Mendengar, bertukar pandangan, dan merumuskan langkah bersama.</p></figcaption></figure>
+            <figure><div className="kp-activity-image"><Image src="/images/kegiatan/ruang-dialog.jpeg" alt="Peserta berdialog dalam kelompok kecil" fill sizes="(max-width: 820px) 100vw, 32vw" /></div><figcaption><span>Dialog</span><p>Percakapan yang terbuka membantu setiap sudut pandang dipahami.</p></figcaption></figure>
           </div>
         </div>
-      </footer>
+        <div className="kp-activity-closing">
+          <div className="kp-activity-closing-image"><Image src="/images/kegiatan/kegiatan-edukasi.jpeg" alt="Peserta berfoto bersama dalam kegiatan edukasi KPI" fill sizes="(max-width: 820px) 100vw, 42vw" /></div>
+          <div><span className="kp-activity-index">Dari kegiatan, menjadi pengetahuan bersama</span><h3>Belajar dari pengalaman.<br />Membagikan pemahaman.</h3><p>Setiap forum membuka kesempatan untuk mengenali persoalan dengan lebih utuh, memperkuat kepedulian, dan membawa nilai interaksi sehat ke lingkungan yang lebih luas.</p><Link className="kp-activity-more" href="/publik/kegiatan">Lihat seluruh dokumentasi <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
+        </div>
+      </div>
+    </section>
 
-    </div>
-  );
+    <section className="kp-process-band" id="alur" aria-labelledby="process-title"><div className="kp-wrap kp-section kp-process"><div><p className="kp-eyebrow">05 / Penerimaan informasi</p><h2 id="process-title">Didengar dengan saksama.<br />Ditelaah dengan adil.</h2><p className="kp-body">Setiap informasi perlu dipahami konteksnya sebelum ditindaklanjuti. Berikut ringkasan prinsip proses dalam pedoman KPI.</p><div className="kp-process-note"><IconScale size={24} stroke={1.5} aria-hidden="true" /><p>Laporan yang diterima <strong>belum berarti pelanggaran terbukti.</strong> Setiap pihak tetap memiliki hak untuk diperlakukan secara adil.</p></div><Link className="kp-button kp-button--light kp-process-link" href="/publik/aspirasi">Pelajari alur aspirasi <IconArrowUpRight size={18} aria-hidden="true" /></Link></div><ol className="kp-steps">{steps.map(([title,description],i) => <li key={title}><span>0{i+1}</span><div><h3>{title}</h3><p>{description}</p></div></li>)}</ol></div></section>
+
+    <section className="kp-wrap kp-section" id="prinsip" aria-labelledby="principles-title"><div className="kp-section-head"><div><p className="kp-eyebrow">06 / Prinsip kerja</p><h2 id="principles-title">Amanah dijaga<br />melalui cara kita bekerja.</h2></div><p>Kewenangan disertai tanggung jawab. Pedoman KPI menempatkan prinsip-prinsip ini dalam pelaksanaan setiap tugas.</p></div><div className="kp-values">{[["Objektivitas", "Menelaah informasi berdasarkan kejelasan dan konteks, tanpa dipengaruhi kepentingan pribadi atau kelompok."],["Proporsionalitas", "Menyesuaikan respons dengan tingkat persoalan, dampak, risiko, dan tujuan penanganan."],["Kerahasiaan", "Membatasi akses terhadap informasi sesuai kewenangan, dengan memperhatikan keamanan pihak terkait."],["Martabat manusia", "Menghormati hak, kehormatan, dan kepentingan setiap orang dalam seluruh proses."],["Kepastian prosedur", "Menjalankan tugas melalui mekanisme yang jelas dan sesuai ketentuan organisasi."],["Akuntabilitas", "Memastikan tindakan dan keputusan dapat dijelaskan serta dipertanggungjawabkan."]].map(([title,description],i) => <article key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div></section>
+
+    <section className="kp-wrap kp-cooperation"><IconUsers size={36} stroke={1.4} aria-hidden="true" /><div><p className="kp-eyebrow">Tumbuh bersama, bekerja bersama</p><h2>Kepedulian bukan pekerjaan satu pihak.</h2><p>KPI berkoordinasi dengan PPMI Mesir, organisasi kekeluargaan, WIHDAH, dan lembaga terkait sesuai kebutuhan serta kewenangan masing-masing.</p></div><Link className="kp-text-link" href="/publik/struktur">Lihat struktur kerja <IconArrowUpRight size={18} aria-hidden="true" /></Link></section>
+
+    <section className="kp-wrap kp-section kp-faq" id="faq" aria-labelledby="faq-title"><div><p className="kp-eyebrow">07 / Pertanyaan umum</p><h2 id="faq-title">Kenali lebih jelas.<br />Pahami lebih dekat.</h2><p className="kp-body">Beberapa hal yang perlu diketahui tentang peran KPI dan informasi di situs ini.</p></div><div className="kp-faq-list">{questions.map(([question,answer]) => <details key={question}><summary>{question}<IconPlus size={20} aria-hidden="true" /></summary><p>{answer}</p></details>)}</div></section>
+
+    <section className="kp-wrap kp-contact"><div><p className="kp-eyebrow">Ruang informasi untuk Masisir</p><h2>Mulai dari memahami.<br />Lanjutkan dengan kepedulian.</h2><p>Kenali peran KPI, pelajari prinsip interaksi, dan pahami cara menyampaikan informasi dengan bertanggung jawab.</p><div className="kp-actions"><Link href="/publik" className="kp-button kp-button--white">Jelajahi informasi publik <IconArrowRight size={18} aria-hidden="true" /></Link><Link href="/publik/aspirasi" className="kp-button kp-button--light">Lihat alur aspirasi <IconArrowUpRight size={18} aria-hidden="true" /></Link></div><small>Formulir aspirasi masih berupa pratinjau dan belum menerima laporan resmi.</small></div><IconHeartHandshake className="kp-contact-icon" size={150} stroke={.8} aria-hidden="true" /></section>
+    <footer className="kp-wrap kp-footer"><div className="kp-footer-top"><Link href="/" className="kp-footer-brand"><Image src="/brand/kpi-ppmi-mesir-logo.png" alt="Logo KPI PPMI Mesir" width={48} height={48}/><span><strong>KPI PPMI Mesir</strong><small>Komisi Peduli Interaksi</small></span></Link><p>Menjaga interaksi.<br />Melindungi martabat.</p><nav aria-label="Navigasi footer"><Link href="/publik">Tentang KPI</Link><Link href="/publik/divisi">Divisi</Link><Link href="/publik/kegiatan">Kegiatan</Link><Link href="/publik/publikasi">Publikasi</Link><Link href="/publik/layanan">Layanan</Link><Link href="/publik/aspirasi">Aspirasi</Link><Link href="/masuk">Login pengurus</Link></nav></div><div className="kp-footer-bottom"><span>KPI PPMI Mesir · Informasi publik</span><span>Ringkasan konten berdasarkan Buku Pedoman KPI.</span></div></footer>
+  </div>;
 }

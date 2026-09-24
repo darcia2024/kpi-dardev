@@ -1,0 +1,34 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { LocalRecordDatabase } from "../src/platform/data/local-record-store";
+import { LocalDirectoryService } from "../src/platform/identity/local-directory-service";
+
+test("directory period and assignments persist with scope and overlap rules", () => {
+  const database = new LocalRecordDatabase(":memory:");
+  const service = new LocalDirectoryService(database);
+  const actorAccountId = "00000000-0000-4000-8000-000000000101";
+  const accountId = "00000000-0000-4000-8000-000000000102";
+  const period = service.createPeriod({ code: "NEW_2028", startsOn: "2028-01-01", endsOn: "2028-12-31", actorAccountId });
+  const division = service.createDivision({ code: "RISET", name: "Riset dan Analisis", actorAccountId });
+  assert.ok(division);
+  const position = service.createPosition({ code: "REVIEWER", name: "Reviewer", divisionId: division.id, actorAccountId });
+  assert.ok(period && position);
+  assert.equal(service.createPosition({ code: "INVALID", name: "Jabatan", divisionId: "missing", actorAccountId }), null);
+  assert.equal(service.transitionPeriod(period.id, "CLOSED", actorAccountId), null);
+  assert.equal(service.transitionPeriod(period.id, "ACTIVE", actorAccountId)?.status, "ACTIVE");
+  assert.equal(service.transitionPeriod("00000000-0000-4000-8000-000000000002", "ACTIVE", actorAccountId), null);
+  assert.equal(service.assign({ accountId, positionId: position.id, periodId: period.id, startsOn: "2027-12-31", actorAccountId }), null);
+  const assignment = service.assign({ accountId, positionId: position.id, periodId: period.id, startsOn: "2028-02-01", actorAccountId });
+  assert.ok(assignment);
+  assert.equal(service.assign({ accountId, positionId: position.id, periodId: period.id, startsOn: "2028-03-01", actorAccountId }), null);
+  assert.equal(service.endAssignment(assignment.id, "2028-01-01", actorAccountId), null);
+  assert.equal(service.endAssignment(assignment.id, "2028-05-01", actorAccountId)?.endsOn, "2028-05-01");
+  const reopened = new LocalDirectoryService(database);
+  assert.equal(reopened.listPositions().length, 1);
+  assert.equal(reopened.listDivisions()[0].id, division.id);
+  assert.equal(reopened.listPositions()[0].divisionId, division.id);
+  assert.equal(reopened.listAssignments()[0].endsOn, "2028-05-01");
+  assert.equal(reopened.listPeriods().find((item) => item.id === period.id)?.status, "ACTIVE");
+  assert.deepEqual(reopened.accountHistory(accountId)?.map((event) => event.action).sort(), ["ASSIGNMENT_CREATED", "ASSIGNMENT_ENDED"]);
+  database.close();
+});

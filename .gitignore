@@ -16,6 +16,7 @@ node_modules/
 .next/
 out/
 *.tsbuildinfo
+.kpi-test/
 
 # Environment dan Supabase CLI
 .env

@@ -16,11 +16,11 @@ export function LandingMotion(): null {
         observer.unobserve(entry.target);
       }
     }, { threshold: 0.08 });
-    document.querySelectorAll(".landing-page > section:not(:first-of-type)").forEach((section) => observer.observe(section));
+    document.querySelectorAll(".landing-page > section:not(:first-of-type), .kp-site > section:not(:first-of-type)").forEach((section) => observer.observe(section));
     const stop = () => {
       if (preference.matches) {
         observer.disconnect();
-        document.querySelectorAll(".landing-page > section").forEach((section) => section.getAnimations().forEach((animation) => animation.cancel()));
+        document.querySelectorAll(".landing-page > section, .kp-site > section").forEach((section) => section.getAnimations().forEach((animation) => animation.cancel()));
       }
     };
     preference.addEventListener("change", stop);

@@ -2,7 +2,7 @@
 
 Repositori ini memuat blueprint dan implementasi bertahap Sistem Digital KPI PPMI Mesir. Blueprint mencakup 113 layar, 61 entitas konseptual, 11 alur, 28 keputusan, dan ringkasan empat dokumen hukum per 17 September 2026.
 
-Implementasi berada pada fase E01. Aplikasi Next.js yang baru berisi fondasi runtime, validasi environment, endpoint health, migrasi platform awal, data TEST, dan pemeriksaan CI. Fitur bisnis belum tersedia untuk penggunaan produksi.
+Implementasi memiliki UI dan sebagian workflow TEST. Backend masih dikerjakan; kelulusan build dan unit test belum membuktikan semua workflow lengkap. Peta status yang mudah dibaca ada di `docs/22-STATUS-BUILD-SAAT-INI.md`, dengan rincian backend di `docs/20-BACKEND-COMPLETION.md`.
 
 ## Dokumen kerja
 
@@ -17,7 +17,7 @@ Implementasi berada pada fase E01. Aplikasi Next.js yang baru berisi fondasi run
 
 ## Menjalankan fondasi lokal
 
-Gunakan Node.js 20.9 atau lebih baru. Local dan staging hanya boleh memakai data sintetis TEST.
+Gunakan Node.js 24 atau lebih baru. Local dan staging hanya boleh memakai data sintetis TEST. Workflow TEST untuk CMS, aspirasi, metadata aset, tugas, rapat, keuangan, evaluasi, knowledge, handover, izin, dan konfirmasi preview AI memakai SQLite lokal di `.kpi-test/records.sqlite`, yang dikecualikan dari Git. Sebagian UI masih memakai data demo, dan SQLite ini bukan pengganti pengujian PostgreSQL/RLS produksi.
 
 ```powershell
 Copy-Item .env.example .env.local
@@ -33,7 +33,7 @@ Jalankan pemeriksaan sebelum review:
 npm run verify
 ```
 
-Supabase CLI dan runtime Docker belum tersedia pada mesin kerja saat E01 dimulai. Migrasi SQL sudah disimpan di repo, tetapi belum dijalankan terhadap database lokal atau remote.
+Migrasi SQL sudah disimpan di repo, tetapi belum dijalankan terhadap database lokal atau remote karena runtime Docker/PostgreSQL belum tersedia pada mesin kerja. Lihat `docs/19-LOCAL-RELEASE-READINESS.md` untuk bukti local TEST, defect register, dan gerbang rilis.
 
 ## Aturan data
 

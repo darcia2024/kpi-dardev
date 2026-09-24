@@ -3,6 +3,7 @@ import { z } from "zod";
 import { completeTestMfa, isTestAuthEnabled, sessionCookieName } from "@/platform/identity/test-auth";
 import { errorResponse } from "@/platform/http/response";
 import { getRequestId } from "@/platform/http/request-id";
+import { previewPeriodCookieName } from "@/platform/identity/preview-period-context";
 
 const mfaSchema = z.object({ challengeId: z.string().uuid(), code: z.string().regex(/^\d{6}$/) });
 
@@ -15,6 +16,7 @@ export async function POST(request: Request): Promise<Response> {
     if (!sessionId) return errorResponse("AUTHENTICATION_INVALID", requestId, 401);
     const response = NextResponse.json({ next: "PORTAL" }, { headers: { "x-request-id": requestId } });
     response.cookies.set(sessionCookieName, sessionId, { httpOnly: true, sameSite: "lax", secure: false, path: "/", maxAge: 8 * 60 * 60 });
+    response.cookies.set(previewPeriodCookieName, "", { httpOnly: true, path: "/", maxAge: 0 });
     return response;
   } catch (error) {
     if (error instanceof z.ZodError) return errorResponse("AUTHENTICATION_INVALID", requestId, 400);

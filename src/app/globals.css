@@ -625,8 +625,8 @@ h2 {
 .decision-panel { display: grid; align-content: start; gap: 0.75rem; padding: 1.2rem; }
 .decision-panel textarea { width: 100%; padding: 0.65rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); color: var(--text-primary); font: inherit; font-size: 0.8rem; resize: vertical; }
 .followup-line { display: flex; justify-content: space-between; gap: 0.5rem; padding-top: 0.7rem; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 0.76rem; }
-.case-tabs { display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); }
-.case-tabs button { min-height: 2.5rem; padding: 0.5rem 0.75rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: 0.8rem; font-weight: 700; }
+.case-tabs { display: flex; gap: 0.5rem; overflow-x: auto; border-bottom: 1px solid var(--border); }
+.case-tabs button { flex: 0 0 auto; min-height: 2.5rem; padding: 0.5rem 0.75rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
 .case-tabs button.is-active { border-color: var(--accent); color: var(--accent); }
 .case-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr); gap: 0.8rem; }
 .case-list, .case-detail, .communication-panel { border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); overflow: hidden; }
@@ -725,6 +725,28 @@ h2 {
 .ai-action-preview { display: grid; gap: 0.55rem; padding: 0.9rem; border: 1px solid var(--border); border-radius: var(--radius-control); }
 .ai-action-preview > span { color: var(--text-tertiary); font-size: 0.72rem; }
 .ai-action-preview > strong { font-size: 0.78rem; }
+.ai-governance { display: grid; gap: 0.8rem; }
+.ai-governance .operations-panel > p:not(.eyebrow), .ai-panel > p:not(.eyebrow), .ai-history p { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.55; }
+.ai-form-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.ai-history { display: grid; gap: 0.85rem; margin: 0; padding-left: 1.25rem; }
+.ai-history li { display: grid; gap: 0.55rem; min-width: 0; overflow-wrap: anywhere; border-top: 1px solid var(--border); padding-top: 0.85rem; font-size: 0.8rem; }
+.ai-history label { display: grid; gap: 0.35rem; font-size: 0.76rem; }
+.ai-history button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.audit-search { display: flex; flex-wrap: wrap; align-items: end; gap: 0.65rem; }
+.audit-search label { flex: 1 1 14rem; }
+.meeting-calendar { display: grid; gap: 0.8rem; padding: 1.2rem; border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); }
+.meeting-calendar__head { display: flex; align-items: start; justify-content: space-between; gap: 0.8rem; }
+.meeting-calendar__head h2 { font-size: 1.1rem; }
+.meeting-calendar__head p, .meeting-calendar > p { color: var(--text-secondary); font-size: 0.78rem; }
+.meeting-calendar__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.3rem; }
+.meeting-calendar__weekday { text-align: center; color: var(--text-secondary); font-size: 0.72rem; }
+.meeting-calendar__day { display: grid; align-content: start; gap: 0.18rem; min-height: 3.6rem; padding: 0.45rem; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface-secondary); color: var(--text-primary); text-align: left; font: inherit; }
+.meeting-calendar__day strong { font-size: 0.75rem; }
+.meeting-calendar__day small { color: var(--accent); font-size: 0.67rem; }
+.meeting-calendar__day--empty { border-color: transparent; background: transparent; }
+.meeting-calendar__day--has-meeting { border-color: var(--accent); cursor: pointer; }
+.meeting-calendar__day--has-meeting:hover { background: var(--surface); }
+@media (max-width: 600px) { .meeting-calendar__day { min-height: 2.9rem; padding: 0.3rem; } .meeting-calendar__day small { font-size: 0.58rem; } }
 .evaluation-layout, .knowledge-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr); gap: 0.8rem; }
 .score-list, .score-detail, .knowledge-list, .knowledge-detail { border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); overflow: hidden; }
 .score-row { display: grid; grid-template-columns: 7rem minmax(0, 1fr) auto auto; gap: 0.7rem; align-items: center; width: 100%; padding: 1rem; border: 0; border-bottom: 1px solid var(--border); background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; text-align: left; }
@@ -861,6 +883,15 @@ h2 {
 .form-success { color: #216e39; font-size: 0.82rem; font-weight: 600; }
 .document-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
 .detail-panel { display: grid; align-content: start; gap: 0.7rem; padding: 1.25rem; }
+.detail-panel label:not(.check-field), .operations-panel label:not(.check-field) { display: grid; gap: 0.35rem; min-width: 0; color: var(--text-primary); font-size: 0.78rem; font-weight: 600; }
+.detail-panel input:not([type="checkbox"]):not([type="radio"]), .detail-panel select, .detail-panel textarea, .operations-panel input:not([type="checkbox"]):not([type="radio"]), .operations-panel select, .operations-panel textarea { width: 100%; min-height: 2.4rem; padding: 0.6rem 0.72rem; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); color: var(--text-primary); font: inherit; font-size: 0.82rem; }
+.detail-panel textarea, .operations-panel textarea { resize: vertical; }
+.detail-panel fieldset { display: grid; gap: 0.75rem; min-width: 0; margin: 0; padding: 0.9rem; border: 1px solid var(--border); border-radius: var(--radius-control); }
+.detail-panel legend { padding-inline: 0.3rem; color: var(--text-secondary); font-size: 0.75rem; font-weight: 700; }
+.detail-panel .editor-edit { display: grid; gap: 0.7rem; padding: 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface-secondary); }
+.detail-panel ol, .operations-panel ol { display: grid; gap: 0.65rem; margin: 0; padding-left: 1.25rem; }
+.detail-panel li, .operations-panel li { overflow-wrap: anywhere; font-size: 0.8rem; }
+.detail-panel li + li, .operations-panel li + li { padding-top: 0.65rem; border-top: 1px solid var(--border); }
 .version-line, .permission-line { display: flex; justify-content: space-between; gap: 1rem; padding-top: 0.7rem; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 0.78rem; }
 .version-line strong { color: var(--text-primary); }
 

@@ -4,7 +4,7 @@
   "private": true,
   "description": "Sistem Digital KPI PPMI Mesir.",
   "engines": {
-    "node": ">=20.9"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "dev": "next dev",
