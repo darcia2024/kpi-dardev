@@ -7,6 +7,7 @@ import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth
 import { hasTestPermission } from "@/platform/authorization/permissions";
 import { visiblePortalNavigation } from "@/lib/portal-navigation";
 import { IconArrowUpRight, IconBook2, IconBrain, IconBriefcase2, IconCircleCheck, IconFileText, IconGavel, IconLayoutDashboard, IconSettings, IconShieldCheck, IconUsersGroup, IconWallet } from "@tabler/icons-react";
+import { getHostedAuthConfiguration, getHostedIdentity } from "@/platform/identity/hosted-auth";
 
 const workCards = [
   { href: "/portal/workspace", label: "Workspace", description: "Pekerjaan dan hambatan dalam konteks akun serta periode.", icon: IconBriefcase2 },
@@ -25,6 +26,11 @@ const controlCards = [
 ];
 
 export default async function PortalPage(): Promise<React.JSX.Element> {
+  if (getHostedAuthConfiguration()) {
+    const hostedIdentity = await getHostedIdentity();
+    if (!hostedIdentity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Masuk diperlukan</h1><p>Gunakan akun yang telah diaktifkan oleh pengelola KPI.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;
+    return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Selamat datang, {hostedIdentity.name}.</h1><p>Akun Anda telah diverifikasi. Akses modul kerja akan muncul setelah data organisasi, izin peran, dan penyimpanan operasional selesai dihubungkan.</p></header><section className="portal-context" aria-label="Akun aktif"><span>Email</span><strong>{hostedIdentity.email}</strong><span>Peran</span><strong>{hostedIdentity.roles.join(" · ")}</strong></section><SignOutButton /></div>;
+  }
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Masuk diperlukan</h1><p>Ruang kerja hanya tersedia setelah sesi pratinjau yang sah terbentuk.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;

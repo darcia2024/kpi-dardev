@@ -33,6 +33,8 @@ Versi situs publik tersedia di https://kpi-ppmi-mesir-preview.vercel.app. Projec
 
 Project saat ini terhubung ke folder kerja melalui Vercel CLI, tanpa deploy otomatis dari Git. Kode terbaru berada di branch `codex/e01-foundation`, sedangkan branch default GitHub masih `main`. Setelah perubahan diverifikasi, deploy pembaruan dari branch yang benar dengan `vercel deploy --prod --scope darcia2024s-projects`. Untuk mengaktifkan deploy otomatis kelak, atur Production Branch project `kpi-ppmi-mesir-preview` ke branch rilis yang sudah disepakati terlebih dahulu.
 
+Jalur login online berbasis Supabase Auth disiapkan dalam kode, tetapi belum diaktifkan pada Vercel. Persyaratan dan batas aksesnya ada di `docs/35-HOSTED-LOGIN.md`.
+
 Jalankan pemeriksaan sebelum review:
 
 ```powershell

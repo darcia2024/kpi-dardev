@@ -3,14 +3,25 @@ import { z } from "zod";
 import { isTestAuthEnabled, startTestSignIn } from "@/platform/identity/test-auth";
 import { errorResponse } from "@/platform/http/response";
 import { getRequestId } from "@/platform/http/request-id";
+import { createHostedAuthClient, getHostedAuthConfiguration, hostedIdentityFromUser } from "@/platform/identity/hosted-auth";
 
 const signInSchema = z.object({ email: z.string().email().max(254), password: z.string().min(1).max(128) });
 
 export async function POST(request: Request): Promise<Response> {
   const requestId = getRequestId(request.headers.get("x-request-id"));
   try {
-    if (!isTestAuthEnabled()) return errorResponse("TEST_AUTH_DISABLED", requestId, 503);
     const input = signInSchema.parse(await request.json());
+    if (getHostedAuthConfiguration()) {
+      const client = await createHostedAuthClient();
+      if (!client) return errorResponse("CONFIGURATION_INVALID", requestId, 503);
+      const { data, error } = await client.auth.signInWithPassword(input);
+      if (error || !hostedIdentityFromUser(data.user)) {
+        await client.auth.signOut();
+        return errorResponse("AUTHENTICATION_INVALID", requestId, 401);
+      }
+      return NextResponse.json({ next: "PORTAL" }, { headers: { "x-request-id": requestId, "Cache-Control": "no-store" } });
+    }
+    if (!isTestAuthEnabled()) return errorResponse("TEST_AUTH_DISABLED", requestId, 503);
     const challengeId = startTestSignIn(input.email, input.password);
     if (!challengeId) return errorResponse("AUTHENTICATION_INVALID", requestId, 401);
     return NextResponse.json({ challengeId, next: "MFA" }, { status: 202, headers: { "x-request-id": requestId } });
