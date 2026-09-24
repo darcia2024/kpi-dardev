@@ -25,3 +25,5 @@ out/
 !.env.example
 supabase/.temp/
 supabase/.branches/
+
+.vercel/

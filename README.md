@@ -27,6 +27,12 @@ npm run dev
 
 Health check tersedia pada `http://localhost:3000/api/v1/health` saat environment valid.
 
+## Pratinjau publik di Vercel
+
+Versi situs publik tersedia di https://kpi-ppmi-mesir-preview.vercel.app. Project Vercel ini terpisah dari situs rancangan `kpi-dardev.vercel.app` dan menjalankan `KPI_APP_ENV=staging` dengan `KPI_TEST_AUTH_ENABLED=false`. Karena itu login contoh, penulisan aspirasi/pengaduan, dan workflow portal internal tidak dibuka di URL publik. Ini pratinjau tampilan, bukan rilis sistem operasional KPI.
+
+Project saat ini terhubung ke folder kerja melalui Vercel CLI, tanpa deploy otomatis dari Git. Kode terbaru berada di branch `codex/e01-foundation`, sedangkan branch default GitHub masih `main`. Setelah perubahan diverifikasi, deploy pembaruan dari branch yang benar dengan `vercel deploy --prod --scope darcia2024s-projects`. Untuk mengaktifkan deploy otomatis kelak, atur Production Branch project `kpi-ppmi-mesir-preview` ke branch rilis yang sudah disepakati terlebih dahulu.
+
 Jalankan pemeriksaan sebelum review:
 
 ```powershell
