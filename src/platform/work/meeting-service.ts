@@ -3,6 +3,14 @@ import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, ty
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import type { TestTaskService } from "@/platform/work/task-service";
 
+// TUNDA is kept only for votes recorded before motions existed.
+export type VoteChoice = "SETUJU" | "TOLAK" | "ABSTAIN" | "TUNDA";
+export type AttendanceStatus = "HADIR" | "IZIN" | "TIDAK_HADIR";
+// Eligible voters and present count are snapshotted when the motion opens (Q08).
+export type Motion = { round: number; text: string; openedAt: string; closedAt?: string; eligibleAccountIds: string[]; presentAtOpen: number };
+export type MotionOutcome = "ACCEPTED" | "REJECTED" | "NO_QUORUM" | "PENDING_RULE";
+export type MotionView = Omit<Motion, "eligibleAccountIds"> & { eligibleCount: number; votesCast: number; tally?: { SETUJU: number; TOLAK: number; ABSTAIN: number }; outcome?: MotionOutcome };
+
 export type MeetingRecord = {
   id: string;
   title: string;
@@ -16,11 +24,16 @@ export type MeetingRecord = {
   participantAccountIds: string[];
   decisionId?: string;
   archivedAt?: string;
+  // Quorum is a per-meeting preview value until KPI sets the official rule (Q08).
+  quorumMinPresent?: number;
+  attendance?: Record<string, AttendanceStatus>;
+  motions?: Motion[];
 };
 
 export class TestMeetingService {
   private readonly meetings: RecordCollection<MeetingRecord>;
-  private readonly votes: RecordCollection<{ choice: "SETUJU" | "TUNDA" }>;
+  // meetingId/round are stored on the record so tallies can be computed; older votes only have choice.
+  private readonly votes: RecordCollection<{ choice: VoteChoice; meetingId?: string; round?: number }>;
   private readonly responses: RecordCollection<{ response: "HADIR" | "TIDAK_HADIR" | "RAGU"; updatedAt: string }>;
   private readonly audit: LocalBusinessAuditService;
 
@@ -34,7 +47,7 @@ export class TestMeetingService {
   }
 
   list(): MeetingRecord[] {
-    return Array.from(this.meetings.values()).map((meeting) => ({ ...meeting, participantAccountIds: [...meeting.participantAccountIds] }));
+    return Array.from(this.meetings.values()).map(cloneMeeting);
   }
 
   create(input: { title: string; organizationCode: string; periodCode: string; startsAt: string; agenda: string; participantAccountIds: string[]; actorAccountId: string }): MeetingRecord {
@@ -76,18 +89,22 @@ export class TestMeetingService {
     return { ...updated };
   }
 
-  castVote(input: { meetingId: string; round: number; voterAccountId: string; choice: "SETUJU" | "TUNDA" }): "SETUJU" | "TUNDA" | null {
+  castVote(input: { meetingId: string; round: number; voterAccountId: string; choice: VoteChoice }): VoteChoice | null {
     const meeting = this.meetings.get(input.meetingId);
     if (!meeting || meeting.archivedAt || input.round < 1 || !meeting.participantAccountIds.includes(input.voterAccountId)) return null;
+    if (meeting.motions?.length) {
+      const motion = meeting.motions.find((candidate) => candidate.round === input.round);
+      if (!motion || motion.closedAt || !motion.eligibleAccountIds.includes(input.voterAccountId) || input.choice === "TUNDA") return null;
+    }
     const key = `${input.meetingId}:${input.round}:${input.voterAccountId}`;
     const existing = this.votes.get(key);
     if (existing) return existing.choice;
-    this.votes.set(key, { choice: input.choice });
+    this.votes.set(key, { choice: input.choice, meetingId: input.meetingId, round: input.round });
     this.audit.record({ action: "MEETING_VOTE_CAST", module: "meeting", entityType: "meeting_vote", entityId: key, actorAccountId: input.voterAccountId, result: "SUCCESS", requestId: `local:${key}`, metadata: { meetingId: input.meetingId, round: input.round, choice: input.choice } });
     return input.choice;
   }
 
-  getVote(meetingId: string, round: number, voterAccountId: string): "SETUJU" | "TUNDA" | null {
+  getVote(meetingId: string, round: number, voterAccountId: string): VoteChoice | null {
     const meeting = this.meetings.get(meetingId);
     if (!meeting?.participantAccountIds.includes(voterAccountId)) return null;
     return this.votes.get(`${meetingId}:${round}:${voterAccountId}`)?.choice ?? null;
@@ -112,7 +129,84 @@ export class TestMeetingService {
     return { ...updated, participantAccountIds: [...updated.participantAccountIds] };
   }
 
+  setQuorum(id: string, actorAccountId: string, minPresent: number): MeetingRecord | null {
+    const meeting = this.meetings.get(id);
+    if (!meeting || meeting.archivedAt || meeting.minutesState === "FINAL" || !Number.isInteger(minPresent) || minPresent < 1 || minPresent > meeting.participantAccountIds.length) return null;
+    return this.save({ ...meeting, quorumMinPresent: minPresent }, actorAccountId, "MEETING_QUORUM_SET", { minPresent });
+  }
+
+  recordAttendance(id: string, actorAccountId: string, accountId: string, status: AttendanceStatus): MeetingRecord | null {
+    const meeting = this.meetings.get(id);
+    if (!meeting || meeting.archivedAt || meeting.minutesState === "FINAL" || !meeting.participantAccountIds.includes(accountId)) return null;
+    return this.save({ ...meeting, attendance: { ...meeting.attendance, [accountId]: status } }, actorAccountId, "MEETING_ATTENDANCE_RECORDED", { accountId, status });
+  }
+
+  openMotion(id: string, actorAccountId: string, text: string): MeetingRecord | null {
+    const meeting = this.meetings.get(id);
+    const clean = text.trim();
+    if (!meeting || meeting.archivedAt || meeting.minutesState === "FINAL" || clean.length < 5 || meeting.motions?.some((motion) => !motion.closedAt)) return null;
+    // Legacy votes recorded before motions existed must not leak into a new motion's tally.
+    const round = Math.max(this.lastLegacyRound(id), ...(meeting.motions ?? []).map((motion) => motion.round)) + 1;
+    const present = presentAccounts(meeting);
+    const attendanceTaken = Object.keys(meeting.attendance ?? {}).length > 0;
+    const motion: Motion = { round, text: clean, openedAt: new Date().toISOString(), eligibleAccountIds: attendanceTaken ? present : [...meeting.participantAccountIds], presentAtOpen: present.length };
+    if (!motion.eligibleAccountIds.length) return null;
+    return this.save({ ...meeting, motions: [...(meeting.motions ?? []), motion] }, actorAccountId, "MEETING_MOTION_OPENED", { round, eligibleCount: motion.eligibleAccountIds.length });
+  }
+
+  closeMotion(id: string, actorAccountId: string): MeetingRecord | null {
+    const meeting = this.meetings.get(id);
+    const open = meeting?.motions?.find((motion) => !motion.closedAt);
+    if (!meeting || !open || meeting.archivedAt) return null;
+    const closedAt = new Date().toISOString();
+    return this.save({ ...meeting, motions: meeting.motions!.map((motion) => motion.round === open.round ? { ...motion, closedAt } : motion) }, actorAccountId, "MEETING_MOTION_CLOSED", { round: open.round, ...this.tally(id, open.round) });
+  }
+
+  // Secret ballot: individual choices are never exposed, and totals only after the motion closes.
+  motionViews(id: string): MotionView[] {
+    const meeting = this.meetings.get(id);
+    return (meeting?.motions ?? []).map(({ eligibleAccountIds, ...motion }) => {
+      const tally = this.tally(id, motion.round);
+      const votesCast = tally.SETUJU + tally.TOLAK + tally.ABSTAIN;
+      if (!motion.closedAt) return { ...motion, eligibleCount: eligibleAccountIds.length, votesCast };
+      return { ...motion, eligibleCount: eligibleAccountIds.length, votesCast, tally, outcome: motionOutcome(meeting!.quorumMinPresent, motion.presentAtOpen, tally) };
+    });
+  }
+
+  private tally(meetingId: string, round: number): { SETUJU: number; TOLAK: number; ABSTAIN: number } {
+    const result = { SETUJU: 0, TOLAK: 0, ABSTAIN: 0 };
+    for (const vote of this.votes.values()) if (vote.meetingId === meetingId && vote.round === round) result[vote.choice === "TUNDA" ? "ABSTAIN" : vote.choice] += 1;
+    return result;
+  }
+
+  // The pre-motion UI only ever voted in round 1.
+  private lastLegacyRound(meetingId: string): number {
+    const meeting = this.meetings.get(meetingId);
+    return meeting?.participantAccountIds.some((accountId) => this.votes.get(`${meetingId}:1:${accountId}`)) ? 1 : 0;
+  }
+
+  private save(meeting: MeetingRecord, actorAccountId: string, action: string, metadata: Record<string, unknown>): MeetingRecord {
+    this.meetings.set(meeting.id, meeting);
+    this.audit.record({ action, module: "meeting", entityType: "meeting", entityId: meeting.id, actorAccountId, result: "SUCCESS", requestId: `local:${meeting.id}`, metadata });
+    return cloneMeeting(meeting);
+  }
+
   listAudit(entityId?: string) { return this.audit.list(entityId); }
+}
+
+function cloneMeeting(meeting: MeetingRecord): MeetingRecord {
+  return { ...meeting, participantAccountIds: [...meeting.participantAccountIds], attendance: meeting.attendance ? { ...meeting.attendance } : undefined, motions: meeting.motions?.map((motion) => ({ ...motion, eligibleAccountIds: [...motion.eligibleAccountIds] })) };
+}
+
+export function presentAccounts(meeting: MeetingRecord): string[] {
+  return meeting.participantAccountIds.filter((accountId) => meeting.attendance?.[accountId] === "HADIR");
+}
+
+// Simple majority of Setuju over Tolak is a preview rule; without a quorum value nothing is declared valid.
+export function motionOutcome(quorumMinPresent: number | undefined, presentAtOpen: number, tally: { SETUJU: number; TOLAK: number }): MotionOutcome {
+  if (!quorumMinPresent) return "PENDING_RULE";
+  if (presentAtOpen < quorumMinPresent) return "NO_QUORUM";
+  return tally.SETUJU > tally.TOLAK ? "ACCEPTED" : "REJECTED";
 }
 
 export function getLocalMeetingService(): TestMeetingService {

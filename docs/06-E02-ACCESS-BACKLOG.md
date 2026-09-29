@@ -15,6 +15,7 @@ Gunakan hanya pada `KPI_APP_ENV=local` dengan `KPI_TEST_AUTH_ENABLED=true`:
 
 - Pengurus: `pengurus.test@kpi.local`
 - Admin Sistem: `admin.test@kpi.local`
+- Ketua (pratinjau): `ketua.test@kpi.local` · pemberi persetujuan akhir keuangan dan penilai kinerja; bukan jabatan resmi
 - Kata sandi fixture: `KPI-TEST-2026`
 - Kode MFA fixture: `000000`
 

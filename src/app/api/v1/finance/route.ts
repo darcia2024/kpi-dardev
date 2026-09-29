@@ -14,7 +14,9 @@ export async function GET(request: Request): Promise<Response> {
   const testScope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity || !hasTestPermission(identity, "FINANCE_READ", testScope)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
-  return Response.json({ records: getLocalFinanceService().list().filter((record) => record.organizationCode === testScope.organizationCode && record.periodCode === testScope.periodCode) }, { headers: { "x-request-id": requestId } });
+  const service = getLocalFinanceService();
+  const records = service.list().filter((record) => record.organizationCode === testScope.organizationCode && record.periodCode === testScope.periodCode).map((record) => ({ ...record, needsFinalApproval: service.needsFinalApproval(record) }));
+  return Response.json({ records, settings: [service.getSettings(testScope.organizationCode, testScope.periodCode) ?? { finalApprovalAboveMinor: null }] }, { headers: { "x-request-id": requestId } });
 }
 
 const createSchema = z.object({ title: z.string().trim().min(3).max(160), amountMinor: z.number().int().positive().safe(), currency: z.literal("TEST"), budgetLineId: z.string().uuid().optional() });

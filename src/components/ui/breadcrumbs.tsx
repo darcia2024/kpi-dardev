@@ -17,6 +17,8 @@ const labels: Record<string, string> = {
   kabar: "Kabar & catatan",
   layanan: "Layanan publik",
   masuk: "Login pengurus",
+  "lupa-sandi": "Lupa kata sandi",
+  "atur-ulang": "Kata sandi baru",
   portal: "Portal pengurus",
   workspace: "Workspace",
   tugas: "Tugas",

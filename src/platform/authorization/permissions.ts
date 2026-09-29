@@ -1,5 +1,6 @@
 import type { TestIdentity } from "@/platform/identity/test-auth";
 import { getLocalAuthorizationRepository } from "@/platform/authorization/local-authorization-repository";
+import { ketuaScopedPermissions } from "@/platform/authorization/test-personas";
 
 export const permissions = [
   "SYSTEM_CONFIGURATION_READ",
@@ -14,6 +15,7 @@ export const permissions = [
   "MEETING_MANAGE",
   "FINANCE_READ",
   "FINANCE_MANAGE",
+  "FINANCE_APPROVE_FINAL",
   "EVALUATION_READ",
   "EVALUATION_WRITE",
   "KNOWLEDGE_READ",
@@ -85,7 +87,8 @@ const testPermissionGrants: TestPermissionGrant[] = [
   { email: "pengurus.test@kpi.local", permission: "HANDOVER_ACCEPT", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "pengurus.test@kpi.local", permission: "AI_READ", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "pengurus.test@kpi.local", permission: "CONTENT_REVIEW", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
-  { email: "pengurus.test@kpi.local", permission: "ASSET_DOWNLOAD", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" }
+  { email: "pengurus.test@kpi.local", permission: "ASSET_DOWNLOAD", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
+  ...ketuaScopedPermissions.map((permission) => ({ email: "ketua.test@kpi.local", permission, organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" }))
 ];
 
 /**

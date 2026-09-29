@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { hasTestPermission } from "@/platform/authorization/permissions";
 import { getLocalContentRepository } from "@/platform/content/content-repository";
+import { publishDueContent } from "@/platform/content/scheduled-publishing";
 import { errorResponse } from "@/platform/http/response";
 import { getRequestId } from "@/platform/http/request-id";
 import { getTestSession, isTestAuthEnabled, sessionCookieName } from "@/platform/identity/test-auth";
@@ -27,6 +28,7 @@ export async function GET(request: Request): Promise<Response> {
     const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
     if (!identity || !["CONTENT_DRAFT_WRITE", "CONTENT_REVIEW", "CONTENT_PUBLISH"].some((permission) => hasTestPermission(identity, permission as "CONTENT_DRAFT_WRITE" | "CONTENT_REVIEW" | "CONTENT_PUBLISH", scope))) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
     const repository = getLocalContentRepository();
+    await publishDueContent(repository);
     const contentId = new URL(request.url).searchParams.get("contentId");
     if (contentId) {
       const id = z.string().uuid().parse(contentId);

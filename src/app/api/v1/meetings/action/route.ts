@@ -8,7 +8,7 @@ import { getTestSession, isTestAuthEnabled, sessionCookieName } from "@/platform
 import { getLocalMeetingService } from "@/platform/work/meeting-service";
 import { getLocalTaskService } from "@/platform/work/task-service";
 
-const actionSchema = z.discriminatedUnion("action", [z.object({ action: z.literal("RSVP"), meetingId: z.string().uuid(), response: z.enum(["HADIR", "TIDAK_HADIR", "RAGU"]) }), z.object({ action: z.literal("FINALIZE_MINUTES"), meetingId: z.string().uuid() }), z.object({ action: z.literal("REVISE_MINUTES"), meetingId: z.string().uuid(), summary: z.string().trim().min(3).max(5_000) }), z.object({ action: z.literal("VOTE"), meetingId: z.string().uuid(), round: z.number().int().positive(), choice: z.enum(["SETUJU", "TUNDA"]) }), z.object({ action: z.literal("CREATE_FOLLOW_UP"), meetingId: z.string().uuid(), title: z.string().trim().min(3).max(180), ownerAccountId: z.string().uuid() }), z.object({ action: z.literal("ARCHIVE"), meetingId: z.string().uuid(), reason: z.string().trim().min(3).max(500) })]);
+const actionSchema = z.discriminatedUnion("action", [z.object({ action: z.literal("RSVP"), meetingId: z.string().uuid(), response: z.enum(["HADIR", "TIDAK_HADIR", "RAGU"]) }), z.object({ action: z.literal("FINALIZE_MINUTES"), meetingId: z.string().uuid() }), z.object({ action: z.literal("REVISE_MINUTES"), meetingId: z.string().uuid(), summary: z.string().trim().min(3).max(5_000) }), z.object({ action: z.literal("VOTE"), meetingId: z.string().uuid(), round: z.number().int().positive(), choice: z.enum(["SETUJU", "TOLAK", "ABSTAIN"]) }), z.object({ action: z.literal("SET_QUORUM"), meetingId: z.string().uuid(), minPresent: z.number().int().min(1).max(200) }), z.object({ action: z.literal("ATTENDANCE"), meetingId: z.string().uuid(), accountId: z.string().uuid(), status: z.enum(["HADIR", "IZIN", "TIDAK_HADIR"]) }), z.object({ action: z.literal("OPEN_MOTION"), meetingId: z.string().uuid(), text: z.string().trim().min(5).max(500) }), z.object({ action: z.literal("CLOSE_MOTION"), meetingId: z.string().uuid() }), z.object({ action: z.literal("CREATE_FOLLOW_UP"), meetingId: z.string().uuid(), title: z.string().trim().min(3).max(180), ownerAccountId: z.string().uuid() }), z.object({ action: z.literal("ARCHIVE"), meetingId: z.string().uuid(), reason: z.string().trim().min(3).max(500) })]);
 
 export async function POST(request: Request): Promise<Response> {
   const requestId = getRequestId(request.headers.get("x-request-id"));
@@ -32,7 +32,11 @@ export async function POST(request: Request): Promise<Response> {
       return choice ? Response.json({ choice }, { headers: { "x-request-id": requestId } }) : errorResponse("AUTHORIZATION_DENIED", requestId, 404);
     }
     if (!hasTestPermission(identity, "MEETING_MANAGE", testScope)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
-    const result = input.action === "FINALIZE_MINUTES"
+    const result = input.action === "SET_QUORUM" ? meetings.setQuorum(input.meetingId, identity.accountId, input.minPresent)
+      : input.action === "ATTENDANCE" ? meetings.recordAttendance(input.meetingId, identity.accountId, input.accountId, input.status)
+      : input.action === "OPEN_MOTION" ? meetings.openMotion(input.meetingId, identity.accountId, input.text)
+      : input.action === "CLOSE_MOTION" ? meetings.closeMotion(input.meetingId, identity.accountId)
+      : input.action === "FINALIZE_MINUTES"
       ? meetings.finalizeMinutes(input.meetingId, identity.accountId)
       : input.action === "REVISE_MINUTES"
         ? meetings.reviseMinutes(input.meetingId, input.summary, identity.accountId)

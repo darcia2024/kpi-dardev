@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { apiJson, usePortalResource } from "@/components/portal/api-client";
+import { PerformanceSheet } from "@/components/evaluation/performance-sheet";
 
 type Evaluation = { id: string; subjectAccountId: string; indicator: string; value: number | null; formulaVersion: string; evidenceAssetIds: string[]; status: "DRAFT" | "REVIEWED" | "CORRECTED"; updatedAt: string };
 type Article = { id: string; title: string; version: number; sourceAssetId: string; status: "DRAFT" | "PUBLISHED" | "ARCHIVED" };
@@ -53,7 +54,7 @@ export function EvaluationWorkspace({ accountId, canEvaluate, canWriteKnowledge 
   return <>
     <section className="case-tabs" aria-label="Area evaluasi"><button className={tab === "performance" ? "is-active" : ""} onClick={() => setTab("performance")} type="button">Kinerja</button><button className={tab === "knowledge" ? "is-active" : ""} onClick={() => setTab("knowledge")} type="button">Knowledge base</button></section>
     {message && <p className="form-message" role="status">{message}</p>}
-    {tab === "performance" ? <>
+    {tab === "performance" ? <><PerformanceSheet accountId={accountId} canEvaluate={canEvaluate} />
       <section className="finance-summary" aria-label="Ringkasan evaluasi pratinjau"><div><span className="finance-summary__label">Indikator</span><strong>{evaluations.items.length}</strong><small>Periode pratinjau</small></div><div><span className="finance-summary__label">Belum dinilai</span><strong>{evaluations.items.filter((item) => item.value === null).length}</strong><small>Berbeda dari nilai nol</small></div><div><span className="finance-summary__label">Sudah ditinjau</span><strong>{evaluations.items.filter((item) => item.status !== "DRAFT").length}</strong><small>Belum nilai resmi</small></div><div><span className="finance-summary__label">Sanggah terbuka</span><strong>{appeals.items.filter((item) => item.status === "OPEN").length}</strong><small>Perlu keputusan</small></div></section>
       <section className="score-report" aria-label="Pratinjau laporan evaluasi"><div><p className="eyebrow">Laporan evaluasi · pratinjau</p><h2>Nilai dan sumbernya</h2><p>Setiap baris menampilkan formula, revisi, dan keadaan bukti. Ini belum menjadi penetapan nilai resmi KPI.</p></div>{report.error && <p role="alert">{report.error}</p>}{report.items.length === 0 && !report.loading && !report.error && <p>Belum ada indikator pada periode ini.</p>}<div className="score-report__rows">{report.items.map((row) => <div className="score-report__row" key={row.evaluationId}><strong>{row.indicator}</strong><span>{row.value ?? "—"}</span><span>{readinessLabels[row.readiness]}</span><small>{row.formulaVersion} · revisi {row.revisionId?.slice(0, 8) ?? "belum ada"} · {row.evidence.length} bukti</small></div>)}</div></section>
       <div className="governance-filters"><label>Cari indikator<input onChange={(event) => setSearch(event.target.value)} placeholder="Nama indikator" type="search" value={search} /></label><label>Status<select onChange={(event) => setStatusFilter(event.target.value)} value={statusFilter}><option value="ALL">Semua status</option><option value="DRAFT">Draf</option><option value="REVIEWED">Ditinjau</option><option value="CORRECTED">Dikoreksi</option></select></label><span>{visible.length} indikator</span></div>

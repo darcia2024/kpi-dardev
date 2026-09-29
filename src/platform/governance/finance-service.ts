@@ -4,7 +4,11 @@ import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit
 import { getLocalAssetRepository, TestAssetRepository } from "@/platform/storage/asset-repository";
 import { BudgetService, summarizeBudget } from "@/platform/governance/budget-service";
 
-export type FinanceStatus = "DRAFT" | "PENDING_APPROVAL" | "APPROVED" | "PAID" | "RECONCILED" | "REJECTED";
+// PENDING_FINAL: checked by the treasurer (level 1), waiting for the chair (level 2).
+export type FinanceStatus = "DRAFT" | "PENDING_APPROVAL" | "PENDING_FINAL" | "APPROVED" | "PAID" | "RECONCILED" | "REJECTED";
+export type FinanceApproval = { level: 1 | 2; approverAccountId: string; at: string };
+// Until KPI sets a threshold every request needs both levels; with one, only amounts above it do.
+export type FinanceSettings = { id: string; organizationCode: string; periodCode: string; finalApprovalAboveMinor?: number; updatedByAccountId: string; updatedAt: string };
 
 export type FinanceRecord = {
   id: string;
@@ -18,16 +22,18 @@ export type FinanceRecord = {
   status: FinanceStatus;
   evidenceAssetId?: string;
   approvedByAccountId?: string;
+  approvals?: FinanceApproval[];
   reconciledByAccountId?: string;
   paidByAccountId?: string;
   updatedAt: string;
 };
 
-export type FinanceEvent = { id: string; recordId: string; action: "CREATED" | "SUBMITTED" | "APPROVED" | "REJECTED" | "PAID" | "RECONCILED"; actorAccountId: string; status: FinanceStatus; reason?: string; createdAt: string };
+export type FinanceEvent = { id: string; recordId: string; action: "CREATED" | "SUBMITTED" | "CHECKED" | "APPROVED" | "REJECTED" | "PAID" | "RECONCILED"; actorAccountId: string; status: FinanceStatus; reason?: string; createdAt: string };
 
 export class TestFinanceService {
   private readonly records: RecordCollection<FinanceRecord>;
   private readonly events: RecordCollection<FinanceEvent>;
+  private readonly settings: RecordCollection<FinanceSettings>;
   private readonly audit: LocalBusinessAuditService;
   private readonly budgets: BudgetService;
   constructor(database?: LocalRecordDatabase, private readonly assets = new TestAssetRepository()) {
@@ -35,6 +41,7 @@ export class TestFinanceService {
     if (process.env.NODE_TEST_CONTEXT) seed.set("00000000-0000-4000-8000-000000005001", { id: "00000000-0000-4000-8000-000000005001", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST", title: "Operasional kegiatan · TEST", currency: "TEST", amountMinor: 1250000, requesterAccountId: "00000000-0000-4000-8000-000000000102", status: "DRAFT", updatedAt: "2026-09-22T08:00:00.000Z" });
     this.records = database ? new PersistentRecords(database, "finance", seed) : seed;
     this.events = database ? new PersistentRecords(database, "finance-events", []) : new Map();
+    this.settings = database ? new PersistentRecords(database, "finance-settings", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);
     this.budgets = new BudgetService(database);
   }
@@ -62,12 +69,44 @@ export class TestFinanceService {
     return this.replace(id, { ...record, evidenceAssetId, status: "PENDING_APPROVAL" }, "SUBMITTED", requesterAccountId);
   }
 
+  getSettings(organizationCode: string, periodCode: string): FinanceSettings | null {
+    const settings = this.settings.get(`${organizationCode}:${periodCode}`);
+    return settings ? { ...settings } : null;
+  }
+
+  setFinalApprovalThreshold(organizationCode: string, periodCode: string, actorAccountId: string, amountMinor: number | null): FinanceSettings | null {
+    if (amountMinor !== null && (!Number.isSafeInteger(amountMinor) || amountMinor < 0)) return null;
+    const settings: FinanceSettings = { id: `${organizationCode}:${periodCode}`, organizationCode, periodCode, finalApprovalAboveMinor: amountMinor ?? undefined, updatedByAccountId: actorAccountId, updatedAt: new Date().toISOString() };
+    this.settings.set(settings.id, settings);
+    this.audit.record({ action: "FINANCE_THRESHOLD_SET", module: "finance", entityType: "finance_settings", entityId: settings.id, actorAccountId, result: "SUCCESS", requestId: `local:${settings.id}`, metadata: { finalApprovalAboveMinor: amountMinor } });
+    return { ...settings };
+  }
+
+  needsFinalApproval(record: Pick<FinanceRecord, "organizationCode" | "periodCode" | "amountMinor">): boolean {
+    const threshold = this.getSettings(record.organizationCode, record.periodCode)?.finalApprovalAboveMinor;
+    return threshold === undefined || record.amountMinor > threshold;
+  }
+
+  // Level 1 (treasurer check). Amounts that need the chair move to PENDING_FINAL instead of APPROVED.
   approve(id: string, reviewerAccountId: string, approved: boolean, reason?: string): FinanceRecord | null {
     const record = this.records.get(id);
     if (!record || record.status !== "PENDING_APPROVAL" || record.requesterAccountId === reviewerAccountId) return null;
     if (!approved && (!reason || reason.trim().length < 3)) return null;
     if (approved && (!record.evidenceAssetId || !this.assets.canUseEvidence(record.evidenceAssetId, reviewerAccountId, record.organizationCode, record.periodCode))) return null;
-    return this.replace(id, { ...record, status: approved ? "APPROVED" : "REJECTED", approvedByAccountId: reviewerAccountId }, approved ? "APPROVED" : "REJECTED", reviewerAccountId, reason?.trim());
+    if (!approved) return this.replace(id, { ...record, status: "REJECTED", approvedByAccountId: reviewerAccountId }, "REJECTED", reviewerAccountId, reason?.trim());
+    const approvals: FinanceApproval[] = [{ level: 1, approverAccountId: reviewerAccountId, at: new Date().toISOString() }];
+    if (this.needsFinalApproval(record)) return this.replace(id, { ...record, status: "PENDING_FINAL", approvals }, "CHECKED", reviewerAccountId);
+    return this.replace(id, { ...record, status: "APPROVED", approvedByAccountId: reviewerAccountId, approvals }, "APPROVED", reviewerAccountId);
+  }
+
+  // Level 2 (chair). Must differ from both the requester and the level-1 checker.
+  approveFinal(id: string, approverAccountId: string, approved: boolean, reason?: string): FinanceRecord | null {
+    const record = this.records.get(id);
+    if (!record || record.status !== "PENDING_FINAL" || record.requesterAccountId === approverAccountId || record.approvals?.some((approval) => approval.approverAccountId === approverAccountId)) return null;
+    if (!approved && (!reason || reason.trim().length < 3)) return null;
+    if (!approved) return this.replace(id, { ...record, status: "REJECTED" }, "REJECTED", approverAccountId, reason?.trim());
+    const approvals: FinanceApproval[] = [...(record.approvals ?? []), { level: 2, approverAccountId, at: new Date().toISOString() }];
+    return this.replace(id, { ...record, status: "APPROVED", approvedByAccountId: approverAccountId, approvals }, "APPROVED", approverAccountId);
   }
 
   markPaid(id: string, actorAccountId: string): FinanceRecord | null {
@@ -107,4 +146,4 @@ export class TestFinanceService {
 }
 
 export function getLocalFinanceService(): TestFinanceService { return new TestFinanceService(getLocalRecordDatabase(), getLocalAssetRepository()); }
-function cloneRecord(record: FinanceRecord): FinanceRecord { return { ...record }; }
+function cloneRecord(record: FinanceRecord): FinanceRecord { return { ...record, approvals: record.approvals?.map((approval) => ({ ...approval })) }; }

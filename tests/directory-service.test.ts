@@ -12,7 +12,7 @@ const localEnvironment = {
 test("local directory separates preview accounts from official assignments", async () => {
   const directory = await loadDirectory("KPI_TEST", localEnvironment);
   assert.equal(directory.source, "LOCAL_PREVIEW");
-  assert.equal(directory.accounts.length, 2);
+  assert.equal(directory.accounts.length, 3, "pengurus, admin, and ketua preview accounts");
   assert.equal(directory.positions.length, 0);
   assert.equal(directory.assignments.length, 0);
   assert.equal(directory.periods.length, 1);

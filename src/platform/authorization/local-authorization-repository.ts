@@ -2,12 +2,14 @@ import { createHash, randomUUID } from "node:crypto";
 import type { TestIdentity } from "@/platform/identity/test-auth";
 import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
+import { ketuaScopedPermissions } from "@/platform/authorization/test-personas";
 
 export type AuthorizationScope = { organizationCode?: string; periodCode?: string; divisionCode?: string; objectId?: string };
 export type LocalPermissionGrant = AuthorizationScope & { id: string; accountId: string; permission: string; active: boolean; expiresAt?: string; createdByAccountId: string; createdAt: string };
 
 const admin = "00000000-0000-4000-8000-000000000101";
 const pengurus = "00000000-0000-4000-8000-000000000102";
+const ketua = "00000000-0000-4000-8000-000000000103";
 const scope = { organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" } as const;
 const now = "2026-09-22T08:00:00.000Z";
 
@@ -16,7 +18,7 @@ function seedGrants(): LocalPermissionGrant[] {
   const adminScoped = ["WORKSPACE_READ", "CONTENT_DRAFT_WRITE", "CONTENT_PUBLISH", "ASSET_UPLOAD", "ASSET_DOWNLOAD", "ASPIRATION_TRIAGE", "NOTIFICATION_READ", "TASK_READ", "TASK_CREATE", "TASK_REVIEW", "MEETING_READ", "MEETING_MANAGE", "FINANCE_READ", "FINANCE_MANAGE", "EVALUATION_READ", "EVALUATION_WRITE", "KNOWLEDGE_READ", "KNOWLEDGE_WRITE", "HANDOVER_READ", "HANDOVER_ACCEPT", "AI_READ", "AI_ACTION_CONFIRM"];
   const pengurusScoped = ["WORKSPACE_READ", "TASK_READ", "TASK_SUBMIT", "NOTIFICATION_READ", "NOTIFICATION_TEMPLATE_REVIEW", "MEETING_READ", "FINANCE_READ", "EVALUATION_READ", "KNOWLEDGE_READ", "KNOWLEDGE_REVIEW", "HANDOVER_READ", "HANDOVER_ACCEPT", "AI_READ", "CONTENT_REVIEW", "ASSET_DOWNLOAD"];
   const create = (accountId: string, permission: string, scoped: boolean): LocalPermissionGrant => ({ id: seedGrantId(accountId, permission), accountId, permission, ...(scoped ? scope : {}), active: true, createdByAccountId: admin, createdAt: now });
-  return [...unrestricted.map((permission) => create(admin, permission, false)), ...adminScoped.map((permission) => create(admin, permission, true)), ...pengurusScoped.map((permission) => create(pengurus, permission, true))];
+  return [...unrestricted.map((permission) => create(admin, permission, false)), ...adminScoped.map((permission) => create(admin, permission, true)), ...pengurusScoped.map((permission) => create(pengurus, permission, true)), ...ketuaScopedPermissions.map((permission) => create(ketua, permission, true))];
 }
 
 function seedGrantId(accountId: string, permission: string): string {

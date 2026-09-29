@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { publishDueContent } from "@/platform/content/scheduled-publishing";
 import Image from "next/image";
 import Link from "next/link";
 import { IconArrowRight, IconArrowUpRight, IconBook2, IconFileText, IconMessageCircle, IconShieldCheck } from "@tabler/icons-react";
@@ -18,7 +19,7 @@ export const dynamic = "force-dynamic";
 
 export default async function PublicationsPage(): Promise<React.JSX.Element> {
   const localPreview = isTestAuthEnabled();
-  const published = localPreview ? await getLocalContentRepository().listPublished() : [];
+  const published = localPreview ? await publishDueContent(getLocalContentRepository()).then((repository) => repository.listPublished()) : [];
   const publications = localPreview ? (published.length ? published : [examplePublication]) : [];
   return <div className="kp-site kp-library">
     <section className="kp-library-hero" aria-labelledby="library-title">

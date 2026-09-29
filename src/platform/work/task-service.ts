@@ -4,6 +4,8 @@ import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit
 import { getLocalAssetRepository, TestAssetRepository } from "@/platform/storage/asset-repository";
 
 export type TaskStatus = "IN_PROGRESS" | "BLOCKED" | "IN_REVIEW" | "ACCEPTED" | "ARCHIVED";
+export type Subtask = { id: string; title: string; done: boolean; doneByAccountId?: string; doneAt?: string };
+export type TaskComment = { id: string; taskId: string; authorAccountId: string; body: string; createdAt: string };
 
 export type TaskRecord = {
   id: string;
@@ -21,6 +23,8 @@ export type TaskRecord = {
   sourceTemplateId?: string;
   sourceTemplateVersion?: number;
   dependencyTaskIds?: string[];
+  subtasks?: Subtask[];
+  submissionNote?: string;
   dueAt?: string;
   closedAt?: string;
   updatedAt: string;
@@ -28,12 +32,14 @@ export type TaskRecord = {
 
 export class TestTaskService {
   private readonly records: RecordCollection<TaskRecord>;
+  private readonly comments: RecordCollection<TaskComment>;
   private readonly audit: LocalBusinessAuditService;
 
   constructor(database?: LocalRecordDatabase, private readonly assets = new TestAssetRepository()) {
     const seed = new Map<string, TaskRecord>();
     if (process.env.NODE_TEST_CONTEXT) seed.set("00000000-0000-4000-8000-000000003001", { id: "00000000-0000-4000-8000-000000003001", title: "Rancang struktur halaman publik · TEST", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST", ownerAccountId: "00000000-0000-4000-8000-000000000102", createdByAccountId: "00000000-0000-4000-8000-000000000101", status: "IN_PROGRESS", progress: 65, updatedAt: "2026-09-22T08:00:00.000Z" });
     this.records = database ? new PersistentRecords(database, "tasks", seed) : seed;
+    this.comments = database ? new PersistentRecords(database, "task-comments", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);
   }
 
@@ -56,12 +62,14 @@ export class TestTaskService {
     return cloneTask(record);
   }
 
-  submit(id: string, actorAccountId: string, evidenceAssetId: string): TaskRecord | null {
+  submit(id: string, actorAccountId: string, evidenceAssetId: string, note?: string): TaskRecord | null {
     const task = this.records.get(id);
     if (!task || task.ownerAccountId !== actorAccountId || task.status !== "IN_PROGRESS" || !evidenceAssetId) return null;
     if ((task.dependencyTaskIds ?? []).some((dependencyId) => this.records.get(dependencyId)?.status !== "ACCEPTED")) return null;
+    // Q04: every subtask done makes the parent ready to submit; review is still required.
+    if ((task.subtasks ?? []).some((subtask) => !subtask.done)) return null;
     if (!this.assets.canUseEvidence(evidenceAssetId, actorAccountId, task.organizationCode, task.periodCode)) return null;
-    const updated: TaskRecord = { ...task, status: "IN_REVIEW", progress: 100, evidenceAssetId, submittedByAccountId: actorAccountId, updatedAt: new Date().toISOString() };
+    const updated: TaskRecord = { ...task, status: "IN_REVIEW", progress: 100, evidenceAssetId, submissionNote: note?.trim() || undefined, submittedByAccountId: actorAccountId, updatedAt: new Date().toISOString() };
     this.records.set(id, updated);
     this.audit.record({ action: "TASK_SUBMITTED", module: "task", entityType: "task", entityId: id, actorAccountId, result: "SUCCESS", requestId: `local:${id}`, metadata: { status: updated.status, evidenceAssetId } });
     return cloneTask(updated);
@@ -73,7 +81,7 @@ export class TestTaskService {
     if (accepted && (!task.evidenceAssetId || !this.assets.canUseEvidence(task.evidenceAssetId, reviewerAccountId, task.organizationCode, task.periodCode))) return null;
     const updated: TaskRecord = accepted
       ? { ...task, status: "ACCEPTED", acceptedByAccountId: reviewerAccountId, updatedAt: new Date().toISOString() }
-      : { ...task, status: "IN_PROGRESS", progress: 80, evidenceAssetId: undefined, submittedByAccountId: undefined, updatedAt: new Date().toISOString() };
+      : { ...task, status: "IN_PROGRESS", progress: subtaskProgress(task.subtasks) ?? 80, evidenceAssetId: undefined, submissionNote: undefined, submittedByAccountId: undefined, updatedAt: new Date().toISOString() };
     this.records.set(id, updated);
     this.audit.record({ action: accepted ? "TASK_ACCEPTED" : "TASK_RETURNED", module: "task", entityType: "task", entityId: id, actorAccountId: reviewerAccountId, reason: reason?.trim(), result: "SUCCESS", requestId: `local:${id}`, metadata: { status: updated.status } });
     return cloneTask(updated);
@@ -110,6 +118,44 @@ export class TestTaskService {
     return cloneTask(updated);
   }
 
+  addSubtask(id: string, actorAccountId: string, title: string): TaskRecord | null {
+    const task = this.records.get(id);
+    const clean = title.trim();
+    if (!task || ![task.ownerAccountId, task.createdByAccountId].includes(actorAccountId) || !["IN_PROGRESS", "BLOCKED"].includes(task.status) || clean.length < 2 || clean.length > 180 || (task.subtasks?.length ?? 0) >= 30) return null;
+    const subtasks = [...(task.subtasks ?? []), { id: randomUUID(), title: clean, done: false }];
+    const updated: TaskRecord = { ...task, subtasks, progress: subtaskProgress(subtasks) ?? task.progress, updatedAt: new Date().toISOString() };
+    this.records.set(id, updated);
+    this.audit.record({ action: "TASK_SUBTASK_ADDED", module: "task", entityType: "task", entityId: id, actorAccountId, result: "SUCCESS", requestId: `local:${id}`, metadata: { subtaskCount: subtasks.length } });
+    return cloneTask(updated);
+  }
+
+  setSubtaskDone(id: string, actorAccountId: string, subtaskId: string, done: boolean): TaskRecord | null {
+    const task = this.records.get(id);
+    if (!task || task.ownerAccountId !== actorAccountId || !["IN_PROGRESS", "BLOCKED"].includes(task.status)) return null;
+    const target = task.subtasks?.find((subtask) => subtask.id === subtaskId);
+    if (!target || target.done === done) return null;
+    const now = new Date().toISOString();
+    const subtasks = task.subtasks!.map((subtask) => subtask.id === subtaskId ? done ? { ...subtask, done, doneByAccountId: actorAccountId, doneAt: now } : { id: subtask.id, title: subtask.title, done } : subtask);
+    const updated: TaskRecord = { ...task, subtasks, progress: subtaskProgress(subtasks) ?? task.progress, updatedAt: now };
+    this.records.set(id, updated);
+    this.audit.record({ action: done ? "TASK_SUBTASK_DONE" : "TASK_SUBTASK_REOPENED", module: "task", entityType: "task", entityId: id, actorAccountId, result: "SUCCESS", requestId: `local:${id}`, metadata: { subtaskId, progress: updated.progress } });
+    return cloneTask(updated);
+  }
+
+  addComment(id: string, authorAccountId: string, body: string): TaskComment | null {
+    const task = this.records.get(id);
+    const clean = body.trim();
+    if (!task || task.status === "ARCHIVED" || !clean || clean.length > 2_000) return null;
+    const comment: TaskComment = { id: randomUUID(), taskId: id, authorAccountId, body: clean, createdAt: new Date().toISOString() };
+    this.comments.set(comment.id, comment);
+    this.audit.record({ action: "TASK_COMMENTED", module: "task", entityType: "task", entityId: id, actorAccountId: authorAccountId, result: "SUCCESS", requestId: `local:${comment.id}` });
+    return { ...comment };
+  }
+
+  listComments(id: string): TaskComment[] {
+    return Array.from(this.comments.values()).filter((comment) => comment.taskId === id).sort((a, b) => a.createdAt.localeCompare(b.createdAt)).map((comment) => ({ ...comment }));
+  }
+
   listAudit(entityId?: string) { return this.audit.list(entityId); }
 }
 
@@ -118,5 +164,11 @@ export function getLocalTaskService(): TestTaskService {
 }
 
 function cloneTask(task: TaskRecord): TaskRecord {
-  return { ...task, dependencyTaskIds: [...(task.dependencyTaskIds ?? [])] };
+  return { ...task, dependencyTaskIds: [...(task.dependencyTaskIds ?? [])], subtasks: task.subtasks?.map((subtask) => ({ ...subtask })) };
+}
+
+// Progress follows subtasks up to 90%; the last 10% comes from an accepted submission.
+function subtaskProgress(subtasks?: Subtask[]): number | null {
+  if (!subtasks?.length) return null;
+  return Math.round(subtasks.filter((subtask) => subtask.done).length / subtasks.length * 90);
 }

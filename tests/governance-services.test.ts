@@ -12,6 +12,7 @@ const evidence = "00000000-0000-4000-8000-000000002001";
 test("a TEST finance record needs evidence and a separate reviewer before reconciliation", () => {
   const service = new TestFinanceService();
   const record = service.list()[0];
+  service.setFinalApprovalThreshold(record.organizationCode, record.periodCode, "00000000-0000-4000-8000-000000000103", 2_000_000);
   assert.equal(service.submit(record.id, pengurus, evidence)?.status, "PENDING_APPROVAL");
   assert.equal(service.approve(record.id, pengurus, true), null);
   assert.equal(service.approve(record.id, admin, true)?.status, "APPROVED");

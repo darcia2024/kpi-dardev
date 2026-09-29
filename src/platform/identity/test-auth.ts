@@ -1,5 +1,14 @@
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { parseEnvironment } from "@/platform/config/environment";
+import { getLocalPasswordRecovery } from "@/platform/identity/password-recovery";
+
+type PasswordState = { verifyOverride(accountId: string, password: string): boolean | null; passwordChangedAt(accountId: string): number | null };
+// Reset passwords live in local TEST storage; outside that mode the fixtures alone apply.
+let passwordState: () => PasswordState | null = () => {
+  try { return isTestAuthEnabled() ? getLocalPasswordRecovery() : null; }
+  catch { return null; }
+};
+export function setPasswordStateForTests(provider: () => PasswordState | null): void { passwordState = provider; }
 
 export const sessionCookieName = "kpi_test_session";
 
@@ -23,8 +32,14 @@ const testSessionSigningKey = "kpi-local-test-session-v1-not-for-production";
 
 const accounts: Array<TestIdentity & { password: string }> = [
   { accountId: "00000000-0000-4000-8000-000000000102", email: "pengurus.test@kpi.local", name: "Pengurus Pratinjau", password: testPassword, roles: ["PENGURUS"] },
-  { accountId: "00000000-0000-4000-8000-000000000101", email: "admin.test@kpi.local", name: "Admin Sistem Pratinjau", password: testPassword, roles: ["ADMIN_SISTEM", "PENGURUS"] }
+  { accountId: "00000000-0000-4000-8000-000000000101", email: "admin.test@kpi.local", name: "Admin Sistem Pratinjau", password: testPassword, roles: ["ADMIN_SISTEM", "PENGURUS"] },
+  { accountId: "00000000-0000-4000-8000-000000000103", email: "ketua.test@kpi.local", name: "Ketua Pratinjau", password: testPassword, roles: ["PENGURUS"] }
 ];
+
+export function findTestIdentityByEmail(email: string): TestIdentity | null {
+  const account = accounts.find((item) => item.email === email.trim().toLowerCase());
+  return account ? { accountId: account.accountId, email: account.email, name: account.name, roles: [...account.roles] } : null;
+}
 
 export function listTestIdentities(): TestIdentity[] {
   return accounts.map(({ accountId, email, name, roles }) => ({ accountId, email, name, roles: [...roles] }));
@@ -39,7 +54,9 @@ export function isTestAuthEnabled(values = process.env): boolean {
 }
 
 export function startTestSignIn(email: string, password: string, now = Date.now()): string | null {
-  const account = accounts.find((candidate) => candidate.email === email.trim().toLowerCase() && candidate.password === password);
+  const candidate = accounts.find((item) => item.email === email.trim().toLowerCase());
+  const override = candidate ? passwordState()?.verifyOverride(candidate.accountId, password) ?? null : null;
+  const account = candidate && (override ?? candidate.password === password) ? candidate : undefined;
   if (!account) return null;
 
   const challengeId = randomUUID();
@@ -67,6 +84,8 @@ export function getTestSession(token: string | undefined, now = Date.now(), valu
   if (!isTestAuthEnabled(values)) return null;
   const session = readTestSession(token);
   if (!session || session.expiresAt <= now || revokedSessionIds.has(session.sessionId)) return null;
+  const changedAt = passwordState()?.passwordChangedAt(session.accountId) ?? null;
+  if (changedAt !== null && session.issuedAt < changedAt) return null;
   return { accountId: session.accountId, email: session.email, name: session.name.replace(/\sTEST$/, " Pratinjau"), roles: session.roles };
 }
 

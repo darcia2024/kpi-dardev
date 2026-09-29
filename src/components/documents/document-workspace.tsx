@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
+import { IconCloudUpload, IconFolderOpen } from "@tabler/icons-react";
 import type { AssetRecord } from "@/platform/storage/asset-repository";
 import { apiJson, usePortalResource } from "@/components/portal/api-client";
 import { ActivityTimeline } from "@/components/portal/activity-timeline";
@@ -75,13 +76,13 @@ export function DocumentWorkspace({ canUpload, accountId, recipients, initialSel
       <div className="document-list" aria-label="Daftar metadata dokumen pratinjau">
         {loading ? <p role="status">Memuat dokumen…</p> : null}
         {error ? <p className="form-message" role="alert">{error} <button onClick={() => void reload()} type="button">Coba lagi</button></p> : null}
-        {!loading && !error && filtered.length === 0 ? <p role="status">Tidak ada dokumen yang cocok.</p> : null}
+        {!loading && !error && filtered.length === 0 ? <div className="portal-empty" role="status"><span className="portal-empty__icon"><IconFolderOpen size={22} aria-hidden="true" /></span><strong>{assets.length === 0 ? "Pustaka masih kosong." : "Tidak ada dokumen yang cocok."}</strong><span>{assets.length === 0 ? "Dokumen yang Anda unggah atau dibagikan kepada Anda akan tampil di sini." : "Ubah kata kunci atau filter klasifikasi."}</span></div> : null}
         {filtered.map((asset) => <article className="document-row" key={asset.id}><div><h3>{asset.fileName}</h3><p>v{asset.version} · {asset.mimeType} · {(asset.sizeBytes / 1_000_000).toFixed(1)} MB · {asset.classification}</p></div><span className={`status-chip status-chip--${asset.status.toLowerCase()}`}>{asset.status}</span><button aria-label={`Lihat metadata ${asset.fileName}`} className="row-action" onClick={() => setSelectedId(asset.id)} type="button">Detail</button></article>)}
       </div>
       <aside className="upload-panel" aria-labelledby="upload-title">
         <p className="eyebrow">F02 · Unggah privat</p><h2 id="upload-title">Unggah dokumen</h2>
         <p>File disimpan di ruang privat lokal. Dokumen baru hanya dapat dibuka setelah pemeriksaan keamanan tersedia dan lulus.</p>
-        {canUpload ? <><label className="file-drop"><input accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.zip" onChange={selectFile} type="file" />{selectedFile?.name ?? "Pilih berkas"}</label><label>Klasifikasi<select value={newClassification} onChange={(event) => setNewClassification(event.target.value as "INTERNAL" | "RESTRICTED")}><option value="INTERNAL">Internal</option><option value="RESTRICTED">Terbatas</option></select></label><label>Versi dari dokumen yang ada<select value={documentKeyOverride} onChange={(event) => setDocumentKeyOverride(event.target.value)}><option value="">Dokumen baru</option>{[...new Set(assets.map((asset) => asset.documentKey))].map((key) => <option key={key} value={key}>{key}</option>)}</select></label><button className="button button--primary" disabled={!selectedFile || busy} onClick={() => void uploadFile()} type="button">{busy ? "Mengunggah…" : "Unggah file"}</button></> : <p className="form-message" role="status">Akun ini hanya memiliki akses baca dokumen.</p>}
+        {canUpload ? <><label className="file-drop"><input accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.zip" onChange={selectFile} type="file" /><IconCloudUpload size={26} aria-hidden="true" /><strong>{selectedFile?.name ?? "Pilih berkas"}</strong><small>{selectedFile ? `${(selectedFile.size / 1_000_000).toFixed(1)} MB · klik untuk mengganti` : "PDF, Word, Excel, PNG, JPG, atau ZIP · maks. 25 MB"}</small></label><label>Klasifikasi<select value={newClassification} onChange={(event) => setNewClassification(event.target.value as "INTERNAL" | "RESTRICTED")}><option value="INTERNAL">Internal</option><option value="RESTRICTED">Terbatas</option></select></label><label>Versi dari dokumen yang ada<select value={documentKeyOverride} onChange={(event) => setDocumentKeyOverride(event.target.value)}><option value="">Dokumen baru</option>{[...new Set(assets.map((asset) => asset.documentKey))].map((key) => <option key={key} value={key}>{key}</option>)}</select></label><button className="button button--primary" disabled={!selectedFile || busy} onClick={() => void uploadFile()} type="button">{busy ? "Mengunggah…" : "Unggah file"}</button></> : <p className="form-message" role="status">Akun ini hanya memiliki akses baca dokumen.</p>}
         {message ? <p className="form-success" role="status">{message}</p> : null}
         {actionError ? <p className="form-message" role="alert">{actionError}</p> : null}
       </aside>

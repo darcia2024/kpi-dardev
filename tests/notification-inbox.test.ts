@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { taskAssignmentNotices } from "../src/platform/notifications/inbox-service";
+import { taskAssignmentNotices, taskReviewNotices } from "../src/platform/notifications/inbox-service";
 import type { TaskRecord } from "../src/platform/work/task-service";
 import type { BusinessAuditRecord } from "../src/platform/audit/local-business-audit-service";
 
@@ -16,4 +16,19 @@ test("inbox includes only tasks assigned to the signed-in recipient in the right
   assert.equal(notices[0].description, "Tinjau laporan");
   assert.equal(notices[0].createdAt, "2026-09-22T08:00:00.000Z");
   assert.equal(taskAssignmentNotices(tasks, audit, "another", scope.organizationCode, scope.periodCode).length, 1);
+});
+
+test("assignment notices need action only while the task is still open", () => {
+  const [open] = taskAssignmentNotices([baseTask], audit, "recipient", scope.organizationCode, scope.periodCode);
+  const [submitted] = taskAssignmentNotices([{ ...baseTask, status: "IN_REVIEW" }], audit, "recipient", scope.organizationCode, scope.periodCode);
+  assert.equal(open.actionRequired, true);
+  assert.equal(submitted.actionRequired, false);
+  assert.equal(open.href, "/portal/tugas?task=task-1");
+});
+
+test("review notices reach other reviewers but never the owner or submitter", () => {
+  const inReview: TaskRecord = { ...baseTask, status: "IN_REVIEW", submittedByAccountId: "recipient" };
+  assert.equal(taskReviewNotices([inReview], audit, "reviewer", scope.organizationCode, scope.periodCode)[0]?.actionRequired, true);
+  assert.equal(taskReviewNotices([inReview], audit, "recipient", scope.organizationCode, scope.periodCode).length, 0);
+  assert.equal(taskReviewNotices([baseTask], audit, "reviewer", scope.organizationCode, scope.periodCode).length, 0, "only submitted work needs review");
 });

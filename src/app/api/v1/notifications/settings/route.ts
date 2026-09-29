@@ -8,7 +8,7 @@ import { getTestSession, isTestAuthEnabled, sessionCookieName } from "@/platform
 import { getLocalNoticeSettingsRepository } from "@/platform/notifications/settings-repository";
 
 const actionSchema = z.discriminatedUnion("action", [
-  z.object({ action: z.literal("PREFERENCE"), optionalInApp: z.boolean() }),
+  z.object({ action: z.literal("PREFERENCE"), optionalInApp: z.boolean().optional(), taskReminders: z.boolean().optional(), announcements: z.boolean().optional(), emailDigest: z.boolean().optional(), quietHours: z.object({ enabled: z.boolean(), start: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), end: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/) }).optional() }),
   z.object({ action: z.literal("TEMPLATE_DRAFT"), code: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(80), locale: z.enum(["id", "en"]), title: z.string().trim().min(3).max(180), body: z.string().trim().min(10).max(2000) }),
   z.object({ action: z.literal("TEMPLATE_SUBMIT"), templateId: z.string().uuid() }),
   z.object({ action: z.literal("TEMPLATE_REVIEW"), templateId: z.string().uuid() })
@@ -35,7 +35,11 @@ export async function POST(request: Request): Promise<Response> {
     if (!identity || !hasTestPermission(identity, "NOTIFICATION_READ", scope)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
     const input = actionSchema.parse(await request.json());
     const repository = getLocalNoticeSettingsRepository();
-    if (input.action === "PREFERENCE") return Response.json({ preference: repository.savePreference(identity.accountId, input.optionalInApp) }, { headers: { "x-request-id": requestId } });
+    if (input.action === "PREFERENCE") {
+      const { action: _action, ...change } = input;
+      const preference = repository.savePreference(identity.accountId, change);
+      return preference ? Response.json({ preference }, { headers: { "x-request-id": requestId } }) : errorResponse("AUTHENTICATION_INVALID", requestId, 400);
+    }
     if (input.action === "TEMPLATE_REVIEW") {
       if (!hasTestPermission(identity, "NOTIFICATION_TEMPLATE_REVIEW", scope)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
       const template = repository.reviewTemplate(input.templateId, identity.accountId);

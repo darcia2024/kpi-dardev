@@ -6,6 +6,7 @@ import { errorResponse } from "@/platform/http/response";
 import { getRequestId } from "@/platform/http/request-id";
 import { getTestSession, isTestAuthEnabled, sessionCookieName } from "@/platform/identity/test-auth";
 import { getSelectedPreviewScope } from "@/platform/identity/preview-period-context";
+import { getLocalAssetRepository } from "@/platform/storage/asset-repository";
 
 const transitionSchema = z.object({ contentId: z.string().uuid(), targetState: z.enum(["DRAFT", "IN_REVIEW", "CHANGES_REQUESTED", "APPROVED", "PUBLISHED", "ARCHIVED"]), reason: z.string().trim().max(500).optional() });
 
@@ -20,8 +21,9 @@ export async function POST(request: Request): Promise<Response> {
     const repository = getLocalContentRepository();
     const current = await repository.getById(input.contentId);
     if (!current || current.organizationCode !== scope.organizationCode || current.periodCode !== scope.periodCode) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
-    const result = await transitionContent({ repository, contentId: input.contentId, targetState: input.targetState, actor: identity, reason: input.reason });
-    if (!result.ok) return errorResponse("AUTHORIZATION_DENIED", requestId, result.reason === "NOT_FOUND" ? 404 : 403);
+    const assets = getLocalAssetRepository();
+    const result = await transitionContent({ repository, contentId: input.contentId, targetState: input.targetState, actor: identity, reason: input.reason, assetStatus: (assetId) => assets.getVisible(assetId, identity.accountId)?.status });
+    if (!result.ok) return result.reason === "PREFLIGHT_FAILED" ? errorResponse("AUTHENTICATION_INVALID", requestId, 422) : errorResponse("AUTHORIZATION_DENIED", requestId, result.reason === "NOT_FOUND" ? 404 : 403);
     return Response.json({ record: result.record }, { headers: { "x-request-id": requestId } });
   } catch (error) {
     if (error instanceof z.ZodError) return errorResponse("AUTHENTICATION_INVALID", requestId, 400);

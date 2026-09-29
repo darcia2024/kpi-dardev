@@ -15,6 +15,8 @@ import "./accessibility.css";
 import "./design-system.css";
 import "./portal-shell.css";
 import "./portal-assistant.css";
+import "./portal-forms.css";
+import "./portal-editor.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],

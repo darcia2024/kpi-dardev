@@ -1,8 +1,12 @@
 import { randomUUID } from "node:crypto";
 import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
+import { defaultQuietHours, isValidClock, type QuietHours } from "@/platform/notifications/quiet-hours";
 
-export type NoticePreference = { id: string; accountId: string; optionalInApp: boolean; updatedAt: string };
+// Approval and account-security notices are mandatory and have no switch.
+export type NoticePreference = { id: string; accountId: string; optionalInApp: boolean; taskReminders: boolean; announcements: boolean; emailDigest: boolean; quietHours: QuietHours; updatedAt: string };
+export type NoticePreferenceChange = Partial<Pick<NoticePreference, "optionalInApp" | "taskReminders" | "announcements" | "emailDigest" | "quietHours">>;
+const defaultPreference = { optionalInApp: true, taskReminders: true, announcements: true, emailDigest: false, quietHours: defaultQuietHours };
 export type NoticeTemplate = { id: string; code: string; locale: "id" | "en"; title: string; body: string; version: number; status: "DRAFT" | "IN_REVIEW" | "REVIEWED"; authorAccountId: string; reviewerAccountId?: string; createdAt: string };
 
 export class LocalNoticeSettingsRepository {
@@ -15,14 +19,16 @@ export class LocalNoticeSettingsRepository {
     this.audit = new LocalBusinessAuditService(database);
   }
   getPreference(accountId: string): NoticePreference {
-    return this.preferences.get(accountId) ?? { id: accountId, accountId, optionalInApp: true, updatedAt: "" };
+    // Older records only stored optionalInApp; fill the newer fields with defaults.
+    const stored = this.preferences.get(accountId);
+    return { ...defaultPreference, id: accountId, accountId, updatedAt: "", ...stored, quietHours: { ...defaultQuietHours, ...stored?.quietHours } };
   }
-  savePreference(accountId: string, optionalInApp: boolean): NoticePreference {
-    const record = { id: accountId, accountId, optionalInApp, updatedAt: new Date().toISOString() };
-    this.preferences.get(accountId);
+  savePreference(accountId: string, change: NoticePreferenceChange): NoticePreference | null {
+    if (change.quietHours && (!isValidClock(change.quietHours.start) || !isValidClock(change.quietHours.end))) return null;
+    const record: NoticePreference = { ...this.getPreference(accountId), ...change, updatedAt: new Date().toISOString() };
     this.preferences.set(accountId, record);
-    this.audit.record({ action: "NOTICE_PREFERENCE_UPDATED", module: "notification", entityType: "account", entityId: accountId, actorAccountId: accountId, result: "SUCCESS", requestId: `local:${accountId}`, metadata: { optionalInApp } });
-    return record;
+    this.audit.record({ action: "NOTICE_PREFERENCE_UPDATED", module: "notification", entityType: "account", entityId: accountId, actorAccountId: accountId, result: "SUCCESS", requestId: `local:${accountId}`, metadata: { changed: Object.keys(change).join(",") } });
+    return { ...record, quietHours: { ...record.quietHours } };
   }
   listTemplates(): NoticeTemplate[] { return Array.from(this.templates.values()).sort((a, b) => b.createdAt.localeCompare(a.createdAt)); }
   createTemplate(input: Pick<NoticeTemplate, "code" | "locale" | "title" | "body" | "authorAccountId">): NoticeTemplate {

@@ -22,6 +22,9 @@ export type ContentRecord = {
   version: number;
   authorAccountId: string;
   mediaAssetId?: string;
+  // Set only while APPROVED; publishDue() publishes once the time has passed.
+  scheduledPublishAt?: string;
+  scheduledByAccountId?: string;
 };
 
 export type CreateDraftInput = Pick<ContentRecord, "title" | "description" | "body" | "type" | "meta" | "href" | "accent" | "locale" | "authorAccountId"> & {
@@ -41,6 +44,8 @@ export interface ContentRepository {
   updateDraft(id: string, actorAccountId: string, expectedVersion: number, title: string, description: string, body?: string): Promise<ContentRecord | null>;
   attachMedia(id: string, actorAccountId: string, expectedVersion: number, mediaAssetId: string | null): Promise<ContentRecord | null>;
   setState(id: string, state: ContentState, actorAccountId?: string, reason?: string): Promise<ContentRecord | null>;
+  schedulePublish(id: string, actorAccountId: string, publishAt: string | null, now?: number): Promise<ContentRecord | null>;
+  publishDue(now: number, mayPublish: (record: ContentRecord) => boolean): Promise<ContentRecord[]>;
 }
 
 export class TestContentRepository implements ContentRepository {
@@ -118,11 +123,38 @@ export class TestContentRepository implements ContentRepository {
   async setState(id: string, state: ContentState, actorAccountId?: string, reason?: string): Promise<ContentRecord | null> {
     const existing = this.records.get(id);
     if (!existing) return null;
-    const updated = { ...existing, state, version: existing.version + 1 };
+    // Leaving APPROVED cancels any pending schedule.
+    const updated: ContentRecord = { ...existing, state, version: existing.version + 1, ...(state === "APPROVED" ? {} : { scheduledPublishAt: undefined, scheduledByAccountId: undefined }) };
     this.records.set(id, updated);
     this.saveRevision(updated, actorAccountId);
     this.audit.record({ action: "CONTENT_STATE_CHANGED", module: "content", entityType: "content", entityId: id, actorAccountId, reason: reason?.trim(), result: "SUCCESS", requestId: `local:${id}`, metadata: { previousState: existing.state, nextState: updated.state, version: updated.version } });
     return clone(updated);
+  }
+
+  async schedulePublish(id: string, actorAccountId: string, publishAt: string | null, now = Date.now()): Promise<ContentRecord | null> {
+    const existing = this.records.get(id);
+    if (!existing || existing.state !== "APPROVED") return null;
+    if (publishAt !== null && (!Number.isFinite(Date.parse(publishAt)) || Date.parse(publishAt) <= now + 60_000)) return null;
+    const updated: ContentRecord = { ...existing, scheduledPublishAt: publishAt ? new Date(publishAt).toISOString() : undefined, scheduledByAccountId: publishAt ? actorAccountId : undefined };
+    this.records.set(id, updated);
+    this.audit.record({ action: publishAt ? "CONTENT_PUBLISH_SCHEDULED" : "CONTENT_SCHEDULE_CANCELLED", module: "content", entityType: "content", entityId: id, actorAccountId, result: "SUCCESS", requestId: `local:${id}`, metadata: { scheduledPublishAt: updated.scheduledPublishAt } });
+    return clone(updated);
+  }
+
+  // Local stand-in for the scheduled worker (ADR-005): runs on read and re-checks each record before publishing.
+  async publishDue(now: number, mayPublish: (record: ContentRecord) => boolean): Promise<ContentRecord[]> {
+    const due = Array.from(this.records.values()).filter((record) => record.state === "APPROVED" && record.scheduledPublishAt && Date.parse(record.scheduledPublishAt) <= now);
+    const published: ContentRecord[] = [];
+    for (const record of due) {
+      if (!mayPublish(record)) {
+        this.records.set(record.id, { ...record, scheduledPublishAt: undefined, scheduledByAccountId: undefined });
+        this.audit.record({ action: "CONTENT_SCHEDULE_BLOCKED", module: "content", entityType: "content", entityId: record.id, result: "DENIED", requestId: `local:${record.id}`, metadata: { scheduledPublishAt: record.scheduledPublishAt } });
+        continue;
+      }
+      const updated = await this.setState(record.id, "PUBLISHED", record.scheduledByAccountId, "Terbit sesuai jadwal");
+      if (updated) published.push(updated);
+    }
+    return published;
   }
 
   listAudit(entityId?: string) { return this.audit.list(entityId); }

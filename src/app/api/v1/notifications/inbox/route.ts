@@ -5,12 +5,19 @@ import { getRequestId } from "@/platform/http/request-id";
 import { errorResponse } from "@/platform/http/response";
 import { getTestSession, isTestAuthEnabled, sessionCookieName } from "@/platform/identity/test-auth";
 import { getLocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
-import { taskAssignmentNotices } from "@/platform/notifications/inbox-service";
+import { taskAssignmentNotices, taskReviewNotices } from "@/platform/notifications/inbox-service";
 import { getLocalTaskService } from "@/platform/work/task-service";
 import { getLocalInboxRepository } from "@/platform/notifications/inbox-repository";
 import { getLocalInternalCommunicationService } from "@/platform/notifications/internal-communication-service";
 import { z } from "zod";
 
+
+function taskNotices(accountId: string, canRead: boolean, canReview: boolean, scope: { organizationCode: string; periodCode: string }) {
+  if (!canRead) return [];
+  const tasks = getLocalTaskService().list();
+  const audit = getLocalBusinessAuditService().list();
+  return [...taskAssignmentNotices(tasks, audit, accountId, scope.organizationCode, scope.periodCode), ...(canReview ? taskReviewNotices(tasks, audit, accountId, scope.organizationCode, scope.periodCode) : [])];
+}
 
 export async function GET(request: Request): Promise<Response> {
   const requestId = getRequestId(request.headers.get("x-request-id"));
@@ -23,7 +30,7 @@ export async function GET(request: Request): Promise<Response> {
   }
   try {
     const receipts = getLocalInboxRepository();
-    const tasks = hasTestPermission(identity, "TASK_READ", scope) ? taskAssignmentNotices(getLocalTaskService().list(), getLocalBusinessAuditService().list(), identity.accountId, scope.organizationCode, scope.periodCode) : [];
+    const tasks = taskNotices(identity.accountId, hasTestPermission(identity, "TASK_READ", scope), hasTestPermission(identity, "TASK_REVIEW", scope), scope);
     const notices = [...tasks, ...getLocalInternalCommunicationService().inbox(identity.accountId, scope.organizationCode, scope.periodCode)]
       .map((notice) => ({ ...notice, readAt: receipts.get(identity.accountId, notice.id)?.readAt }));
     return Response.json({ notices }, { headers: { "x-request-id": requestId } });
@@ -32,7 +39,7 @@ export async function GET(request: Request): Promise<Response> {
   }
 }
 
-const markReadSchema = z.object({ action: z.literal("MARK_READ"), noticeId: z.string().regex(/^(task-assigned|message):[0-9a-f-]{36}$/i) });
+const markReadSchema = z.object({ action: z.literal("MARK_READ"), noticeId: z.string().regex(/^(task-assigned|task-review|message):[0-9a-f-]{36}$/i) });
 
 export async function POST(request: Request): Promise<Response> {
   const requestId = getRequestId(request.headers.get("x-request-id"));
@@ -43,7 +50,7 @@ export async function POST(request: Request): Promise<Response> {
   if (!hasTestPermission(identity, "NOTIFICATION_READ", scope)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
   try {
     const input = markReadSchema.parse(await request.json());
-    const tasks = hasTestPermission(identity, "TASK_READ", scope) ? taskAssignmentNotices(getLocalTaskService().list(), getLocalBusinessAuditService().list(), identity.accountId, scope.organizationCode, scope.periodCode) : [];
+    const tasks = taskNotices(identity.accountId, hasTestPermission(identity, "TASK_READ", scope), hasTestPermission(identity, "TASK_REVIEW", scope), scope);
     const visible = [...tasks, ...getLocalInternalCommunicationService().inbox(identity.accountId, scope.organizationCode, scope.periodCode)];
     if (!visible.some((notice) => notice.id === input.noticeId)) return errorResponse("AUTHORIZATION_DENIED", requestId, 404);
     const receipt = getLocalInboxRepository().markRead(identity.accountId, input.noticeId);

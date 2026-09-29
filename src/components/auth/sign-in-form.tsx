@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 type Step = "credentials" | "mfa";
@@ -61,6 +62,7 @@ export function SignInForm({ mode = "local" }: { mode?: "local" | "hosted" }): R
       <label>Kata sandi<input autoComplete="current-password" name="password" required type="password" /></label>
       {message ? <p className="form-message" role="alert">{message}</p> : null}
       <button className="button button--primary" disabled={pending} type="submit">{pending ? "Memeriksa" : mode === "hosted" ? "Masuk ke portal" : "Lanjut ke MFA"}</button>
+      <Link className="auth-form__link" href="/masuk/lupa-sandi">Lupa kata sandi?</Link>
     </form>
   ) : (
     <form className="auth-form" onSubmit={submitMfa}>

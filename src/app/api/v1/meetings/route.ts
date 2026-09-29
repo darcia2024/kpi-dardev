@@ -18,7 +18,7 @@ export async function GET(request: Request): Promise<Response> {
     const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
     if (!identity || !hasTestPermission(identity, "MEETING_READ", testScope)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
     const service = getLocalMeetingService();
-    return Response.json({ meetings: service.list().filter((meeting) => meeting.organizationCode === testScope.organizationCode && meeting.periodCode === testScope.periodCode).map((meeting) => ({ ...meeting, myVote: service.getVote(meeting.id, 1, identity.accountId), myRsvp: service.getResponse(meeting.id, identity.accountId)?.response ?? null })) }, { headers: { "x-request-id": requestId } });
+    return Response.json({ meetings: service.list().filter((meeting) => meeting.organizationCode === testScope.organizationCode && meeting.periodCode === testScope.periodCode).map(({ motions, ...meeting }) => ({ ...meeting, myVote: service.getVote(meeting.id, 1, identity.accountId), myRsvp: service.getResponse(meeting.id, identity.accountId)?.response ?? null, motions: service.motionViews(meeting.id), myMotionVotes: Object.fromEntries((motions ?? []).map((motion) => [motion.round, service.getVote(meeting.id, motion.round, identity.accountId)])), myEligibleRounds: (motions ?? []).filter((motion) => motion.eligibleAccountIds.includes(identity.accountId)).map((motion) => motion.round) })) }, { headers: { "x-request-id": requestId } });
   } catch {
     return errorResponse("CONFIGURATION_INVALID", requestId, 503);
   }
