@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import {
   IconArticle, IconArrowsExchange, IconBell, IconBrain, IconCalendarEvent, IconChartBar,
   IconChecklist, IconChevronRight, IconFiles, IconHome2, IconLayoutDashboard,
-  IconListDetails, IconLock, IconMenu2, IconSearch, IconShieldCheck, IconWallet, IconX
+  IconListDetails, IconLock, IconMenu2, IconSearch, IconShieldCheck, IconUserCircle, IconWallet, IconX
 } from "@tabler/icons-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { FloatingReportAssistant } from "@/components/ai/floating-report-assistant";
@@ -15,6 +15,14 @@ import type { PortalNavigationItem } from "@/lib/portal-navigation";
 import { formatPreviewPeriodLabel } from "@/lib/period-label";
 
 const groupOrder = ["Beranda", "Pekerjaan", "Layanan", "Konten", "Tata kelola", "Admin"];
+// Phone tab bar from the approved wireframes; only destinations this account can open are shown.
+const bottomTabs: Array<{ href: string; label: string; icon: string }> = [
+  { href: "/portal", label: "Beranda", icon: "home" },
+  { href: "/portal/tugas", label: "Tugas", icon: "task" },
+  { href: "/portal/rapat", label: "Rapat", icon: "meeting" },
+  { href: "/portal/dokumen", label: "Dokumen", icon: "document" },
+  { href: "/portal/profil", label: "Akun", icon: "account" }
+];
 
 function NavigationIcon({ name }: { name: string }): React.JSX.Element {
   const props = { size: 18, stroke: 1.7, "aria-hidden": true as const };
@@ -32,6 +40,7 @@ function NavigationIcon({ name }: { name: string }): React.JSX.Element {
     case "evaluation": return <IconChartBar {...props} />;
     case "handover": return <IconArrowsExchange {...props} />;
     case "access": return <IconLock {...props} />;
+    case "account": return <IconUserCircle {...props} />;
     default: return <IconListDetails {...props} />;
   }
 }
@@ -89,6 +98,10 @@ export function PortalFrame({ children, identity, navigation, period, periods, c
       </header>
       <div className="portal-frame__body">{children}</div>
     </div>
+    <nav aria-label="Navigasi cepat" className="portal-tabbar">{bottomTabs.filter((tab) => navigation.some((item) => item.href === tab.href)).map((tab) => {
+      const active = tab.href === "/portal" ? pathname === "/portal" : pathname === tab.href || pathname.startsWith(`${tab.href}/`);
+      return <Link aria-current={active ? "page" : undefined} className={active ? "is-current" : ""} href={tab.href} key={tab.href}><NavigationIcon name={tab.icon} /><span>{tab.label}</span></Link>;
+    })}</nav>
     {canUseAssistant && <FloatingReportAssistant />}
   </div>;
 }

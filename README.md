@@ -27,6 +27,14 @@ npm run dev
 
 Health check tersedia pada `http://localhost:3000/api/v1/health` saat environment valid.
 
+Untuk UAT atau demo, isi portal dengan data contoh bertanda TEST (tugas di semua kolom papan, rapat dengan voting, keuangan, evaluasi, serah terima, dan artikel terbit ID/EN):
+
+```powershell
+npm run seed:demo
+```
+
+Perintah ini hanya berjalan pada mode lokal TEST dan hanya sekali; menjalankannya lagi tidak mengubah apa pun. Karena pemindai berkas belum ada, berkas bukti contoh ditandai lolos pemeriksaan oleh skrip dan tercatat di audit sebagai `seed-demo`. Akun contoh: `pengurus.test@kpi.local`, `admin.test@kpi.local`, dan `ketua.test@kpi.local` (lihat `docs/06-E02-ACCESS-BACKLOG.md`).
+
 ## Pratinjau publik di Vercel
 
 Versi situs publik tersedia di https://kpi-ppmi-mesir-preview.vercel.app. Project Vercel ini terpisah dari situs rancangan `kpi-dardev.vercel.app` dan menjalankan `KPI_APP_ENV=staging` dengan `KPI_TEST_AUTH_ENABLED=false`. Karena itu login contoh, penulisan aspirasi/pengaduan, dan workflow portal internal tidak dibuka di URL publik. Ini pratinjau tampilan, bukan rilis sistem operasional KPI.

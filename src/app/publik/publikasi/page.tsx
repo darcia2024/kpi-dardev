@@ -20,7 +20,9 @@ export const dynamic = "force-dynamic";
 export default async function PublicationsPage(): Promise<React.JSX.Element> {
   const localPreview = isTestAuthEnabled();
   const published = localPreview ? await publishDueContent(getLocalContentRepository()).then((repository) => repository.listPublished()) : [];
-  const publications = localPreview ? (published.length ? published : [examplePublication]) : [];
+  // CMS records store a generic href; each published article has its own page by slug.
+  const articles = published.map((record) => ({ ...record, href: `/publik/publikasi/${record.slug}` }));
+  const publications = localPreview ? (articles.length ? articles : [examplePublication]) : [];
   return <div className="kp-site kp-library">
     <section className="kp-library-hero" aria-labelledby="library-title">
       <div className="kp-wrap kp-library-hero__inner">

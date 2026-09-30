@@ -12,7 +12,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/**/*.test.ts",
-    "verify": "npm run typecheck && npm run test && npm run build"
+    "verify": "npm run typecheck && npm run test && npm run build",
+    "seed:demo": "node --env-file=.env.local --import tsx scripts/seed-demo.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
