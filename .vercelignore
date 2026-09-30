@@ -1,0 +1,15 @@
+# Never upload local secrets, local TEST data, or build output to Vercel.
+.env
+.env.local
+.env.*.local
+.kpi-test/
+.claude/
+.vscode/
+.idea/
+node_modules/
+.next/
+out/
+*.log
+*.tsbuildinfo
+supabase/.temp/
+supabase/.branches/
