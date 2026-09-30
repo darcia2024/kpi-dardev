@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import type { ContentState } from "@/platform/workflow/content-lifecycle";
 
@@ -53,7 +53,7 @@ export class TestContentRepository implements ContentRepository {
   private readonly revisions: RecordCollection<ContentRevision>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: LocalRecordDatabase) {
+  constructor(database?: RecordDatabase) {
     const seed = new Map<string, ContentRecord>();
     if (process.env.NODE_TEST_CONTEXT) {
       const scope = { organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" };

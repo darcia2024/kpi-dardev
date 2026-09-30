@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { createAuditEvent, type AuditResult } from "@/platform/audit/event";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 
 export type BusinessAuditRecord = {
   id: string;
@@ -19,7 +19,7 @@ export type BusinessAuditRecord = {
 export class LocalBusinessAuditService {
   private readonly records: RecordCollection<BusinessAuditRecord>;
 
-  constructor(database?: LocalRecordDatabase) {
+  constructor(database?: RecordDatabase) {
     this.records = database ? new PersistentRecords(database, "business-audit", []) : new Map();
   }
 

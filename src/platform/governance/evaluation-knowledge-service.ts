@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import { getLocalAssetRepository, TestAssetRepository } from "@/platform/storage/asset-repository";
 
@@ -80,7 +80,7 @@ export class TestEvaluationKnowledgeService {
 
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: LocalRecordDatabase, private readonly assets = new TestAssetRepository()) {
+  constructor(database?: RecordDatabase, private readonly assets = new TestAssetRepository()) {
     const evaluationSeed = new Map<string, EvaluationRecord>();
     const articleSeed = new Map<string, KnowledgeArticle>();
     if (process.env.NODE_TEST_CONTEXT) {

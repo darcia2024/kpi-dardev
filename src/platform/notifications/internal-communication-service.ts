@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import type { InboxNotice } from "@/platform/notifications/inbox-service";
 
 export type InternalMessage = {
@@ -21,7 +21,7 @@ export type InternalMessage = {
 export class LocalInternalCommunicationService {
   private readonly records: RecordCollection<InternalMessage>;
   private readonly audit: LocalBusinessAuditService;
-  constructor(database?: LocalRecordDatabase) {
+  constructor(database?: RecordDatabase) {
     this.records = database ? new PersistentRecords(database, "internal-messages", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);
   }

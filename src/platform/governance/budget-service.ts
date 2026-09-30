@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import type { FinanceRecord } from "@/platform/governance/finance-service";
 
@@ -23,7 +23,7 @@ export class BudgetService {
   private readonly financeRecords: RecordCollection<FinanceRecord>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: LocalRecordDatabase) {
+  constructor(database?: RecordDatabase) {
     this.records = database ? new PersistentRecords(database, "budget-plans", []) : new Map();
     this.financeRecords = database ? new PersistentRecords(database, "finance", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);

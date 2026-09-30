@@ -8,6 +8,8 @@ const errorMessages: Record<string, string> = {
   AUTHENTICATION_REQUIRED: "Sesi berakhir. Masuk kembali untuk melanjutkan.",
   AUTHORIZATION_DENIED: "Tindakan ini tidak dapat dilakukan oleh akun Anda pada status sekarang.",
   CONFIGURATION_INVALID: "Layanan sedang tidak dapat memproses permintaan. Coba lagi beberapa saat.",
+  CONFLICT: "Data ini baru saja diubah oleh orang lain. Muat ulang, lalu ulangi perubahan Anda.",
+  SERVICE_NOT_READY: "Modul ini belum siap dipakai: pengaturan organisasi atau periode belum lengkap.",
   INTERNAL_ERROR: "Terjadi kesalahan pada layanan. Coba lagi beberapa saat.",
   MFA_REQUIRED: "Verifikasi dua langkah diperlukan sebelum melanjutkan.",
   SCANNER_UNAVAILABLE: "File sedang diperiksa dan belum dapat digunakan.",

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import { getLocalAssetRepository, TestAssetRepository } from "@/platform/storage/asset-repository";
 
@@ -17,7 +17,7 @@ export class PerformanceSheetService {
   private readonly assessments: RecordCollection<RubricAssessment>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: LocalRecordDatabase, private readonly assets = new TestAssetRepository()) {
+  constructor(database?: RecordDatabase, private readonly assets = new TestAssetRepository()) {
     this.schemes = database ? new PersistentRecords(database, "performance-schemes", []) : new Map();
     this.conflicts = database ? new PersistentRecords(database, "performance-conflicts", []) : new Map();
     this.assessments = database ? new PersistentRecords(database, "performance-assessments", []) : new Map();

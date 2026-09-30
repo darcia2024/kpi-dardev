@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import { getLocalAssetRepository, TestAssetRepository } from "@/platform/storage/asset-repository";
 
@@ -10,7 +10,7 @@ export type AiActionPreview = { id: string; ownerAccountId: string; target: stri
 export class TestAiService {
   private readonly actions: RecordCollection<AiActionPreview>;
   private readonly audit: LocalBusinessAuditService;
-  constructor(private readonly assets = new TestAssetRepository(), database?: LocalRecordDatabase) {
+  constructor(private readonly assets = new TestAssetRepository(), database?: RecordDatabase) {
     this.actions = database ? new PersistentRecords(database, "ai-actions", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);
   }

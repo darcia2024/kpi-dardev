@@ -22,6 +22,9 @@ const destinations: Array<PortalNavigationItem & { permissions: Permission[] }> 
   { href: "/portal/katalog", label: "Katalog layar", group: "Admin", icon: "catalog", permissions: ["SYSTEM_CONFIGURATION_READ"] }
 ];
 
+/** Areas already backed by the production database. Others stay hidden for hosted accounts. */
+export const hostedReadyDestinations: ReadonlySet<string> = new Set(["/portal", "/portal/tugas"]);
+
 export function visiblePortalNavigation(can: (permission: Permission) => boolean): PortalNavigationItem[] {
   return destinations.filter((item) => item.permissions.length === 0 || item.permissions.some(can))
     .map(({ href, label, group, icon }) => ({ href, label, group, icon }));

@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import { getLocalAssetRepository, TestAssetRepository } from "@/platform/storage/asset-repository";
 
@@ -27,7 +27,7 @@ export type HandoverAccessPlan = { handoverId: string; status: HandoverRecord["s
 export class TestHandoverService {
   private readonly records: RecordCollection<HandoverRecord>;
   private readonly audit: LocalBusinessAuditService;
-  constructor(database?: LocalRecordDatabase, private readonly assets = new TestAssetRepository()) {
+  constructor(database?: RecordDatabase, private readonly assets = new TestAssetRepository()) {
     const seed = new Map<string, HandoverRecord>();
     if (process.env.NODE_TEST_CONTEXT) seed.set("00000000-0000-4000-8000-000000007001", { id: "00000000-0000-4000-8000-000000007001", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST", title: "Paket tugas berjalan · TEST", outgoingOwnerAccountId: "00000000-0000-4000-8000-000000000101", successorAccountId: "00000000-0000-4000-8000-000000000102", sourceAssetIds: ["00000000-0000-4000-8000-000000002001"], status: "PENDING", updatedAt: "2026-09-22T08:00:00.000Z" });
     this.records = database ? new PersistentRecords(database, "handover", seed) : seed;

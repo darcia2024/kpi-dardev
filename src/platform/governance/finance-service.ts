@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import { getLocalAssetRepository, TestAssetRepository } from "@/platform/storage/asset-repository";
 import { BudgetService, summarizeBudget } from "@/platform/governance/budget-service";
@@ -36,7 +36,7 @@ export class TestFinanceService {
   private readonly settings: RecordCollection<FinanceSettings>;
   private readonly audit: LocalBusinessAuditService;
   private readonly budgets: BudgetService;
-  constructor(database?: LocalRecordDatabase, private readonly assets = new TestAssetRepository()) {
+  constructor(database?: RecordDatabase, private readonly assets = new TestAssetRepository()) {
     const seed = new Map<string, FinanceRecord>();
     if (process.env.NODE_TEST_CONTEXT) seed.set("00000000-0000-4000-8000-000000005001", { id: "00000000-0000-4000-8000-000000005001", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST", title: "Operasional kegiatan · TEST", currency: "TEST", amountMinor: 1250000, requesterAccountId: "00000000-0000-4000-8000-000000000102", status: "DRAFT", updatedAt: "2026-09-22T08:00:00.000Z" });
     this.records = database ? new PersistentRecords(database, "finance", seed) : seed;

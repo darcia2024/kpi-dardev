@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import type { TestTaskService } from "@/platform/work/task-service";
 
@@ -37,7 +37,7 @@ export class TestMeetingService {
   private readonly responses: RecordCollection<{ response: "HADIR" | "TIDAK_HADIR" | "RAGU"; updatedAt: string }>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: LocalRecordDatabase) {
+  constructor(database?: RecordDatabase) {
     const seed = new Map<string, MeetingRecord>();
     if (process.env.NODE_TEST_CONTEXT) seed.set("00000000-0000-4000-8000-000000004001", { id: "00000000-0000-4000-8000-000000004001", title: "Rapat koordinasi fondasi · TEST", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST", startsAt: "2026-09-24T17:00:00.000Z", minutesVersion: 1, minutesState: "DRAFT", minutesSummary: "Catatan rapat TEST belum difinalkan.", participantAccountIds: ["00000000-0000-4000-8000-000000000101", "00000000-0000-4000-8000-000000000102"] });
     this.meetings = database ? new PersistentRecords(database, "meetings", seed) : seed;

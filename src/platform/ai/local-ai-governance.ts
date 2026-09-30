@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 
 type DraftStatus = "DRAFT" | "IN_REVIEW";
 type DraftBase = { id: string; version: number; status: DraftStatus; authorAccountId: string; createdAt: string; updatedAt: string };
@@ -31,7 +31,7 @@ export class LocalAiGovernanceService {
   private readonly policies: RecordCollection<AiPolicyDraft>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: LocalRecordDatabase) {
+  constructor(database?: RecordDatabase) {
     this.providers = database ? new PersistentRecords(database, "ai-provider-drafts", []) : new Map();
     this.policies = database ? new PersistentRecords(database, "ai-policy-drafts", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);

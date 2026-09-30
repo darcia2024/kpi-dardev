@@ -1,13 +1,22 @@
 import { backup, DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { getScopedRecordDatabase } from "@/platform/data/record-context";
 
 export class RecordConflictError extends Error {
-  constructor() { super("Record changed; reload before retrying."); }
+  constructor() { super("Record changed; reload before retrying."); this.name = "RecordConflictError"; }
 }
 
-/** Local synthetic data only. PostgreSQL integration uses a separate adapter. */
-export class LocalRecordDatabase {
+/** Storage contract shared by the local TEST database and the production request snapshot. */
+export interface RecordDatabase {
+  read(namespace: string, id: string): { payload: string; revision: number } | undefined;
+  entries(namespace: string): { id: string; payload: string; revision: number }[];
+  seed(namespace: string, id: string, value: unknown): void;
+  write(namespace: string, id: string, value: unknown, expectedRevision: number): number;
+}
+
+/** Local synthetic data only. Production uses the request snapshot backed by Supabase. */
+export class LocalRecordDatabase implements RecordDatabase {
   private readonly db: DatabaseSync;
 
   constructor(path: string) {
@@ -68,7 +77,7 @@ export interface RecordCollection<T> {
 
 export class PersistentRecords<T> implements RecordCollection<T> {
   private readonly revisions = new Map<string, number>();
-  constructor(private readonly db: LocalRecordDatabase, private readonly namespace: string, seed: Iterable<[string, T]>) {
+  constructor(private readonly db: RecordDatabase, private readonly namespace: string, seed: Iterable<[string, T]>) {
     for (const [id, value] of seed) db.seed(namespace, id, value);
   }
   get(id: string): T | undefined {
@@ -89,7 +98,14 @@ export class PersistentRecords<T> implements RecordCollection<T> {
 }
 
 let database: LocalRecordDatabase | undefined;
-export function getLocalRecordDatabase(): LocalRecordDatabase {
+
+/** Records for the current request: the production snapshot when one is open, otherwise local TEST storage. */
+export function getLocalRecordDatabase(): RecordDatabase {
+  return getScopedRecordDatabase() ?? getSqliteRecordDatabase();
+}
+
+/** The local TEST SQLite file itself. Only available in local TEST mode. */
+export function getSqliteRecordDatabase(): LocalRecordDatabase {
   if (process.env.KPI_APP_ENV !== "local" || process.env.KPI_TEST_AUTH_ENABLED !== "true") {
     throw new Error("Persistent TEST storage requires local TEST mode.");
   }

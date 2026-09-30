@@ -1,10 +1,6 @@
-import { getSelectedPreviewScope } from "@/platform/identity/preview-period-context";
-import { cookies } from "next/headers";
 import { z } from "zod";
-import { hasTestPermission } from "@/platform/authorization/permissions";
-import { getRequestId } from "@/platform/http/request-id";
 import { errorResponse } from "@/platform/http/response";
-import { getTestSession, isTestAuthEnabled, sessionCookieName } from "@/platform/identity/test-auth";
+import { portalRoute } from "@/platform/http/portal-route";
 import { getLocalTaskService } from "@/platform/work/task-service";
 
 const actionSchema = z.discriminatedUnion("action", [
@@ -21,42 +17,37 @@ const actionSchema = z.discriminatedUnion("action", [
 ]);
 
 export async function POST(request: Request): Promise<Response> {
-  const requestId = getRequestId(request.headers.get("x-request-id"));
-  try {
-    if (!isTestAuthEnabled()) return errorResponse("TEST_AUTH_DISABLED", requestId, 503);
-    const testScope = await getSelectedPreviewScope();
-    const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
-    if (!identity) return errorResponse("AUTHENTICATION_REQUIRED", requestId, 401);
-    const input = actionSchema.parse(await request.json());
+  return portalRoute(request, async (context, requestId) => {
+    let input: z.infer<typeof actionSchema>;
+    try { input = actionSchema.parse(await request.json()); }
+    catch { return errorResponse("AUTHENTICATION_INVALID", requestId, 400); }
     const service = getLocalTaskService();
     const existing = service.get(input.taskId);
-    if (!existing || existing.organizationCode !== testScope.organizationCode || existing.periodCode !== testScope.periodCode) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
+    if (!existing || existing.organizationCode !== context.scope.organizationCode || existing.periodCode !== context.scope.periodCode) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
+    const actor = context.identity.accountId;
     if (input.action === "COMMENT") {
-      const comment = hasTestPermission(identity, "TASK_READ", testScope) ? service.addComment(input.taskId, identity.accountId, input.body) : null;
+      const comment = context.can("TASK_READ") ? service.addComment(input.taskId, actor, input.body) : null;
       if (!comment) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
       return Response.json({ comment }, { headers: { "x-request-id": requestId } });
     }
     const task = input.action === "SUBMIT"
-      ? hasTestPermission(identity, "TASK_SUBMIT", testScope) ? service.submit(input.taskId, identity.accountId, input.evidenceAssetId, input.note) : null
+      ? context.can("TASK_SUBMIT") ? service.submit(input.taskId, actor, input.evidenceAssetId, input.note) : null
       : input.action === "START"
-        ? hasTestPermission(identity, "TASK_SUBMIT", testScope) ? service.start(input.taskId, identity.accountId) : null
+        ? context.can("TASK_SUBMIT") ? service.start(input.taskId, actor) : null
       : input.action === "SET_BLOCKED"
-        ? hasTestPermission(identity, "TASK_SUBMIT", testScope) ? service.setBlocked(input.taskId, identity.accountId, input.blocked, input.reason) : null
+        ? context.can("TASK_SUBMIT") ? service.setBlocked(input.taskId, actor, input.blocked, input.reason) : null
       : input.action === "ADD_SUBTASK"
-        ? hasTestPermission(identity, "TASK_READ", testScope) ? service.addSubtask(input.taskId, identity.accountId, input.title) : null
+        ? context.can("TASK_READ") ? service.addSubtask(input.taskId, actor, input.title) : null
       : input.action === "SET_SUBTASK"
-        ? hasTestPermission(identity, "TASK_SUBMIT", testScope) ? service.setSubtaskDone(input.taskId, identity.accountId, input.subtaskId, input.done) : null
+        ? context.can("TASK_SUBMIT") ? service.setSubtaskDone(input.taskId, actor, input.subtaskId, input.done) : null
       : input.action === "REVIEW"
-        ? hasTestPermission(identity, "TASK_REVIEW", testScope) ? service.review(input.taskId, identity.accountId, input.accepted, input.reason) : null
-        : input.action === "EXTEND_DEADLINE"
-          ? hasTestPermission(identity, "TASK_CREATE", testScope) ? service.extendDeadline(input.taskId, identity.accountId, input.dueAt, input.reason) : null
-          : input.action === "DELEGATE"
-            ? hasTestPermission(identity, "TASK_CREATE", testScope) && ["00000000-0000-4000-8000-000000000101", "00000000-0000-4000-8000-000000000102"].includes(input.successorAccountId) ? service.delegate(input.taskId, identity.accountId, input.successorAccountId, input.reason) : null
-          : hasTestPermission(identity, "TASK_CREATE", testScope) ? service.close(input.taskId, identity.accountId, input.action, input.reason) : null;
+        ? context.can("TASK_REVIEW") ? service.review(input.taskId, actor, input.accepted, input.reason) : null
+      : input.action === "EXTEND_DEADLINE"
+        ? context.can("TASK_CREATE") ? service.extendDeadline(input.taskId, actor, input.dueAt, input.reason) : null
+      : input.action === "DELEGATE"
+        ? context.can("TASK_CREATE") && await context.isAssignableAccount(input.successorAccountId) ? service.delegate(input.taskId, actor, input.successorAccountId, input.reason) : null
+      : context.can("TASK_CREATE") ? service.close(input.taskId, actor, input.action, input.reason) : null;
     if (!task) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
     return Response.json({ task }, { headers: { "x-request-id": requestId } });
-  } catch (error) {
-    if (error instanceof z.ZodError) return errorResponse("AUTHENTICATION_INVALID", requestId, 400);
-    return errorResponse("CONFIGURATION_INVALID", requestId, 503);
-  }
+  });
 }

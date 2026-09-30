@@ -1,13 +1,13 @@
 import { randomUUID } from "node:crypto";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
-import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 
 export type LegalHold = { id: string; assetId: string; reason: string; placedByAccountId: string; placedAt: string; releasedByAccountId?: string; releasedAt?: string; releaseReason?: string };
 
 export class LocalLegalHoldRepository {
   private readonly records: RecordCollection<LegalHold>;
   private readonly audit: LocalBusinessAuditService;
-  constructor(database?: LocalRecordDatabase) {
+  constructor(database?: RecordDatabase) {
     this.records = database ? new PersistentRecords(database, "legal-holds", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);
   }
