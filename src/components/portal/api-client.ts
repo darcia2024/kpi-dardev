@@ -2,6 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+// Server error codes are for logs; people see plain Indonesian.
+const errorMessages: Record<string, string> = {
+  AUTHENTICATION_INVALID: "Isian belum sesuai atau tindakan ini tidak dapat dilakukan pada status sekarang.",
+  AUTHENTICATION_REQUIRED: "Sesi berakhir. Masuk kembali untuk melanjutkan.",
+  AUTHORIZATION_DENIED: "Tindakan ini tidak dapat dilakukan oleh akun Anda pada status sekarang.",
+  CONFIGURATION_INVALID: "Layanan sedang tidak dapat memproses permintaan. Coba lagi beberapa saat.",
+  INTERNAL_ERROR: "Terjadi kesalahan pada layanan. Coba lagi beberapa saat.",
+  MFA_REQUIRED: "Verifikasi dua langkah diperlukan sebelum melanjutkan.",
+  SCANNER_UNAVAILABLE: "File sedang diperiksa dan belum dapat digunakan.",
+  TEST_AUTH_DISABLED: "Mode pratinjau tidak aktif di lingkungan ini."
+};
+
 export async function apiJson<T>(url: string, body?: unknown): Promise<T> {
   const response = await fetch(url, {
     method: body === undefined ? "GET" : "POST",
@@ -14,7 +26,8 @@ export async function apiJson<T>(url: string, body?: unknown): Promise<T> {
     const result = await response.json().catch(() => null) as { error?: { code?: string }; code?: string } | null;
     if (response.status === 401) throw new Error("Sesi berakhir. Masuk kembali untuk melanjutkan.");
     if (response.status === 403) throw new Error("Akun ini tidak memiliki izin untuk tindakan tersebut.");
-    throw new Error(result?.error?.code ?? result?.code ?? `Permintaan gagal (${response.status}).`);
+    const code = result?.error?.code ?? result?.code;
+    throw new Error((code && errorMessages[code]) ?? `Permintaan gagal diproses (kode ${response.status}). Coba lagi.`);
   }
   return response.json() as Promise<T>;
 }

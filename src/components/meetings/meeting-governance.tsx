@@ -41,7 +41,7 @@ export function MeetingGovernance({ meeting, accountId, canManage, onChanged }: 
 
   return <section className="decision-grid meeting-governance">
     <article className="decision-panel" aria-labelledby={`attendance-${meeting.id}`}>
-      <p className="eyebrow">M03 · Presensi & kuorum</p>
+      <p className="eyebrow">Presensi & kuorum</p>
       <h2 id={`attendance-${meeting.id}`}>{present} dari {total} peserta hadir</h2>
       <p className={`meeting-quorum meeting-quorum--${quorumMet === null ? "unset" : quorumMet ? "met" : "unmet"}`}>{quorumMet === null ? <><IconClockHour4 size={16} aria-hidden="true" />Kuorum belum ditetapkan. Aturan resmi menunggu keputusan KPI.</> : quorumMet ? <><IconCircleCheck size={16} aria-hidden="true" />Kuorum terpenuhi (minimal {meeting.quorumMinPresent} hadir).</> : <><IconAlertTriangle size={16} aria-hidden="true" />Belum kuorum: perlu {meeting.quorumMinPresent! - present} kehadiran lagi.</>}</p>
       <ul className="meeting-attendance">{meeting.participantAccountIds.map((id) => {
@@ -52,7 +52,7 @@ export function MeetingGovernance({ meeting, accountId, canManage, onChanged }: 
     </article>
 
     <article className="decision-panel" aria-labelledby={`motion-${meeting.id}`}>
-      <p className="eyebrow">M05 · Pemungutan suara tertutup</p>
+      <p className="eyebrow">Pemungutan suara tertutup</p>
       <h2 id={`motion-${meeting.id}`}>{openMotion ? `Mosi putaran ${openMotion.round}` : "Mosi & hasil"}</h2>
       {openMotion ? <div className="meeting-motion meeting-motion--open">
         <p className="meeting-motion__text">{openMotion.text}</p>

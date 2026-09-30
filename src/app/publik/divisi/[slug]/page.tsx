@@ -7,7 +7,7 @@ import { findPublicDivision, publicDivisions } from "@/lib/public-organization";
 import { PublicFooter } from "@/components/public/public-footer";
 
 export function generateStaticParams(): Array<{ slug: string }> { return publicDivisions.map(({ slug }) => ({ slug })); }
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { const division = findPublicDivision((await params).slug); return { title: division ? `${division.name} | KPI PPMI Mesir` : "Divisi | KPI PPMI Mesir" }; }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { const division = findPublicDivision((await params).slug); return division ? { title: `${division.name} | KPI PPMI Mesir`, alternates: { languages: { id: `/publik/divisi/${division.slug}`, en: `/en/divisions/${division.slug}` } } } : { title: "Divisi | KPI PPMI Mesir" }; }
 
 export default async function PublicDivisionDetailPage({ params }: { params: Promise<{ slug: string }> }): Promise<React.JSX.Element> {
   const division = findPublicDivision((await params).slug);

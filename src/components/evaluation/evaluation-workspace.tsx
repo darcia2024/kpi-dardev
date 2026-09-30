@@ -52,7 +52,7 @@ export function EvaluationWorkspace({ accountId, canEvaluate, canWriteKnowledge 
   }
 
   return <>
-    <section className="case-tabs" aria-label="Area evaluasi"><button className={tab === "performance" ? "is-active" : ""} onClick={() => setTab("performance")} type="button">Kinerja</button><button className={tab === "knowledge" ? "is-active" : ""} onClick={() => setTab("knowledge")} type="button">Knowledge base</button></section>
+    <section className="case-tabs" aria-label="Area evaluasi"><button className={tab === "performance" ? "is-active" : ""} onClick={() => setTab("performance")} type="button">Kinerja</button><button className={tab === "knowledge" ? "is-active" : ""} onClick={() => setTab("knowledge")} type="button">Pustaka rujukan</button></section>
     {message && <p className="form-message" role="status">{message}</p>}
     {tab === "performance" ? <><PerformanceSheet accountId={accountId} canEvaluate={canEvaluate} />
       <section className="finance-summary" aria-label="Ringkasan evaluasi pratinjau"><div><span className="finance-summary__label">Indikator</span><strong>{evaluations.items.length}</strong><small>Periode pratinjau</small></div><div><span className="finance-summary__label">Belum dinilai</span><strong>{evaluations.items.filter((item) => item.value === null).length}</strong><small>Berbeda dari nilai nol</small></div><div><span className="finance-summary__label">Sudah ditinjau</span><strong>{evaluations.items.filter((item) => item.status !== "DRAFT").length}</strong><small>Belum nilai resmi</small></div><div><span className="finance-summary__label">Sanggah terbuka</span><strong>{appeals.items.filter((item) => item.status === "OPEN").length}</strong><small>Perlu keputusan</small></div></section>
@@ -67,8 +67,8 @@ export function EvaluationWorkspace({ accountId, canEvaluate, canWriteKnowledge 
       </aside></section>}
     </> : <>
       {articles.loading && <p role="status">Memuat knowledge…</p>}{articles.error && <p role="alert">{articles.error} <button onClick={() => void articles.reload()} type="button">Coba lagi</button></p>}{!articles.loading && !articles.error && articles.items.length === 0 && <p>Belum ada artikel yang dapat diakses.</p>}
-      <section className="knowledge-layout"><div className="knowledge-list">{articles.items.map((article) => <article className="knowledge-row" key={article.id}><div><p className="eyebrow">Versi {article.version} · {article.status}</p><h2>{article.title}</h2><p>Sumber aset: {article.sourceAssetId.slice(0, 8)}</p></div></article>)}</div><aside className="knowledge-detail"><p className="eyebrow">Artikel & sumber</p><h2>Kelola di ruang knowledge</h2><p>Penulisan, telaah, dan penerbitan rujukan dilakukan dalam satu alur agar versi serta izin sumber tetap konsisten.</p><Link className="button button--primary" href="/portal/knowledge">Buka knowledge</Link></aside></section>
+      <section className="knowledge-layout"><div className="knowledge-list">{articles.items.map((article) => <article className="knowledge-row" key={article.id}><div><p className="eyebrow">Versi {article.version} · {article.status}</p><h2>{article.title}</h2><p>Sumber aset: {article.sourceAssetId.slice(0, 8)}</p></div></article>)}</div><aside className="knowledge-detail"><p className="eyebrow">Artikel & sumber</p><h2>Kelola di ruang rujukan</h2><p>Penulisan, telaah, dan penerbitan rujukan dilakukan dalam satu alur agar versi serta izin sumber tetap konsisten.</p><Link className="button button--primary" href="/portal/knowledge">Buka knowledge</Link></aside></section>
     </>}
-    <p className="task-footnote">Data sintetis pratinjau. Formula resmi, rubrik, dan taksonomi knowledge menunggu keputusan KPI.</p>
+    <p className="task-footnote">Data sintetis pratinjau. Formula resmi, rubrik, dan taksonomi rujukan menunggu keputusan KPI.</p>
   </>;
 }

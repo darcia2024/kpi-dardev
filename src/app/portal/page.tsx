@@ -10,7 +10,7 @@ import { IconArrowUpRight, IconBook2, IconBrain, IconBriefcase2, IconCircleCheck
 import { getHostedAuthConfiguration, getHostedIdentity } from "@/platform/identity/hosted-auth";
 
 const workCards = [
-  { href: "/portal/workspace", label: "Workspace", description: "Pekerjaan dan hambatan dalam konteks akun serta periode.", icon: IconBriefcase2 },
+  { href: "/portal/workspace", label: "Ruang kerja", description: "Pekerjaan dan hambatan dalam konteks akun serta periode.", icon: IconBriefcase2 },
   { href: "/portal/tugas", label: "Tugas & review", description: "Antrean tugas, bukti, keputusan, dan tindak lanjut.", icon: IconCircleCheck },
   { href: "/portal/dokumen", label: "Dokumen", description: "Metadata, versi, klasifikasi, dan akses sumber.", icon: IconFileText },
   { href: "/portal/rapat", label: "Rapat & keputusan", description: "Notulen, voting, keputusan, dan tugas lanjutan.", icon: IconGavel }
@@ -19,8 +19,8 @@ const workCards = [
 const controlCards = [
   { href: "/portal/kasus", label: "Kasus & notifikasi", icon: IconShieldCheck },
   { href: "/portal/keuangan", label: "Keuangan", icon: IconWallet },
-  { href: "/portal/editor", label: "CMS editorial", icon: IconBook2 },
-  { href: "/portal/evaluasi", label: "Evaluasi & knowledge", icon: IconBrain },
+  { href: "/portal/editor", label: "Redaksi", icon: IconBook2 },
+  { href: "/portal/evaluasi", label: "Evaluasi & rujukan", icon: IconBrain },
   { href: "/portal/handover", label: "Handover & operasi", icon: IconSettings },
   { href: "/portal/akses", label: "Identitas & akses", icon: IconUsersGroup }
 ];

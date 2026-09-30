@@ -14,7 +14,7 @@ export function EditorLibrary({ records, loading, error, accountId, canDraft, ca
 
   return <section className="cms-library" aria-label="Pustaka naskah">
     <div className="cms-library__head">
-      <div><p className="eyebrow">C01 · Naskah</p><h2>Semua naskah</h2></div>
+      <div><p className="eyebrow">Naskah</p><h2>Semua naskah</h2></div>
       {canDraft && <button className="button button--primary" onClick={onCreate} type="button"><IconPencilPlus size={18} aria-hidden="true" />Tulis naskah</button>}
     </div>
     {awaitingMe > 0 && filter !== "IN_REVIEW" && <div className="cms-callout" role="status"><span><strong>{awaitingMe} naskah</strong> menunggu review Anda.</span><button className="button button--quiet" onClick={() => setFilter("IN_REVIEW")} type="button">Buka antrean</button></div>}

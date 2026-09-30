@@ -12,7 +12,7 @@ import { isTestAuthEnabled } from "@/platform/identity/test-auth";
 
 export const metadata: Metadata = {
   title: "Publikasi & Edukasi | KPI PPMI Mesir",
-  description: "Materi publik KPI PPMI Mesir tentang edukasi interaksi, pencegahan, dan prinsip penanganan sesuai mandat organisasi."
+  description: "Materi publik KPI PPMI Mesir tentang edukasi interaksi, pencegahan, dan prinsip penanganan sesuai mandat organisasi.", alternates: { languages: { id: "/publik/publikasi", en: "/en/publications" } }
 };
 
 export const dynamic = "force-dynamic";

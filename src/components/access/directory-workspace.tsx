@@ -71,7 +71,7 @@ export function DirectoryWorkspace({ canManage }: { canManage: boolean }): React
   }, [selectedAccountId, directory]);
 
   return <section className="access-directory" aria-labelledby="directory-title">
-    <div className="access-directory__heading"><div><p className="eyebrow">A06–A09 · Direktori dan periode</p><h2 id="directory-title">Orang, jabatan, dan masa kerja</h2><p>Dasar untuk memastikan penugasan dan hak akses mengikuti periode yang tepat.</p></div>{directory && <span className="status-chip">{directory.source === "LOCAL_PREVIEW" ? "Pratinjau lokal" : "Database terhubung"}</span>}</div>
+    <div className="access-directory__heading"><div><p className="eyebrow">Direktori dan periode</p><h2 id="directory-title">Orang, jabatan, dan masa kerja</h2><p>Dasar untuk memastikan penugasan dan hak akses mengikuti periode yang tepat.</p></div>{directory && <span className="status-chip">{directory.source === "LOCAL_PREVIEW" ? "Pratinjau lokal" : "Database terhubung"}</span>}</div>
     {loading && <p role="status">Memuat direktori…</p>}
     {error && <p role="alert">{error}</p>}
     {message && <p role="status">{message}</p>}

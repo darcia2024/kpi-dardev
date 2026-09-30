@@ -25,7 +25,7 @@ export function financeActionFor(record: DashboardRecord, accountId: string, can
 function downloadReport(records: DashboardRecord[], usage: Usage[]): void {
   const quote = (value: string | number) => `"${String(value).replaceAll("\"", "\"\"")}"`;
   const rows = [
-    ["Laporan keuangan pratinjau (data TEST, unit minor)"],
+    ["Laporan keuangan pratinjau (data TEST, satuan terkecil)"],
     [],
     ["Pos anggaran", "Alokasi", "Terpakai", "Sisa"],
     ...usage.map((line) => [line.name, line.allocatedMinor, line.spentMinor, line.remainingMinor]),
@@ -59,11 +59,11 @@ export function FinanceDashboard({ records, usage, threshold, accountId, canMana
   }
 
   return <section className="finance-dashboard" aria-label="Dasbor keuangan">
-    <div className="finance-dashboard__head"><div><p className="eyebrow">B01 · Dasbor keuangan</p><h2>Posisi anggaran periode ini</h2></div><button className="button button--quiet" onClick={() => downloadReport(records, usage)} type="button"><IconDownload size={16} aria-hidden="true" />Unduh laporan</button></div>
+    <div className="finance-dashboard__head"><div><p className="eyebrow">Dasbor keuangan</p><h2>Posisi anggaran periode ini</h2></div><button className="button button--quiet" onClick={() => downloadReport(records, usage)} type="button"><IconDownload size={16} aria-hidden="true" />Unduh laporan</button></div>
     <div className="finance-kpis">
       <div><span>Anggaran disahkan</span><strong>{allocated ? units(allocated) : "—"}</strong><small>{usage.length ? `${usage.length} pos anggaran` : "Belum ada anggaran disahkan"}</small></div>
       <div><span>Sudah terpakai</span><strong>{units(spent)}</strong><small>{allocated ? `${Math.round(spent / allocated * 100)}% dari anggaran` : "Dari pembayaran tercatat"}</small></div>
-      <div><span>Menunggu persetujuan</span><strong>{pending.length}</strong><small>{units(pending.reduce((sum, record) => sum + record.amountMinor, 0))} unit minor</small></div>
+      <div><span>Menunggu persetujuan</span><strong>{pending.length}</strong><small>{units(pending.reduce((sum, record) => sum + record.amountMinor, 0))} satuan terkecil</small></div>
       <div><span>Belum direkonsiliasi</span><strong>{unreconciled.length}</strong><small>Sudah dibayar</small></div>
     </div>
     <div className="finance-dashboard__grid">
@@ -71,11 +71,11 @@ export function FinanceDashboard({ records, usage, threshold, accountId, canMana
         const percent = line.allocatedMinor ? Math.round(line.spentMinor / line.allocatedMinor * 100) : 0;
         return <li key={line.lineId}><div><span>{line.name}</span><strong>{percent}%</strong></div><span className="finance-bars__track"><span className={percent > 100 ? "is-over" : ""} style={{ width: `${Math.min(100, percent)}%` }} /></span><small>{units(line.spentMinor)} dari {units(line.allocatedMinor)} · sisa {units(line.remainingMinor)}</small></li>;
       })}</ul>}</article>
-      <article className="finance-panel"><h3>Perlu tindakan Anda <span>{todo.length}</span></h3>{todo.length === 0 ? <p className="finance-panel__empty">Tidak ada pengajuan yang menunggu Anda.</p> : <ul className="finance-todo">{todo.slice(0, 6).map(({ record, action }) => <li key={record.id}><button onClick={() => onOpen(record.id)} type="button"><span><strong>{record.title}</strong><small>{units(record.amountMinor)} unit minor · {financeStatusLabel[record.status]}</small></span><em>{action}</em></button></li>)}</ul>}</article>
+      <article className="finance-panel"><h3>Perlu tindakan Anda <span>{todo.length}</span></h3>{todo.length === 0 ? <p className="finance-panel__empty">Tidak ada pengajuan yang menunggu Anda.</p> : <ul className="finance-todo">{todo.slice(0, 6).map(({ record, action }) => <li key={record.id}><button onClick={() => onOpen(record.id)} type="button"><span><strong>{record.title}</strong><small>{units(record.amountMinor)} satuan terkecil · {financeStatusLabel[record.status]}</small></span><em>{action}</em></button></li>)}</ul>}</article>
     </div>
     <article className="finance-panel finance-threshold"><h3><IconScale size={16} aria-hidden="true" />Batas kewenangan persetujuan</h3>
-      <p>{threshold === null ? "Ambang belum ditetapkan KPI, jadi semua pengajuan memerlukan pemeriksaan Bendahara lalu persetujuan Ketua." : `Pengajuan di atas ${units(threshold)} unit minor memerlukan persetujuan Ketua setelah diperiksa Bendahara. Di bawahnya cukup pemeriksaan Bendahara.`}</p>
-      {canFinal && <div className="portal-form-inline"><label>Ambang (unit minor, pratinjau)<input inputMode="numeric" min={0} onChange={(event) => setThresholdInput(event.target.value)} placeholder="Kosongkan = semua ke Ketua" type="number" value={thresholdInput} /></label><div className="portal-form-actions"><button className="button button--quiet" disabled={busy || thresholdInput !== "" && (!Number.isSafeInteger(Number(thresholdInput)) || Number(thresholdInput) < 0)} onClick={() => void saveThreshold(thresholdInput === "" ? null : Number(thresholdInput))} type="button">Simpan aturan</button></div></div>}
+      <p>{threshold === null ? "Ambang belum ditetapkan KPI, jadi semua pengajuan memerlukan pemeriksaan Bendahara lalu persetujuan Ketua." : `Pengajuan di atas ${units(threshold)} satuan terkecil memerlukan persetujuan Ketua setelah diperiksa Bendahara. Di bawahnya cukup pemeriksaan Bendahara.`}</p>
+      {canFinal && <div className="portal-form-inline"><label>Ambang (satuan terkecil, pratinjau)<input inputMode="numeric" min={0} onChange={(event) => setThresholdInput(event.target.value)} placeholder="Kosongkan = semua ke Ketua" type="number" value={thresholdInput} /></label><div className="portal-form-actions"><button className="button button--quiet" disabled={busy || thresholdInput !== "" && (!Number.isSafeInteger(Number(thresholdInput)) || Number(thresholdInput) < 0)} onClick={() => void saveThreshold(thresholdInput === "" ? null : Number(thresholdInput))} type="button">Simpan aturan</button></div></div>}
       {message && <p className="form-message" role="status">{message}</p>}
     </article>
   </section>;

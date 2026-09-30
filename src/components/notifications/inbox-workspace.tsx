@@ -45,7 +45,7 @@ export function InboxWorkspace(): React.JSX.Element {
 
   return <section aria-labelledby="inbox-title" className="inbox-panel">
     <div className="inbox-panel__head">
-      <div><p className="eyebrow">N01 · Pusat notifikasi</p><h2 id="inbox-title">Untuk akun Anda</h2></div>
+      <div><p className="eyebrow">Pusat notifikasi</p><h2 id="inbox-title">Untuk akun Anda</h2></div>
       <div className="inbox-panel__head-actions"><span>{unread.length ? `${unread.length} belum dibaca` : "Semua sudah dibaca"}</span>{unread.length > 0 && <button className="button button--quiet" disabled={!!busyId} onClick={() => void markRead(unread.map((notice) => notice.id))} type="button"><IconChecks size={16} aria-hidden="true" />{busyId === "all" ? "Menyimpan…" : "Tandai semua dibaca"}</button>}</div>
     </div>
     <nav className="inbox-filters" aria-label="Saring notifikasi">{([["all", "Semua"], ["unread", "Belum dibaca"], ["action", "Perlu tindakan"]] as const).map(([key, label]) => <button aria-pressed={filter === key} className={filter === key ? "is-selected" : ""} key={key} onClick={() => setFilter(key)} type="button">{label}<span>{counts[key]}</span></button>)}</nav>

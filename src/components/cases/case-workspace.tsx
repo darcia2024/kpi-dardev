@@ -50,7 +50,7 @@ export function CaseWorkspace({ accountId }: { accountId: string }): React.JSX.E
       setPublicUpdate("");
       setInternalNote("");
       setTriageReason("");
-      setMessage("Perubahan kasus tersimpan. Pembaruan pelapor masuk antrean pratinjau; belum terkirim ke provider.");
+      setMessage("Perubahan kasus tersimpan. Pembaruan pelapor masuk antrean pratinjau; belum terkirim ke penyedia AI.");
       await Promise.all([cases.reload(), notifications.reload()]);
       const refreshed = await apiJson<{ detail: CaseDetail }>(`/api/v1/cases/detail?caseId=${encodeURIComponent(selected.caseId)}`);
       setDetail(refreshed.detail);
@@ -59,7 +59,7 @@ export function CaseWorkspace({ accountId }: { accountId: string }): React.JSX.E
   }
 
   return <>
-    <section className="case-tabs" aria-label="Area layanan"><button aria-pressed={tab === "cases"} className={tab === "cases" ? "is-active" : ""} onClick={() => setTab("cases")} type="button">Antrean kasus</button><button aria-pressed={tab === "communications"} className={tab === "communications" ? "is-active" : ""} onClick={() => setTab("communications")} type="button">Monitor notifikasi</button><button aria-pressed={tab === "messages"} className={tab === "messages" ? "is-active" : ""} onClick={() => setTab("messages")} type="button">Pesan internal</button><button aria-pressed={tab === "forms"} className={tab === "forms" ? "is-active" : ""} onClick={() => setTab("forms")} type="button">Form layanan</button></section>
+    <section className="case-tabs" aria-label="Area layanan"><button aria-pressed={tab === "cases"} className={tab === "cases" ? "is-active" : ""} onClick={() => setTab("cases")} type="button">Antrean kasus</button><button aria-pressed={tab === "communications"} className={tab === "communications" ? "is-active" : ""} onClick={() => setTab("communications")} type="button">Monitor notifikasi</button><button aria-pressed={tab === "messages"} className={tab === "messages" ? "is-active" : ""} onClick={() => setTab("messages")} type="button">Pesan internal</button><button aria-pressed={tab === "forms"} className={tab === "forms" ? "is-active" : ""} onClick={() => setTab("forms")} type="button">Formulir layanan</button></section>
     {message && <p className="form-message" role="status">{message}</p>}
     {tab === "cases" ? <>
       <section className="case-filters" aria-label="Filter kasus"><label>Cari kasus<input type="search" placeholder="Subjek atau ID kasus" value={query} onChange={(event) => setQuery(event.target.value)} /></label><label>Status<select value={filter} onChange={(event) => setFilter(event.target.value)}><option value="all">Semua status</option><option value="RECEIVED">Diterima</option><option value="TRIAGED">Ditriase</option><option value="IN_PROGRESS">Ditangani</option><option value="CLOSED">Ditutup</option></select></label></section>

@@ -6,7 +6,7 @@ import { ServiceFinder } from "@/components/public/service-finder";
 
 export const metadata: Metadata = {
   title: "Layanan Publik | KPI PPMI Mesir",
-  description: "Direktori informasi publik KPI PPMI Mesir: mandat, divisi, edukasi, kegiatan, dan alur aspirasi."
+  description: "Direktori informasi publik KPI PPMI Mesir: mandat, divisi, edukasi, kegiatan, dan alur aspirasi.", alternates: { languages: { id: "/publik/layanan", en: "/en/services" } }
 };
 
 export default function PublicServicesPage(): React.JSX.Element {
