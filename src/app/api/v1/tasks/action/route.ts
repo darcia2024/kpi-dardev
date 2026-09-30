@@ -12,6 +12,8 @@ const actionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("ADD_SUBTASK"), taskId: z.string().uuid(), title: z.string().trim().min(2).max(180) }),
   z.object({ action: z.literal("SET_SUBTASK"), taskId: z.string().uuid(), subtaskId: z.string().uuid(), done: z.boolean() }),
   z.object({ action: z.literal("COMMENT"), taskId: z.string().uuid(), body: z.string().trim().min(1).max(2_000) }),
+  z.object({ action: z.literal("START"), taskId: z.string().uuid() }),
+  z.object({ action: z.literal("SET_BLOCKED"), taskId: z.string().uuid(), blocked: z.boolean(), reason: z.string().trim().max(500).optional() }),
   z.object({ action: z.literal("REVIEW"), taskId: z.string().uuid(), accepted: z.boolean(), reason: z.string().trim().max(500).optional() }),
   z.object({ action: z.literal("EXTEND_DEADLINE"), taskId: z.string().uuid(), dueAt: z.iso.datetime(), reason: z.string().trim().min(3).max(500) }),
   z.object({ action: z.literal("DELEGATE"), taskId: z.string().uuid(), successorAccountId: z.string().uuid(), reason: z.string().trim().min(3).max(500) }),
@@ -36,6 +38,10 @@ export async function POST(request: Request): Promise<Response> {
     }
     const task = input.action === "SUBMIT"
       ? hasTestPermission(identity, "TASK_SUBMIT", testScope) ? service.submit(input.taskId, identity.accountId, input.evidenceAssetId, input.note) : null
+      : input.action === "START"
+        ? hasTestPermission(identity, "TASK_SUBMIT", testScope) ? service.start(input.taskId, identity.accountId) : null
+      : input.action === "SET_BLOCKED"
+        ? hasTestPermission(identity, "TASK_SUBMIT", testScope) ? service.setBlocked(input.taskId, identity.accountId, input.blocked, input.reason) : null
       : input.action === "ADD_SUBTASK"
         ? hasTestPermission(identity, "TASK_READ", testScope) ? service.addSubtask(input.taskId, identity.accountId, input.title) : null
       : input.action === "SET_SUBTASK"

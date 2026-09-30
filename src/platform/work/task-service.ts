@@ -25,6 +25,9 @@ export type TaskRecord = {
   dependencyTaskIds?: string[];
   subtasks?: Subtask[];
   submissionNote?: string;
+  // Set when the owner starts work; tasks without it sit in the board's "Belum dikerjakan" column.
+  startedAt?: string;
+  blockedReason?: string;
   dueAt?: string;
   closedAt?: string;
   updatedAt: string;
@@ -69,7 +72,7 @@ export class TestTaskService {
     // Q04: every subtask done makes the parent ready to submit; review is still required.
     if ((task.subtasks ?? []).some((subtask) => !subtask.done)) return null;
     if (!this.assets.canUseEvidence(evidenceAssetId, actorAccountId, task.organizationCode, task.periodCode)) return null;
-    const updated: TaskRecord = { ...task, status: "IN_REVIEW", progress: 100, evidenceAssetId, submissionNote: note?.trim() || undefined, submittedByAccountId: actorAccountId, updatedAt: new Date().toISOString() };
+    const updated: TaskRecord = { ...task, status: "IN_REVIEW", progress: 100, evidenceAssetId, submissionNote: note?.trim() || undefined, submittedByAccountId: actorAccountId, startedAt: task.startedAt ?? new Date().toISOString(), updatedAt: new Date().toISOString() };
     this.records.set(id, updated);
     this.audit.record({ action: "TASK_SUBMITTED", module: "task", entityType: "task", entityId: id, actorAccountId, result: "SUCCESS", requestId: `local:${id}`, metadata: { status: updated.status, evidenceAssetId } });
     return cloneTask(updated);
@@ -118,6 +121,28 @@ export class TestTaskService {
     return cloneTask(updated);
   }
 
+  start(id: string, ownerAccountId: string): TaskRecord | null {
+    const task = this.records.get(id);
+    if (!task || task.ownerAccountId !== ownerAccountId || task.status !== "IN_PROGRESS" || task.startedAt) return null;
+    const now = new Date().toISOString();
+    const updated: TaskRecord = { ...task, startedAt: now, updatedAt: now };
+    this.records.set(id, updated);
+    this.audit.record({ action: "TASK_STARTED", module: "task", entityType: "task", entityId: id, actorAccountId: ownerAccountId, result: "SUCCESS", requestId: `local:${id}` });
+    return cloneTask(updated);
+  }
+
+  // Blocking keeps the task with its owner but stops submission until it is resumed.
+  setBlocked(id: string, ownerAccountId: string, blocked: boolean, reason?: string): TaskRecord | null {
+    const task = this.records.get(id);
+    if (!task || task.ownerAccountId !== ownerAccountId || task.status !== (blocked ? "IN_PROGRESS" : "BLOCKED")) return null;
+    if (blocked && !reason?.trim()) return null;
+    const now = new Date().toISOString();
+    const updated: TaskRecord = { ...task, status: blocked ? "BLOCKED" : "IN_PROGRESS", blockedReason: blocked ? reason!.trim() : undefined, startedAt: task.startedAt ?? now, updatedAt: now };
+    this.records.set(id, updated);
+    this.audit.record({ action: blocked ? "TASK_BLOCKED" : "TASK_RESUMED", module: "task", entityType: "task", entityId: id, actorAccountId: ownerAccountId, reason: reason?.trim(), result: "SUCCESS", requestId: `local:${id}`, metadata: { status: updated.status } });
+    return cloneTask(updated);
+  }
+
   addSubtask(id: string, actorAccountId: string, title: string): TaskRecord | null {
     const task = this.records.get(id);
     const clean = title.trim();
@@ -136,7 +161,7 @@ export class TestTaskService {
     if (!target || target.done === done) return null;
     const now = new Date().toISOString();
     const subtasks = task.subtasks!.map((subtask) => subtask.id === subtaskId ? done ? { ...subtask, done, doneByAccountId: actorAccountId, doneAt: now } : { id: subtask.id, title: subtask.title, done } : subtask);
-    const updated: TaskRecord = { ...task, subtasks, progress: subtaskProgress(subtasks) ?? task.progress, updatedAt: now };
+    const updated: TaskRecord = { ...task, subtasks, progress: subtaskProgress(subtasks) ?? task.progress, startedAt: task.startedAt ?? (done ? now : undefined), updatedAt: now };
     this.records.set(id, updated);
     this.audit.record({ action: done ? "TASK_SUBTASK_DONE" : "TASK_SUBTASK_REOPENED", module: "task", entityType: "task", entityId: id, actorAccountId, result: "SUCCESS", requestId: `local:${id}`, metadata: { subtaskId, progress: updated.progress } });
     return cloneTask(updated);
