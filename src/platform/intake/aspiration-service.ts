@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 
 export type AspirationKind = "SARAN" | "PERTANYAAN" | "PENGADUAN";
@@ -75,7 +75,7 @@ export class TestAspirationService {
   private readonly notifications: RecordCollection<NotificationRecord>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: RecordDatabase) {
+  constructor(database?: LocalRecordDatabase) {
     this.records = database ? new PersistentRecords(database, "aspirations", []) : new Map();
     this.notifications = database ? new PersistentRecords(database, "notifications", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);

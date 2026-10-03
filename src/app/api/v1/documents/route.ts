@@ -4,7 +4,6 @@ import { z } from "zod";
 import { hasTestPermission } from "@/platform/authorization/permissions";
 import { getRequestId } from "@/platform/http/request-id";
 import { errorResponse } from "@/platform/http/response";
-import { portalRoute } from "@/platform/http/portal-route";
 import { getTestSession, isTestAuthEnabled, sessionCookieName } from "@/platform/identity/test-auth";
 import { getLocalAssetRepository } from "@/platform/storage/asset-repository";
 
@@ -17,14 +16,17 @@ const assetSchema = z.object({
 });
 
 
-// Listing is available in hosted mode too (metadata only). Registering files stays
-// local TEST until private storage and the malware scanner exist in production.
 export async function GET(request: Request): Promise<Response> {
-  return portalRoute(request, async (context, requestId) => {
-    if (!context.can("ASSET_DOWNLOAD")) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
-    const { organizationCode, periodCode } = context.scope;
-    return Response.json({ assets: (await getLocalAssetRepository().listVisible(context.identity.accountId)).filter((asset) => asset.organizationCode === organizationCode && asset.periodCode === periodCode) }, { headers: { "x-request-id": requestId } });
-  });
+  const requestId = getRequestId(request.headers.get("x-request-id"));
+  try {
+    if (!isTestAuthEnabled()) return errorResponse("TEST_AUTH_DISABLED", requestId, 503);
+    const testScope = await getSelectedPreviewScope();
+    const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
+    if (!identity || !hasTestPermission(identity, "ASSET_DOWNLOAD", testScope)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
+    return Response.json({ assets: (await getLocalAssetRepository().listVisible(identity.accountId)).filter((asset) => asset.organizationCode === testScope.organizationCode && asset.periodCode === testScope.periodCode) }, { headers: { "x-request-id": requestId } });
+  } catch {
+    return errorResponse("CONFIGURATION_INVALID", requestId, 503);
+  }
 }
 
 export async function POST(request: Request): Promise<Response> {

@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { DatabaseSync } from "node:sqlite";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
-import { getSqliteRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 
 export type BackupRun = { id: string; createdAt: string; status: "VERIFIED"; recordCount: number; assetCount: number; sqliteSha256: string; actorAccountId: string };
 type AssetWithHash = { id: string; contentSha256?: string };
@@ -72,5 +72,5 @@ async function verifyBackup(databasePath: string, assetRoot: string): Promise<Pi
 export function getLocalBackupService(): LocalBackupService {
   const root = join(process.cwd(), ".kpi-test");
   const backupRoot = join(process.env.LOCALAPPDATA ?? tmpdir(), "KPI-Dardev", "backups");
-  return new LocalBackupService(getSqliteRecordDatabase(), join(root, "private-assets"), backupRoot);
+  return new LocalBackupService(getLocalRecordDatabase(), join(root, "private-assets"), backupRoot);
 }

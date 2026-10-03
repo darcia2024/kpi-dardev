@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import { LocalLegalHoldRepository } from "@/platform/governance/local-legal-hold";
 import { evaluateUpload, type UploadCandidate } from "@/platform/storage/upload-policy";
@@ -52,7 +52,7 @@ export class TestAssetRepository {
   private readonly audit: LocalBusinessAuditService;
   private readonly holds: LocalLegalHoldRepository;
 
-  constructor(database?: RecordDatabase) {
+  constructor(database?: LocalRecordDatabase) {
     const seed = new Map<string, AssetRecord>();
     if (process.env.NODE_TEST_CONTEXT) {
       const scope = { organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" };

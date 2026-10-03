@@ -1,11 +1,11 @@
-import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 
 export type InboxReceipt = { id: string; recipientAccountId: string; noticeId: string; readAt: string };
 
 export class LocalInboxRepository {
   private readonly receipts: RecordCollection<InboxReceipt>;
 
-  constructor(database?: RecordDatabase) {
+  constructor(database?: LocalRecordDatabase) {
     this.receipts = database ? new PersistentRecords(database, "inbox-receipts", []) : new Map();
   }
 

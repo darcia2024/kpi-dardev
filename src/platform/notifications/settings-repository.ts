@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import { defaultQuietHours, isValidClock, type QuietHours } from "@/platform/notifications/quiet-hours";
 
@@ -13,7 +13,7 @@ export class LocalNoticeSettingsRepository {
   private readonly preferences: RecordCollection<NoticePreference>;
   private readonly templates: RecordCollection<NoticeTemplate>;
   private readonly audit: LocalBusinessAuditService;
-  constructor(database?: RecordDatabase) {
+  constructor(database?: LocalRecordDatabase) {
     this.preferences = database ? new PersistentRecords(database, "notice-preferences", []) : new Map();
     this.templates = database ? new PersistentRecords(database, "notice-templates", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);

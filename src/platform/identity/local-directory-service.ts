@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import { testPeriods, type PeriodRecord } from "@/platform/data/organization-repository";
 import { listTestIdentities } from "@/platform/identity/test-auth";
@@ -14,7 +14,7 @@ export class LocalDirectoryService {
   private readonly assignments: RecordCollection<DirectoryAssignment>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: RecordDatabase) {
+  constructor(database?: LocalRecordDatabase) {
     this.periods = database ? new PersistentRecords(database, "directory-periods", testPeriods.map((period) => [period.id, period])) : new Map(testPeriods.map((period) => [period.id, { ...period }]));
     this.positions = database ? new PersistentRecords(database, "directory-positions", []) : new Map();
     this.divisions = database ? new PersistentRecords(database, "directory-divisions", []) : new Map();

@@ -5,8 +5,7 @@ import Link from "next/link";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth";
 import { hasTestPermission } from "@/platform/authorization/permissions";
-import { hostedReadyDestinations, visiblePortalNavigation } from "@/lib/portal-navigation";
-import { runInPortal } from "@/platform/identity/portal-context";
+import { visiblePortalNavigation } from "@/lib/portal-navigation";
 import { IconArrowUpRight, IconBook2, IconBrain, IconBriefcase2, IconCircleCheck, IconFileText, IconGavel, IconLayoutDashboard, IconSettings, IconShieldCheck, IconUsersGroup, IconWallet } from "@tabler/icons-react";
 import { getHostedAuthConfiguration, getHostedIdentity } from "@/platform/identity/hosted-auth";
 
@@ -30,18 +29,7 @@ export default async function PortalPage(): Promise<React.JSX.Element> {
   if (getHostedAuthConfiguration()) {
     const hostedIdentity = await getHostedIdentity();
     if (!hostedIdentity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Masuk diperlukan</h1><p>Gunakan akun yang telah diaktifkan oleh pengelola KPI.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;
-    const outcome = await runInPortal((context) => ({
-      periodCode: context.scope.periodCode,
-      destinations: new Set(visiblePortalNavigation((permission) => context.can(permission)).map((item) => item.href).filter((href) => hostedReadyDestinations.has(href)))
-    }));
-    const ready = outcome.status === "READY" ? outcome.value : null;
-    const modules = ready ? workCards.filter((card) => ready.destinations.has(card.href)) : [];
-    return <div className="portal-shell">
-      <header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Selamat datang, {hostedIdentity.name}.</h1><p>{ready ? "Modul di bawah sudah memakai data KPI. Modul lain menyusul setelah penyimpanannya selesai dipindahkan." : "Akun Anda telah diverifikasi. Akses modul kerja akan muncul setelah data organisasi, izin peran, dan penyimpanan operasional selesai dihubungkan."}</p></header>
-      <section className="portal-context" aria-label="Akun aktif"><span>Email</span><strong>{hostedIdentity.email}</strong><span>Peran</span><strong>{hostedIdentity.roles.join(" · ")}</strong>{ready && <><span>Periode</span><strong>{formatPreviewPeriodLabel(ready.periodCode)}</strong></>}</section>
-      {modules.length > 0 && <section aria-labelledby="hosted-work-title"><div className="kp-portal-section-head"><div><p className="eyebrow">Sudah tersedia</p><h2 id="hosted-work-title">Mulai bekerja.</h2></div></div><div className="kp-portal-workgrid">{modules.map((card, index) => <Link href={card.href} key={card.href}><div><span>{String(index + 1).padStart(2, "0")}</span><card.icon size={24} stroke={1.45} aria-hidden="true" /></div><strong>{card.label}</strong><small>{card.description}</small><IconArrowUpRight className="kp-portal-workgrid__arrow" size={19} aria-hidden="true" /></Link>)}</div></section>}
-      <SignOutButton />
-    </div>;
+    return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Selamat datang, {hostedIdentity.name}.</h1><p>Akun Anda telah diverifikasi. Akses modul kerja akan muncul setelah data organisasi, izin peran, dan penyimpanan operasional selesai dihubungkan.</p></header><section className="portal-context" aria-label="Akun aktif"><span>Email</span><strong>{hostedIdentity.email}</strong><span>Peran</span><strong>{hostedIdentity.roles.join(" · ")}</strong></section><SignOutButton /></div>;
   }
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);

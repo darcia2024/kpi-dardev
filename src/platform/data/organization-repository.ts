@@ -1,5 +1,5 @@
 import { getSupabaseConfiguration } from "@/platform/config/integrations";
-import { createSupabaseRestClient, type SupabaseRestClient } from "@/platform/data/supabase-rest";
+import { createSupabaseRestClient } from "@/platform/data/supabase-rest";
 import { parseEnvironment } from "@/platform/config/environment";
 
 export type OrganizationRecord = {
@@ -52,19 +52,21 @@ export class TestOrganizationRepository implements OrganizationRepository {
 type SupabaseOrganization = { id: string; code: string; name: string };
 type SupabasePeriod = { id: string; organization_id: string; code: string; starts_on: string; ends_on: string; status: PeriodRecord["status"] };
 
-// The org schema is not exposed through the Supabase API; the kpi_* functions
-// (service role only) read it on the server.
 export class SupabaseOrganizationRepository implements OrganizationRepository {
-  constructor(private readonly client: SupabaseRestClient = createSupabaseRestClient()) {}
-
   async getOrganizationByCode(code: string): Promise<OrganizationRecord | null> {
-    const records = await this.client.rpc<SupabaseOrganization[]>("kpi_get_organization", { p_code: code });
+    const client = createSupabaseRestClient();
+    const records = await client.request<SupabaseOrganization[]>(`organizations?code=eq.${encodeURIComponent(code.trim().toUpperCase())}&select=id,code,name`, {
+      headers: { "Accept-Profile": "org" }
+    });
     const organization = records[0];
     return organization ? { id: organization.id, code: organization.code, name: organization.name } : null;
   }
 
   async getPeriods(organizationId: string): Promise<PeriodRecord[]> {
-    const records = await this.client.rpc<SupabasePeriod[]>("kpi_list_periods", { p_organization_id: organizationId });
+    const client = createSupabaseRestClient();
+    const records = await client.request<SupabasePeriod[]>(`periods?organization_id=eq.${encodeURIComponent(organizationId)}&select=id,organization_id,code,starts_on,ends_on,status&order=starts_on.desc`, {
+      headers: { "Accept-Profile": "org" }
+    });
     return records.map((period) => ({
       id: period.id,
       organizationId: period.organization_id,

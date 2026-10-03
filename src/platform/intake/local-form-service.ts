@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
-import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 
 export type FormField = { key: string; label: string; type: "text" | "email" | "textarea"; required: boolean };
 export type FormDraft = { id: string; code: string; title: string; consentText: string; fields: FormField[]; version: number; status: "DRAFT"; authorAccountId: string; organizationCode: string; periodCode: string; updatedAt: string };
@@ -9,7 +9,7 @@ export type FormValidation = { valid: boolean; errors: Record<string, string> };
 export class LocalFormService {
   private readonly records: RecordCollection<FormDraft>;
   private readonly audit: LocalBusinessAuditService;
-  constructor(database?: RecordDatabase) {
+  constructor(database?: LocalRecordDatabase) {
     this.records = database ? new PersistentRecords(database, "service-forms", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);
   }

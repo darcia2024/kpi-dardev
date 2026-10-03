@@ -1,5 +1,5 @@
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 
 // Local TEST password recovery. Tokens are stored only as SHA-256 hashes, expire after 30 minutes,
@@ -27,7 +27,7 @@ export class LocalPasswordRecovery {
   private readonly overrides: RecordCollection<PasswordOverride>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: RecordDatabase) {
+  constructor(database?: LocalRecordDatabase) {
     this.requests = database ? new PersistentRecords(database, "password-recovery", []) : new Map();
     this.overrides = database ? new PersistentRecords(database, "password-overrides", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);

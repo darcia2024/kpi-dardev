@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { getLocalRecordDatabase, PersistentRecords, type RecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
+import { getLocalRecordDatabase, PersistentRecords, type LocalRecordDatabase, type RecordCollection } from "@/platform/data/local-record-store";
 import { LocalBusinessAuditService } from "@/platform/audit/local-business-audit-service";
 import type { TestTaskService, TaskRecord } from "@/platform/work/task-service";
 
@@ -17,7 +17,7 @@ export class TaskTemplateService {
   private readonly records: RecordCollection<TaskTemplate>;
   private readonly audit: LocalBusinessAuditService;
 
-  constructor(database?: RecordDatabase) {
+  constructor(database?: LocalRecordDatabase) {
     this.records = database ? new PersistentRecords(database, "task-templates", []) : new Map();
     this.audit = new LocalBusinessAuditService(database);
   }
