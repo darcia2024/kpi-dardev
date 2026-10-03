@@ -3,7 +3,7 @@ import { z } from "zod";
 import { isTestAuthEnabled, startTestSignIn } from "@/platform/identity/test-auth";
 import { errorResponse } from "@/platform/http/response";
 import { getRequestId } from "@/platform/http/request-id";
-import { createHostedAuthClient, getHostedAuthConfiguration, hostedIdentityFromUser } from "@/platform/identity/hosted-auth";
+import { createHostedAuthClient, getHostedAuthConfiguration, resolveHostedAccess } from "@/platform/identity/hosted-auth";
 
 const signInSchema = z.object({ email: z.string().email().max(254), password: z.string().min(1).max(128) });
 
@@ -15,7 +15,7 @@ export async function POST(request: Request): Promise<Response> {
       const client = await createHostedAuthClient();
       if (!client) return errorResponse("CONFIGURATION_INVALID", requestId, 503);
       const { data, error } = await client.auth.signInWithPassword(input);
-      if (error || !hostedIdentityFromUser(data.user)) {
+      if (error || !await resolveHostedAccess(client, data.user)) {
         await client.auth.signOut();
         return errorResponse("AUTHENTICATION_INVALID", requestId, 401);
       }

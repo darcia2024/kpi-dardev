@@ -2,40 +2,8 @@ import type { TestIdentity } from "@/platform/identity/test-auth";
 import { getLocalAuthorizationRepository } from "@/platform/authorization/local-authorization-repository";
 import { ketuaScopedPermissions } from "@/platform/authorization/test-personas";
 
-export const permissions = [
-  "SYSTEM_CONFIGURATION_READ",
-  "IDENTITY_READ",
-  "IDENTITY_MANAGE",
-  "WORKSPACE_READ",
-  "TASK_READ",
-  "TASK_CREATE",
-  "TASK_SUBMIT",
-  "TASK_REVIEW",
-  "MEETING_READ",
-  "MEETING_MANAGE",
-  "FINANCE_READ",
-  "FINANCE_MANAGE",
-  "FINANCE_APPROVE_FINAL",
-  "EVALUATION_READ",
-  "EVALUATION_WRITE",
-  "KNOWLEDGE_READ",
-  "KNOWLEDGE_WRITE",
-  "KNOWLEDGE_REVIEW",
-  "HANDOVER_READ",
-  "HANDOVER_ACCEPT",
-  "AI_READ",
-  "AI_ACTION_CONFIRM",
-  "CONTENT_DRAFT_WRITE",
-  "CONTENT_REVIEW",
-  "CONTENT_PUBLISH",
-  "ASSET_UPLOAD",
-  "ASSET_DOWNLOAD",
-  "ASPIRATION_TRIAGE",
-  "NOTIFICATION_READ",
-  "NOTIFICATION_TEMPLATE_REVIEW"
-] as const;
-
-export type Permission = (typeof permissions)[number];
+import { permissions, type Permission } from "./permission-catalog";
+export { permissions, type Permission } from "./permission-catalog";
 
 export type PermissionScope = {
   organizationCode?: string;
@@ -56,6 +24,7 @@ const testPermissionGrants: TestPermissionGrant[] = [
   { email: "admin.test@kpi.local", permission: "CONTENT_DRAFT_WRITE", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "admin.test@kpi.local", permission: "CONTENT_PUBLISH", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "admin.test@kpi.local", permission: "ASSET_UPLOAD", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
+  { email: "admin.test@kpi.local", permission: "ASSET_READ", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "admin.test@kpi.local", permission: "ASSET_DOWNLOAD", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "admin.test@kpi.local", permission: "ASPIRATION_TRIAGE", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "admin.test@kpi.local", permission: "NOTIFICATION_READ", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
@@ -87,6 +56,7 @@ const testPermissionGrants: TestPermissionGrant[] = [
   { email: "pengurus.test@kpi.local", permission: "HANDOVER_ACCEPT", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "pengurus.test@kpi.local", permission: "AI_READ", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "pengurus.test@kpi.local", permission: "CONTENT_REVIEW", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
+  { email: "pengurus.test@kpi.local", permission: "ASSET_READ", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   { email: "pengurus.test@kpi.local", permission: "ASSET_DOWNLOAD", organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" },
   ...ketuaScopedPermissions.map((permission) => ({ email: "ketua.test@kpi.local", permission, organizationCode: "KPI_TEST", periodCode: "2026_2027_TEST" }))
 ];

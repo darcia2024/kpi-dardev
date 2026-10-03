@@ -8,6 +8,8 @@ import { PublicFooter } from "@/components/public/public-footer";
 import { getLocalContentRepository } from "@/platform/content/content-repository";
 import { examplePublication } from "@/lib/example-publication";
 import { isTestAuthEnabled } from "@/platform/identity/test-auth";
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {hostedPublications} from "@/platform/content/hosted-publications";
 
 
 export const metadata: Metadata = {
@@ -22,7 +24,7 @@ export default async function PublicationsPage(): Promise<React.JSX.Element> {
   const published = localPreview ? await publishDueContent(getLocalContentRepository()).then((repository) => repository.listPublished()) : [];
   // CMS records store a generic href; each published article has its own page by slug.
   const articles = published.map((record) => ({ ...record, href: `/publik/publikasi/${record.slug}` }));
-  const publications = localPreview ? (articles.length ? articles : [examplePublication]) : [];
+  const publications = localPreview ? (articles.length ? articles : [examplePublication]) : getHostedAuthConfiguration() ? await hostedPublications("id") : [];
   return <div className="kp-site kp-library">
     <section className="kp-library-hero" aria-labelledby="library-title">
       <div className="kp-wrap kp-library-hero__inner">

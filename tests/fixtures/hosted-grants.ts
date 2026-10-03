@@ -1,0 +1,8 @@
+import type {PGlite} from '@electric-sql/pglite';
+import {hostedFixture as f} from './hosted-database';
+export async function grantHostedFixture(db:PGlite,account:string,permission:string,object:string|null=null){
+ await db.exec('reset role;');const approver=account===f.owner?f.reviewer:f.owner;
+ const authority=(await db.query<{id:string}>(`insert into governance.access_authorities(account_id,organization_id,period_id,classifications,permissions,mandate_reference,starts_at,expires_at) values($1,$2,$3,$4,$5,'Isolated fixture mandate',now()-interval '1 day',now()+interval '2 days') returning id`,[approver,f.organization,f.period,['TERBATAS','RAHASIA'],[permission]])).rows[0].id;
+ const decision=(await db.query<{id:string}>(`insert into governance.access_decisions(authority_id,recipient_account_id,organization_id,period_id,object_id,permission,classification,form_reference,mandate_reference,purpose,information_scope,decision_reference,approved_by_account_id,starts_at,expires_at,review_due_at,implemented_by_account_id,implemented_at) values($1,$2,$3,$4,$5,$6,$7,'Fixture F01','Fixture mandate','Fixture need','Fixture scope','Fixture decision',$8,now()-interval '1 hour',now()+interval '1 day',now()+interval '12 hours',$8,now()) returning id`,[authority,account,f.organization,f.period,object,permission,object?'RAHASIA':'TERBATAS',approver])).rows[0].id;
+ await db.query(`insert into identity.permission_grants(account_id,organization_id,period_id,object_id,permission,decision_id,reason,starts_at,expires_at) values($1,$2,$3,$4,$5,$6,'Fixture approved decision',now(),now()+interval '23 hours')`,[account,f.organization,f.period,object,permission,decision]);
+}

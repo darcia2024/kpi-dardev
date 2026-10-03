@@ -3,10 +3,13 @@ import { getRequestId } from "@/platform/http/request-id";
 import { errorResponse } from "@/platform/http/response";
 import { getLocalAspirationService } from "@/platform/intake/aspiration-service";
 import { isTestAuthEnabled } from "@/platform/identity/test-auth";
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {hostedPublicIntakeRequest} from "@/platform/intake/hosted-public-intake";
 
 const trackingSchema = z.object({ trackingToken: z.string().trim().regex(/^TST-[A-Z0-9]{12}$/) });
 
 export async function POST(request: Request): Promise<Response> {
+  if(getHostedAuthConfiguration())return hostedPublicIntakeRequest(request,true);
   const requestId = getRequestId(request.headers.get("x-request-id"));
   try {
     if (!isTestAuthEnabled()) return errorResponse("TEST_AUTH_DISABLED", requestId, 503);

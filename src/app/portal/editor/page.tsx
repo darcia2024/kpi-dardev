@@ -5,8 +5,11 @@ import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth
 import { hasTestPermission } from "@/platform/authorization/permissions";
 import { EditorWorkspace } from "@/components/editor/editor-workspace";
 import { PortalAccessDenied } from "@/components/portal/portal-access-denied";
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {HostedContentPage} from "@/components/editor/hosted-content-page";
 
 export default async function EditorPage(): Promise<React.JSX.Element> {
+  if(getHostedAuthConfiguration()) return <HostedContentPage kind="PUBLICATION"/>;
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Redaksi</p><h1>Masuk diperlukan.</h1><p>Editor hanya dapat dibuka setelah sesi pratinjau terbentuk.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;

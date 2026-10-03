@@ -1,0 +1,8 @@
+"use client";
+import {useRef,useState} from 'react';
+import {RichTextView} from './rich-text-view';
+export function HostedRichEditor({value,onChange,disabled}:{value:string;onChange:(value:string)=>void;disabled:boolean}){
+ const ref=useRef<HTMLTextAreaElement>(null),[preview,setPreview]=useState(false);
+ function insert(before:string,after:string=''){const el=ref.current;if(!el)return;const start=el.selectionStart,end=el.selectionEnd,selection=value.slice(start,end)||'Teks';onChange(value.slice(0,start)+before+selection+after+value.slice(end));requestAnimationFrame(()=>{el.focus();el.setSelectionRange(start+before.length,start+before.length+selection.length);});}
+ return <div><div className="portal-form-actions" role="group" aria-label="Format isi"><button type="button" disabled={disabled||preview} onClick={()=>insert('## ')}>Subjudul</button><button type="button" disabled={disabled||preview} onClick={()=>insert('**','**')}>Tebal</button><button type="button" disabled={disabled||preview} onClick={()=>insert('*','*')}>Miring</button><button type="button" disabled={disabled||preview} onClick={()=>insert('- ')}>Daftar</button><button type="button" disabled={disabled||preview} onClick={()=>insert('> ')}>Kutipan</button><button type="button" onClick={()=>setPreview(p=>!p)} aria-pressed={preview}>{preview?'Kembali menulis':'Pratinjau'}</button></div>{preview?<RichTextView source={value} className="cms-prose"/>:<label>Isi naskah<textarea ref={ref} required minLength={10} maxLength={30000} rows={12} value={value} disabled={disabled} onChange={e=>onChange(e.target.value)}/></label>}<small>Format teks, daftar, dan tautan HTTPS. HTML mentah dan skrip tidak dijalankan.</small></div>;
+}

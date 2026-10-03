@@ -1,0 +1,9 @@
+import {z} from "zod";
+export const hostedIntakeSchema=z.object({kind:z.enum(["SARAN","PERTANYAAN","PENGADUAN"]),subject:z.string().trim().min(3).max(180),description:z.string().trim().min(20).max(6000),contact:z.string().email().max(254).optional().or(z.literal("")),consent:z.literal(true),website:z.literal("").optional(),idempotencyKey:z.string().uuid(),trackingToken:z.string().regex(/^[a-f0-9]{64}$/),templateId:z.string().uuid().optional(),templateVersion:z.number().int().positive().optional(),answers:z.record(z.string().regex(/^[a-z][a-z0-9_]{1,39}$/),z.string().trim().max(300)).refine(v=>Object.keys(v).length<=6).optional()}).strict();
+export const hostedCaseActionSchema=z.discriminatedUnion("action",[
+ z.object({action:z.literal("ASSIGN"),expectedVersion:z.number().int().positive(),note:z.string().trim().min(3).max(2000),ownerAccountId:z.string().uuid()}).strict(),
+ z.object({action:z.enum(["START","ADD_NOTE","PUBLIC_UPDATE","REQUEST_CLOSE","APPROVE_CLOSE","REQUEST_REVISION","REOPEN"]),expectedVersion:z.number().int().positive(),note:z.string().trim().min(3).max(2000)}).strict()
+]);
+export const hostedCaseSchema=z.object({id:z.string().uuid(),kind:z.string(),subject:z.string(),description:z.string(),contact:z.string(),status:z.enum(["RECEIVED","TRIAGED","IN_PROGRESS","IN_REVIEW","CLOSED"]),version:z.number().int(),submittedAt:z.string(),ownerAccountId:z.string().uuid().nullable(),canManage:z.boolean(),canReview:z.boolean(),canAssign:z.boolean(),eligibleOwners:z.array(z.object({accountId:z.string().uuid(),name:z.string()})),events:z.array(z.object({action:z.string(),visibility:z.enum(["INTERNAL","PUBLIC"]),note:z.string(),actorName:z.string(),createdAt:z.string()}))});
+export type HostedCase=z.infer<typeof hostedCaseSchema>;
+export const hostedCaseSummarySchema=hostedCaseSchema.omit({description:true,contact:true,events:true,canManage:true,canReview:true,canAssign:true,eligibleOwners:true});

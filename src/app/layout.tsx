@@ -1,3 +1,4 @@
+import "./portal-management.css";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import type { ReactNode } from "react";
@@ -17,6 +18,7 @@ import "./portal-shell.css";
 import "./portal-assistant.css";
 import "./portal-forms.css";
 import "./portal-editor.css";
+import "./portal-workspace.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],

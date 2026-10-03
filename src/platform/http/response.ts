@@ -1,11 +1,23 @@
 import { NextResponse } from "next/server";
 
 export type ErrorCode =
+  | "MANAGEMENT_INPUT_INVALID"
+  | "MANAGEMENT_VERSION_CONFLICT"
+  | "AI_INPUT_INVALID"
+  | "AI_PROVIDER_UNAVAILABLE"
+  | "AI_PROCESSOR_NOT_APPROVED"
   | "AUTHENTICATION_INVALID"
   | "AUTHENTICATION_REQUIRED"
   | "AUTHORIZATION_DENIED"
   | "CONFIGURATION_INVALID"
   | "INTERNAL_ERROR"
+  | "TASK_INPUT_INVALID"
+  | "TASK_VERSION_CONFLICT"
+  | "WORK_INPUT_INVALID"
+  | "WORK_VERSION_CONFLICT"
+  | "INTAKE_UNAVAILABLE"
+  | "RATE_LIMITED"
+  | "ADMIN_SETUP_CONFLICT"
   | "MFA_REQUIRED"
   | "SCANNER_UNAVAILABLE"
   | "TEST_AUTH_DISABLED";
@@ -20,7 +32,7 @@ export function errorResponse(code: ErrorCode, requestId: string, status: number
     },
     {
       status,
-      headers: { "x-request-id": requestId }
+      headers: { "x-request-id": requestId, "Cache-Control": "private, no-store" }
     }
   );
 }

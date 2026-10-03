@@ -8,6 +8,7 @@ import { hasTestPermission } from "@/platform/authorization/permissions";
 import { visiblePortalNavigation } from "@/lib/portal-navigation";
 import { IconArrowUpRight, IconBook2, IconBrain, IconBriefcase2, IconCircleCheck, IconFileText, IconGavel, IconLayoutDashboard, IconSettings, IconShieldCheck, IconUsersGroup, IconWallet } from "@tabler/icons-react";
 import { getHostedAuthConfiguration, getHostedIdentity } from "@/platform/identity/hosted-auth";
+import { HostedAdminOverview } from "@/components/portal/hosted-admin-overview";
 
 const workCards = [
   { href: "/portal/workspace", label: "Ruang kerja", description: "Pekerjaan dan hambatan dalam konteks akun serta periode.", icon: IconBriefcase2 },
@@ -29,7 +30,8 @@ export default async function PortalPage(): Promise<React.JSX.Element> {
   if (getHostedAuthConfiguration()) {
     const hostedIdentity = await getHostedIdentity();
     if (!hostedIdentity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Masuk diperlukan</h1><p>Gunakan akun yang telah diaktifkan oleh pengelola KPI.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;
-    return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Selamat datang, {hostedIdentity.name}.</h1><p>Akun Anda telah diverifikasi. Akses modul kerja akan muncul setelah data organisasi, izin peran, dan penyimpanan operasional selesai dihubungkan.</p></header><section className="portal-context" aria-label="Akun aktif"><span>Email</span><strong>{hostedIdentity.email}</strong><span>Peran</span><strong>{hostedIdentity.roles.join(" · ")}</strong></section><SignOutButton /></div>;
+    if(hostedIdentity.systemAdmin) return <HostedAdminOverview identity={hostedIdentity}/>;
+    return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Portal pengurus</p><h1>Selamat datang, {hostedIdentity.name}.</h1><p>Pilih pekerjaan sesuai penugasan dan izin akun Anda. Data operasional menggunakan penyimpanan Supabase dan mengikuti keputusan akses yang masih berlaku.</p></header><section className="portal-context" aria-label="Akun aktif"><span>Email</span><strong>{hostedIdentity.email}</strong><span>Peran</span><strong>{hostedIdentity.roles.join(" · ")}</strong></section><section className="operations-panel"><h2>Tugas dan review</h2><p>{hostedIdentity.memberships.length ? "Buka tugas untuk melihat pekerjaan yang diizinkan bagi penugasan Anda." : "Akun aktif. Pengelola masih perlu mengisi periode, jabatan dan izin pekerjaan agar tugas bisa dijalankan."}</p><Link className="button button--primary" href="/portal/tugas">Buka tugas</Link><Link className="button button--quiet" href="/portal/akses">Periksa hak akses</Link></section><SignOutButton /></div>;
   }
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);

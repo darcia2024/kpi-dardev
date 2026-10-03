@@ -5,8 +5,11 @@ import { KnowledgeWorkspace } from "@/components/knowledge/knowledge-workspace";
 import { PortalAccessDenied } from "@/components/portal/portal-access-denied";
 import { hasTestPermission } from "@/platform/authorization/permissions";
 import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth";
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {HostedContentPage} from "@/components/editor/hosted-content-page";
 
 export default async function KnowledgePage(): Promise<React.JSX.Element> {
+  if(getHostedAuthConfiguration()) return <HostedContentPage kind="KNOWLEDGE"/>;
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Rujukan</p><h1>Masuk diperlukan.</h1></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;

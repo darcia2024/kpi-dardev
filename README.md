@@ -2,7 +2,7 @@
 
 Repositori ini memuat blueprint dan implementasi bertahap Sistem Digital KPI PPMI Mesir. Blueprint mencakup 113 layar, 61 entitas konseptual, 11 alur, 28 keputusan, dan ringkasan empat dokumen hukum per 17 September 2026.
 
-Implementasi memiliki UI dan sebagian workflow TEST. Backend masih dikerjakan; kelulusan build dan unit test belum membuktikan semua workflow lengkap. Peta status yang mudah dibaca ada di `docs/22-STATUS-BUILD-SAAT-INI.md`, dengan rincian backend di `docs/20-BACKEND-COMPLETION.md`.
+Deployment Vercel Production menggunakan Supabase untuk modul operasional dan mengikuti SOP kerahasiaan v1.1. Status terbaru ada di [laporan kelompok 2](docs/50-KELOMPOK-2-OPERASIONAL.md), [laporan kelompok 1](docs/49-KELOMPOK-1-MODUL-HOSTED.md) dan [alur SOP F01–F05](docs/48-ALUR-SOP-F01-F05.md). Koneksi dan tes kode tidak menggantikan aktivasi periode, mandat resmi, persetujuan penyedia AI/scanner, atau UAT beberapa peran. Backend SQLite dan akun sintetis tetap terbatas pada pengembangan lokal.
 
 ## Dokumen kerja
 
@@ -17,7 +17,7 @@ Implementasi memiliki UI dan sebagian workflow TEST. Backend masih dikerjakan; k
 
 ## Menjalankan fondasi lokal
 
-Gunakan Node.js 24 atau lebih baru. Local dan staging hanya boleh memakai data sintetis TEST. Workflow TEST untuk CMS, aspirasi, metadata aset, tugas, rapat, keuangan, evaluasi, knowledge, handover, izin, dan konfirmasi preview AI memakai SQLite lokal di `.kpi-test/records.sqlite`, yang dikecualikan dari Git. Sebagian UI masih memakai data demo, dan SQLite ini bukan pengganti pengujian PostgreSQL/RLS produksi.
+Gunakan Node.js 24.x. Lokal hanya boleh memakai data sintetis TEST. Deployment online memakai Vercel Production dan Supabase Production; staging tidak digunakan. Workflow TEST untuk CMS, aspirasi, metadata aset, tugas, rapat, keuangan, evaluasi, knowledge, handover, izin, dan konfirmasi preview AI memakai SQLite lokal di `.kpi-test/records.sqlite`, yang dikecualikan dari Git. Sebagian UI masih memakai data demo, dan SQLite ini bukan pengganti pengujian PostgreSQL/RLS produksi.
 
 ```powershell
 Copy-Item .env.example .env.local
@@ -37,11 +37,11 @@ Perintah ini hanya berjalan pada mode lokal TEST dan hanya sekali; menjalankanny
 
 ## Pratinjau publik di Vercel
 
-Versi situs publik tersedia di https://kpi-ppmi-mesir-preview.vercel.app. Project Vercel ini terpisah dari situs rancangan `kpi-dardev.vercel.app` dan menjalankan `KPI_APP_ENV=staging` dengan `KPI_TEST_AUTH_ENABLED=false`. Karena itu login contoh, penulisan aspirasi/pengaduan, dan workflow portal internal tidak dibuka di URL publik. Ini pratinjau tampilan, bukan rilis sistem operasional KPI.
+Versi situs publik tersedia di https://kpi-ppmi-mesir-preview.vercel.app. Deployment terbaru 2 Oktober 2026 memakai `KPI_APP_ENV=production` dengan `KPI_TEST_AUTH_ENABLED=false`; nama project/domain masih mengandung `preview`. Akun contoh lokal tidak berlaku online. Fondasi Production sudah terverifikasi, tetapi penulisan pengaduan dan workflow operasional masih menunggu migrasi modul berikutnya.
 
-Project saat ini terhubung ke folder kerja melalui Vercel CLI, tanpa deploy otomatis dari Git, jadi push ke GitHub tidak langsung mengubah situs. Seluruh kode berada di branch `main`. Setelah `npm run verify` lulus, deploy dari `main` dengan `vercel deploy --prod --yes --scope darcia2024s-projects`. File `.vercelignore` mencegah `.env.local`, data lokal `.kpi-test`, dan folder lokal lain ikut terunggah. Untuk mengaktifkan deploy otomatis kelak, hubungkan project `kpi-ppmi-mesir-preview` ke repo GitHub dan atur Production Branch ke `main`.
+Project terhubung ke folder kerja melalui Vercel CLI, tanpa deploy otomatis dari Git. Push GitHub tidak langsung mengubah situs. Panduan pemeriksaan environment, kandidat deploy tanpa mengganti domain live, dan langkah Supabase ada di [Paket 1](docs/40-PAKET-1-FONDASI-PRODUKSI.md). Build hosted memeriksa konfigurasi dan koneksi sebelum membangun aplikasi. `.vercelignore` mencegah environment dan data lokal ikut diunggah.
 
-Jalur login online berbasis Supabase Auth disiapkan dalam kode, tetapi belum diaktifkan pada Vercel. Persyaratan dan batas aksesnya ada di `docs/35-HOSTED-LOGIN.md`.
+Supabase Auth, API database, dan akses schema organisasi berhasil diperiksa pada 2 Oktober 2026. Build hosted serta deployment Production berhasil. Login online tidak berarti modul operasional telah tersambung. Persyaratan akun dan batas akses ada di `docs/35-HOSTED-LOGIN.md`.
 
 Jalankan pemeriksaan sebelum review:
 

@@ -54,3 +54,23 @@
 .kp-nav-lang:hover { opacity: 1; }
 .kp-en-note { margin: 0 0 18px; padding: 12px 16px; border-left: 3px solid #ad1e3b; border-radius: 0 8px 8px 0; background: #fbf3f5; color: #5e4f56; font-size: .86rem; }
 :root[data-theme="dark"] .kp-en-note { background: #2a1d23; color: #d8c8cf; }
+
+/* A plain 1fr track never shrinks below its widest field; minmax(0,1fr) lets the form fit the phone. */
+@media (max-width: 900px) {
+  .kp-aspiration-page .kp-aspiration-layout { grid-template-columns: minmax(0, 1fr); }
+  .kp-aspiration-page .kp-aspiration-layout > *, .kp-aspiration-page .public-form > * { min-width: 0; }
+  .kp-aspiration-page .public-form :is(input:not([type="checkbox"]), select, textarea) { width: 100%; max-width: 100%; }
+}
+
+/* Phone header: brand + search + theme + menu must fit 320–375px; the language link moves into the menu. */
+.kp-topbar .kp-nav-lang-menu { display: none; }
+@media (max-width: 600px) {
+  .kp-topbar .kp-nav-inner { gap: 10px; }
+  .kp-topbar .kp-brand { gap: 8px; min-width: 0; }
+  .kp-topbar .kp-brand img { width: 36px; height: 36px; }
+  .kp-topbar .kp-brand small { display: none; }
+  .kp-topbar .kp-nav-controls { gap: 6px; }
+  .kp-topbar .kp-nav-controls .kp-nav-lang { display: none; }
+  .kp-topbar .kp-nav-search, .kp-topbar .theme-toggle, .kp-topbar .kp-menu { width: 40px; min-width: 40px; height: 40px; min-height: 40px; }
+  .kp-topbar .kp-nav-lang-menu { display: flex; }
+}

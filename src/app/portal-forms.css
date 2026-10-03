@@ -480,6 +480,16 @@ body:has(.portal-shell) {
 :root[data-theme="dark"] .auth-rules li.is-ok { color: #8fd8a9; }
 
 /* Task board (T01). */
+/* Grid children default to min-width:auto and would stretch the page to their content
+   (e.g. the kanban board). Let them shrink so wide content scrolls inside its own box. */
+.portal-shell > *, .portal-shell :is(.document-detail-grid, .document-layout, .task-layout, .decision-grid, .finance-dashboard__grid, .cms-composer__grid, .task-composer, .portal-form-grid) > * { min-width: 0; }
+.portal-shell .task-board, .portal-shell .task-board > * { min-width: 0; }
+.portal-shell :is(.detail-panel, .document-row, .task-row, .cms-list__main) :is(h2, h3, p, span, strong, li) { overflow-wrap: anywhere; }
+@media (max-width: 620px) {
+  .portal-shell .version-line { flex-wrap: wrap; }
+  .meeting-attendance__choices button { min-height: 36px; padding: 0 12px; }
+}
+
 .task-view-toggle { display: inline-flex; padding: 2px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-secondary); }
 .task-view-toggle button { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; padding: 0 10px; border: 0; border-radius: 7px; background: transparent; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: .76rem; font-weight: 600; }
 .task-view-toggle button.is-selected { background: var(--surface); color: var(--text-primary); box-shadow: 0 1px 2px rgb(0 0 0 / 12%); }

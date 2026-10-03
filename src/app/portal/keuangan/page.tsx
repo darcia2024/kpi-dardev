@@ -1,3 +1,5 @@
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {HostedGroupOne} from "@/components/portal/hosted-group-one";
 import { getSelectedPreviewScope } from "@/platform/identity/preview-period-context";
 import Link from "next/link";
 import { cookies } from "next/headers";
@@ -7,6 +9,7 @@ import { FinanceWorkspace } from "@/components/finance/finance-workspace";
 import { PortalAccessDenied } from "@/components/portal/portal-access-denied";
 
 export default async function FinancePage(): Promise<React.JSX.Element> {
+  if(getHostedAuthConfiguration()) return <HostedGroupOne module="keuangan"/>;
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Keuangan</p><h1>Masuk diperlukan.</h1><p>Modul keuangan hanya dapat dibuka setelah sesi pratinjau terbentuk.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;

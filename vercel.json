@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "npm run deployment:connect && npm run build",
+  "crons": [
+    {
+      "path": "/api/internal/operations",
+      "schedule": "0 2 * * *"
+    }
+  ]
+}

@@ -7,9 +7,16 @@ import { InternalCommunicationsWorkspace } from "@/components/notifications/inte
 import { PortalAccessDenied } from "@/components/portal/portal-access-denied";
 import { hasTestPermission } from "@/platform/authorization/permissions";
 import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth";
+import {getHostedAuthConfiguration,getHostedIdentity} from "@/platform/identity/hosted-auth";
+import {HostedInbox} from "@/components/notifications/hosted-inbox";
 
 
 export default async function NotificationsPage(): Promise<React.JSX.Element> {
+  if(getHostedAuthConfiguration()) {
+    const identity=await getHostedIdentity();
+    if(!identity)return <div className="portal-shell"><h1>Masuk diperlukan</h1><Link href="/masuk">Masuk ke portal</Link></div>;
+    return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Komunikasi internal</p><h1>Kotak masuk</h1><p>Notifikasi pekerjaan sesuai akun dan hak akses Anda.</p></header><HostedInbox/></div>;
+  }
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Notifikasi</p><h1>Masuk diperlukan.</h1><p>Kotak masuk hanya tersedia bagi akun yang telah masuk.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;

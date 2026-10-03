@@ -1,3 +1,5 @@
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {HostedGroupOne} from "@/components/portal/hosted-group-one";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth";
@@ -6,6 +8,7 @@ import { hasTestPermission } from "@/platform/authorization/permissions";
 import { PortalAccessDenied } from "@/components/portal/portal-access-denied";
 
 export default async function CatalogPage(): Promise<React.JSX.Element> {
+  if(getHostedAuthConfiguration()) return <HostedGroupOne module="katalog"/>;
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Katalog cakupan</p><h1>Masuk diperlukan.</h1><p>Katalog internal hanya dapat dibuka setelah sesi pratinjau terbentuk.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;
   if (!hasTestPermission(identity, "SYSTEM_CONFIGURATION_READ")) return <PortalAccessDenied area="katalog layar internal" />;

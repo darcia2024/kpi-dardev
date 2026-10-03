@@ -4,6 +4,8 @@ import { errorResponse } from "@/platform/http/response";
 import { getLocalAspirationService } from "@/platform/intake/aspiration-service";
 import { isTestAuthEnabled } from "@/platform/identity/test-auth";
 import { getLocalDirectoryService } from "@/platform/identity/local-directory-service";
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {hostedPublicIntakeRequest} from "@/platform/intake/hosted-public-intake";
 
 const submissionSchema = z.object({
   kind: z.enum(["SARAN", "PERTANYAAN", "PENGADUAN"]),
@@ -16,6 +18,7 @@ const submissionSchema = z.object({
 });
 
 export async function POST(request: Request): Promise<Response> {
+  if(getHostedAuthConfiguration())return hostedPublicIntakeRequest(request);
   const requestId = getRequestId(request.headers.get("x-request-id"));
   try {
     if (!isTestAuthEnabled()) return errorResponse("TEST_AUTH_DISABLED", requestId, 503);

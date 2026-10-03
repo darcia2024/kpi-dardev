@@ -1,0 +1,13 @@
+"use client";
+import {HostedDeliveryPreferences} from "./hosted-delivery-preferences";
+import Link from "next/link";
+import {useCallback,useEffect,useState} from "react";
+import {z} from "zod";
+const schema=z.object({notifications:z.array(z.object({id:z.string().uuid(),title:z.string(),href:z.enum(["/portal/tugas","/portal/rapat","/portal/editor","/portal/knowledge","/portal/kasus","/portal/keuangan","/portal/evaluasi","/portal/handover","/portal/operasi"]),createdAt:z.string(),readAt:z.string().nullable()}))});
+export function HostedInbox():React.JSX.Element{
+ const [items,setItems]=useState<z.infer<typeof schema>["notifications"]>([]),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState("");
+ const load=useCallback(async()=>{setLoading(true);setError("");try{const r=await fetch("/api/v1/work/notifications",{cache:"no-store"});if(!r.ok)throw new Error("Kotak masuk belum dapat dibaca. Periksa sesi dan izin Anda.");setItems(schema.parse(await r.json()).notifications);}catch(e){setError(e instanceof Error?e.message:"Gagal membaca kotak masuk.");}finally{setLoading(false);}},[]);
+ useEffect(()=>{void load();},[load]);
+ async function read(id:string){if(busy)return;setBusy(true);setError("");try{const r=await fetch("/api/v1/work/notifications",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})});if(!r.ok)throw new Error("Notifikasi tidak dapat diperbarui. Periksa izin atau muat ulang.");await load();}catch(e){setError(e instanceof Error?e.message:"Gagal memperbarui notifikasi.");}finally{setBusy(false);}}
+ return <section className="portal-form-card"><h2>Notifikasi untuk akun Anda</h2><p>Pembaruan pekerjaan dibuat dalam transaksi yang sama dengan perubahan data. Notifikasi ini tersedia di dalam portal; pengiriman email dan WhatsApp mengikuti preferensi Anda serta konfigurasi penyedia yang disetujui.</p>{error?<p role="alert">{error}</p>:null}{loading?<p role="status">Membaca kotak masuk…</p>:items.length?<ul className="hosted-task-list">{items.map(i=><li key={i.id}><div className="hosted-task-list__row"><span><Link href={i.href}><strong>{i.title}</strong></Link><small>{new Date(i.createdAt).toLocaleString("id-ID")} · {i.readAt?"Sudah dibaca":"Belum dibaca"}</small></span>{!i.readAt?<button className="button button--quiet" disabled={busy} onClick={()=>void read(i.id)}>Tandai dibaca</button>:null}</div></li>)}</ul>:<p>Belum ada notifikasi yang tersedia untuk akun dan izin Anda.</p>}<button className="button button--quiet" disabled={busy||loading} onClick={()=>void load()}>Muat ulang</button><HostedDeliveryPreferences/></section>;
+}

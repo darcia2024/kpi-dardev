@@ -5,8 +5,16 @@ import { hasTestPermission, permissions } from "@/platform/authorization/permiss
 import { AuthorizationWorkspace } from "@/components/access/authorization-workspace";
 import { DirectoryWorkspace } from "@/components/access/directory-workspace";
 import { PortalAccessDenied } from "@/components/portal/portal-access-denied";
+import { getHostedAuthConfiguration, getHostedIdentity } from "@/platform/identity/hosted-auth";
+import { HostedAccountPanel } from "@/components/access/hosted-account-panel";
+import { redirect } from "next/navigation";
 
 export default async function AccessPage(): Promise<React.JSX.Element> {
+  if (getHostedAuthConfiguration()) {
+    const identity = await getHostedIdentity();
+    if (!identity) redirect("/masuk");
+    return <HostedAccountPanel identity={identity} showGrants />;
+  }
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Identitas & akses</p><h1>Masuk diperlukan.</h1><p>Halaman ini hanya dapat dibuka setelah sesi pratinjau terbentuk.</p></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;
   if (!hasTestPermission(identity, "IDENTITY_READ") && !hasTestPermission(identity, "IDENTITY_MANAGE")) return <PortalAccessDenied area="identitas dan akses" />;

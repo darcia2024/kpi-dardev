@@ -2,10 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { IconArrowRight, IconArrowUpRight, IconLock } from "@tabler/icons-react";
 import { PublicFooter } from "@/components/public/public-footer";
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {hostedIntakeReady} from "@/platform/intake/hosted-public-intake";
+import {HostedIntakeForm} from "@/components/public/hosted-intake-form";
+export const dynamic="force-dynamic";
 
 export const metadata: Metadata = {
   title: "Layanan Pengaduan | KPI PPMI Mesir",
-  description: "Pahami ruang lingkup, tahapan penanganan, dan perlindungan informasi dalam layanan pengaduan KPI PPMI Mesir. Kanal resmi belum dibuka."
+  description: "Ruang lingkup, tahapan penanganan, dan perlindungan informasi dalam layanan pengaduan KPI PPMI Mesir."
 };
 
 const stages = [
@@ -15,7 +19,8 @@ const stages = [
   ["04", "Pembaruan aman", "Pelapor menerima status yang boleh dibagikan. Hanya personel KPI yang terlibat dalam kasus yang dapat mengakses informasi sesuai tugasnya."]
 ] as const;
 
-export default function ComplaintPage(): React.JSX.Element {
+export default async function ComplaintPage(): Promise<React.JSX.Element> {
+  const ready=!!getHostedAuthConfiguration()&&await hostedIntakeReady();
   return <div className="kp-site kp-complaint-page">
     <section className="kp-complaint-hero" aria-labelledby="complaint-title">
       <div className="kp-wrap kp-complaint-hero__inner">
@@ -27,12 +32,14 @@ export default function ComplaintPage(): React.JSX.Element {
         </div>
         <aside className="kp-complaint-notice" aria-label="Status layanan">
           <IconLock size={28} stroke={1.5} aria-hidden="true" />
-          <p className="kp-eyebrow">Belum menerima laporan resmi</p>
-          <h2>Kanal resmi sedang disiapkan</h2>
-          <p>Penanggung jawab penerimaan dan tindak lanjut sudah ditentukan, tetapi SOP rinci dan kanal penanganan produksi belum siap. Jangan masukkan identitas, bukti, atau cerita perkara nyata.</p>
+          <p className="kp-eyebrow">{ready?"Penerimaan laporan aktif":"Belum menerima laporan resmi"}</p>
+          <h2>{ready?"Laporan ditangani secara terbatas":"Kanal resmi sedang disiapkan"}</h2>
+          <p>{ready?"Sekretaris KPI menerima laporan untuk pemeriksaan awal. Petugas IOD yang ditugaskan menindaklanjuti, dengan akses terbatas bagi personel yang terlibat.":"Kanal belum menerima laporan karena periode aktif dan petugas resmi belum lengkap. Jangan masukkan identitas, bukti, atau cerita perkara nyata."}</p>
         </aside>
       </div>
     </section>
+
+    {ready?<section className="kp-wrap kp-aspiration-layout"><section className="kp-aspiration-form"><h2>Sampaikan pengaduan</h2><HostedIntakeForm complaint/></section><aside className="kp-aspiration-aside"><h2>Tulis informasi yang diperlukan</h2><p>Jelaskan peristiwa, waktu, dan konteks secara faktual. Jangan memasukkan kata sandi, kode verifikasi, atau data pribadi yang tidak relevan. Kode pelacakan hanya menampilkan pembaruan yang aman bagi pelapor.</p></aside></section>:null}
 
     <section className="kp-wrap kp-complaint-scope" aria-labelledby="scope-title">
       <div><p className="kp-eyebrow">Sebelum menyampaikan</p><h2 id="scope-title">Pengaduan berbeda dari aspirasi.</h2></div>

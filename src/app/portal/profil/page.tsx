@@ -4,8 +4,16 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth";
+import { getHostedAuthConfiguration, getHostedIdentity } from "@/platform/identity/hosted-auth";
+import { HostedAccountPanel } from "@/components/access/hosted-account-panel";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage(): Promise<React.JSX.Element> {
+  if (getHostedAuthConfiguration()) {
+    const identity = await getHostedIdentity();
+    if (!identity) redirect("/masuk");
+    return <HostedAccountPanel identity={identity} />;
+  }
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Profil</p><h1>Masuk diperlukan.</h1></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;

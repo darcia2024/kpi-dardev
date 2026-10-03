@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
+import { parseHostedAccess, type HostedAccess } from "@/platform/authorization/hosted-access";
 
 export type HostedIdentity = {
   accountId: string;
@@ -55,12 +56,18 @@ export function hostedIdentityFromUser(user: User | null): HostedIdentity | null
   };
 }
 
-export async function getHostedIdentity(): Promise<HostedIdentity | null> {
+export async function resolveHostedAccess(client: SupabaseClient, user: User | null): Promise<HostedAccess | null> {
+  if (!hostedIdentityFromUser(user) || !user?.email) return null;
+  const { data, error } = await client.rpc("kpi_access_context");
+  return error ? null : parseHostedAccess(data, user.id, user.email);
+}
+
+export async function getHostedIdentity(): Promise<HostedAccess | null> {
   try {
     const client = await createHostedAuthClient();
     if (!client) return null;
     const { data, error } = await client.auth.getUser();
-    return error ? null : hostedIdentityFromUser(data.user);
+    return error ? null : resolveHostedAccess(client, data.user);
   } catch {
     return null;
   }

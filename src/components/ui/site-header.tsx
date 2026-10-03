@@ -34,6 +34,7 @@ export function SiteHeader(): React.JSX.Element | null {
         </Link>
         <nav id="kp-navigation" className={`kp-nav${menuOpen ? " is-open" : ""}`} aria-label="Navigasi utama">
           {publicLinks.map(([href, label]) => <Link href={href} key={href} aria-current={pathname === href || ((href === "/publik/divisi" || href === "/en/divisions" || href === "/en/publications") && pathname.startsWith(`${href}/`)) ? "page" : undefined} onClick={() => setMenuOpen(false)}>{label}</Link>)}
+          <Link className="kp-nav-lang-menu" href={otherLanguage.href} hrefLang={otherLanguage.lang} lang={otherLanguage.lang} onClick={() => setMenuOpen(false)}>{otherLanguage.title}</Link>
           <Link href="/masuk" className="kp-nav-login" onClick={() => setMenuOpen(false)}>Login <IconArrowUpRight size={16} aria-hidden="true" /></Link>
         </nav>
         <div className="kp-nav-controls">

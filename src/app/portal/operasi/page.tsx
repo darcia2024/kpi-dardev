@@ -1,3 +1,5 @@
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {HostedGroupOne} from "@/components/portal/hosted-group-one";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { OperationsWorkspace } from "@/components/access/operations-workspace";
@@ -7,6 +9,7 @@ import { hasTestPermission } from "@/platform/authorization/permissions";
 import { getTestSession, sessionCookieName } from "@/platform/identity/test-auth";
 
 export default async function OperationsPage(): Promise<React.JSX.Element> {
+  if(getHostedAuthConfiguration()) return <HostedGroupOne module="operasi"/>;
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
   if (!identity) return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Operasi</p><h1>Masuk diperlukan.</h1></header><Link className="button button--primary" href="/masuk">Masuk ke portal</Link></div>;
   if (!hasTestPermission(identity, "SYSTEM_CONFIGURATION_READ")) return <PortalAccessDenied area="operasi sistem" />;

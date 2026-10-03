@@ -6,13 +6,15 @@ import { PublicFooter } from "@/components/public/public-footer";
 import { getLocalContentRepository } from "@/platform/content/content-repository";
 import { publishDueContent } from "@/platform/content/scheduled-publishing";
 import { isTestAuthEnabled } from "@/platform/identity/test-auth";
+import {getHostedAuthConfiguration} from "@/platform/identity/hosted-auth";
+import {hostedPublications} from "@/platform/content/hosted-publications";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Publications | KPI PPMI Egypt", description: "Educational material from KPI PPMI Egypt on healthy interaction, prevention, and protection principles.", alternates: { languages: { id: "/publik/publikasi", en: "/en/publications" } } };
 
 export default async function EnglishPublicationsPage(): Promise<React.JSX.Element> {
   // Only English articles that are themselves published; Indonesian drafts or texts are never substituted.
-  const articles = isTestAuthEnabled() ? await publishDueContent(getLocalContentRepository()).then((repository) => repository.listPublished("en")) : [];
+  const articles = isTestAuthEnabled() ? await publishDueContent(getLocalContentRepository()).then((repository) => repository.listPublished("en")) : getHostedAuthConfiguration() ? await hostedPublications("en") : [];
   return <div className="kp-site kp-search-page" lang="en">
     <section className="kp-wrap kp-search" aria-labelledby="publications-title">
       <p className="kp-eyebrow"><span /> Public knowledge</p>
