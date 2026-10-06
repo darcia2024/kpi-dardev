@@ -537,3 +537,15 @@ body:has(.portal-shell) {
   .portal-frame__body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
   .report-assistant__trigger { bottom: calc(76px + env(safe-area-inset-bottom)); }
 }
+
+.case-source-text { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.75; max-width: 100%; }
+.case-forms { margin-block: 1.5rem; padding-block: 1.25rem; border-block: 1px solid var(--border); }
+.case-forms details, .portal-form-card details { padding-block: .65rem; }
+.case-forms summary, .portal-form-card summary { cursor: pointer; line-height: 1.6; }
+.case-forms form { display: grid; gap: 1rem; }
+.case-forms textarea { width: 100%; min-height: 8rem; }
+
+.case-structured-fields { display: grid; gap: 1rem; margin-block: 1rem; }
+.case-structured-fields .case-check-field { display: flex; align-items: start; gap: .65rem; }
+.case-check-field input { margin-block-start: .25rem; flex: 0 0 auto; }
+.case-forms fieldset { display: grid; gap: 1rem; min-width: 0; border: 1px solid var(--border); padding: 1rem; }

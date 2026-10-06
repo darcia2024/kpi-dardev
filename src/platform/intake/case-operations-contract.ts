@@ -1,0 +1,9 @@
+import {z} from "zod";
+export const evidenceFieldsSchema=z.object({title:z.string().trim().min(3).max(180),source:z.string().trim().min(3).max(2000),acquisition:z.string().max(2000),condition:z.string().trim().min(3).max(2000),verification:z.enum(["UNVERIFIED","IN_REVIEW","VERIFIED","DISPUTED"]),location:z.string().trim().min(3).max(2000),assetId:z.string().uuid().or(z.literal("")),receivedOn:z.iso.date().or(z.literal("")),verifiedOn:z.iso.date().or(z.literal("")),verificationNote:z.string().max(2000),custodian:z.string().max(2000),previousLocation:z.string().max(2000).optional()}).strict();
+export type EvidenceFields=z.infer<typeof evidenceFieldsSchema>;
+export const caseOperationInputSchema=z.discriminatedUnion("action",[
+ z.object({action:z.enum(["SUBMIT","REVIEW","REQUEST_REVISION","WITHDRAW","RECORD_AUTHORIZATION"]),id:z.string().uuid(),expectedVersion:z.number().int().positive(),note:z.string().trim().min(3).max(2000),reference:z.string().trim().max(500).optional(),assetId:z.string().uuid().optional()}).strict(),
+ z.object({action:z.enum(["EVIDENCE_SAVE","EVIDENCE_TRANSFER"]),id:z.string().uuid(),expectedVersion:z.number().int().nonnegative(),note:z.string().trim().min(3).max(2000),fields:evidenceFieldsSchema}).strict()
+]);
+export const caseOperationsSchema=z.object({attachments:z.array(z.object({id:z.string(),assetId:z.string(),name:z.string(),mimeType:z.string(),createdAt:z.string()})),events:z.array(z.object({formId:z.string(),version:z.number(),action:z.string(),note:z.string(),reference:z.string(),assetId:z.string().nullable(),authorName:z.string(),createdAt:z.string()})),evidence:z.array(z.object({id:z.string(),version:z.number(),fields:evidenceFieldsSchema,updatedAt:z.string(),history:z.array(z.object({version:z.number(),action:z.string(),note:z.string(),snapshot:evidenceFieldsSchema,authorName:z.string(),createdAt:z.string()}))}))});
+export type CaseOperations=z.infer<typeof caseOperationsSchema>;

@@ -1,4 +1,6 @@
 "use client";
+import {HostedCaseForms} from "./hosted-case-forms";
+import type {CaseFormTemplate} from "@/platform/intake/case-form-contract";
 import {HostedAttachments} from "@/components/documents/hosted-attachments";
 import {useCallback,useEffect,useRef,useState} from "react";
 import {z} from "zod";
@@ -6,7 +8,7 @@ import {hostedCaseSchema,hostedCaseSummarySchema,type HostedCase} from "@/platfo
 import type {HostedTaskScope} from "@/platform/work/hosted-task-contract";
 const statusLabel:Record<HostedCase['status'],string>={RECEIVED:"Diterima",TRIAGED:"Ditugaskan",IN_PROGRESS:"Ditindaklanjuti",IN_REVIEW:"Menunggu review",CLOSED:"Ditutup"};
 type Summary=z.infer<typeof hostedCaseSummarySchema>;
-export function HostedCaseWorkspace({scopes,accountId}:{scopes:HostedTaskScope[];accountId:string}):React.JSX.Element{
+export function HostedCaseWorkspace({scopes,accountId,templates}:{scopes:HostedTaskScope[];accountId:string;templates:CaseFormTemplate[]}):React.JSX.Element{
  const [scopeIndex,setScopeIndex]=useState(0),scope=scopes[scopeIndex];
  const [items,setItems]=useState<Summary[]>([]),[selected,setSelected]=useState<HostedCase|null>(null),[note,setNote]=useState(""),[owner,setOwner]=useState(""),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
  const generation=useRef(0),detailGeneration=useRef(0);
@@ -37,7 +39,7 @@ export function HostedCaseWorkspace({scopes,accountId}:{scopes:HostedTaskScope[]
     {selected.canManage&&officer&&selected.status==="IN_PROGRESS"?<button type="button" className="button button--primary" disabled={!enabled} onClick={()=>void act("REQUEST_CLOSE")}>Ajukan penutupan</button>:null}
     {selected.canReview&&selected.status==="IN_REVIEW"?<><button type="button" className="button button--primary" disabled={!enabled} onClick={()=>void act("APPROVE_CLOSE")}>Setujui penutupan</button><button type="button" className="button button--quiet" disabled={!enabled} onClick={()=>void act("REQUEST_REVISION")}>Minta revisi</button></>:null}
     {selected.canReview&&selected.status==="CLOSED"?<button type="button" className="button button--quiet" disabled={!enabled} onClick={()=>void act("REOPEN")}>Buka kembali</button>:null}
-   </div></>:null}<HostedAttachments module="CASE" entityId={selected.id} version={selected.version} scope={scope} editable={selected.canManage&&["RECEIVED","TRIAGED","IN_PROGRESS"].includes(selected.status)} onChanged={async()=>{await reload();await open(selected.id);}}/><h3>Riwayat tindak lanjut</h3><ul className="hosted-task-list">{selected.events.map((event,i)=><li key={`${event.createdAt}:${i}`}><strong>{event.actorName} · {event.visibility==="PUBLIC"?"Pembaruan pelapor":"Internal"}</strong><p className="hosted-meeting-text">{event.note}</p><small>{new Intl.DateTimeFormat("id-ID",{dateStyle:"medium",timeStyle:"short",timeZone:"Africa/Cairo"}).format(new Date(event.createdAt))} · {event.action}</small></li>)}</ul>
+   </div></>:null}<HostedAttachments module="CASE" entityId={selected.id} version={selected.version} scope={scope} editable={selected.canManage&&["RECEIVED","TRIAGED","IN_PROGRESS"].includes(selected.status)} onChanged={async()=>{await reload();await open(selected.id);}}/><HostedCaseForms key={selected.id} caseId={selected.id} canReview={selected.canReview} editable={selected.canManage&&["RECEIVED","TRIAGED","IN_PROGRESS"].includes(selected.status)} templates={templates}/><h3>Riwayat tindak lanjut</h3><ul className="hosted-task-list">{selected.events.map((event,i)=><li key={`${event.createdAt}:${i}`}><strong>{event.actorName} · {event.visibility==="PUBLIC"?"Pembaruan pelapor":"Internal"}</strong><p className="hosted-meeting-text">{event.note}</p><small>{new Intl.DateTimeFormat("id-ID",{dateStyle:"medium",timeStyle:"short",timeZone:"Africa/Cairo"}).format(new Date(event.createdAt))} · {event.action}</small></li>)}</ul>
   </section>:null}
  </div>;
 }

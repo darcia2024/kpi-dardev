@@ -9,12 +9,15 @@ import {getHostedAuthConfiguration,getHostedIdentity} from "@/platform/identity/
 import {hostedScopes} from "@/platform/authorization/hosted-scopes";
 import {HostedCaseWorkspace} from "@/components/cases/hosted-case-workspace";
 
+import catalog from "@/platform/intake/case-sop-catalog.json";
+import {CaseSopGuide} from "@/components/cases/case-sop-guide";
+
 export default async function CasesPage(): Promise<React.JSX.Element> {
   if(getHostedAuthConfiguration()){
     const identity=await getHostedIdentity();
     if(!identity)return <div className="portal-shell"><h1>Masuk diperlukan</h1><Link href="/masuk">Masuk ke portal</Link></div>;
     const scopes=[...new Map(hostedScopes(identity,"CASE_READ").map(s=>[`${s.organizationCode}:${s.periodCode}`,s])).values()];
-    return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Layanan dan kasus</p><h1>Penanganan laporan</h1><p>Pemeriksaan awal oleh sekretariat, tindak lanjut oleh petugas IOD, dan penutupan melalui review terpisah.</p></header>{scopes.length?<HostedCaseWorkspace scopes={scopes} accountId={identity.accountId}/>:<section className="operations-panel"><h2>Belum ada akses kasus untuk periode aktif</h2><p>Periode kepengurusan, penerima sekretariat, petugas IOD, dan hak akses resmi harus ditetapkan sebelum penanganan kasus dibuka.</p></section>}</div>;
+    return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Layanan dan kasus</p><h1>Penanganan laporan</h1><p>Sekretariat mencatat laporan; PIC melaksanakan penanganan, OIC I&O memeriksa pelaksanaan teknis, dan Ketua KPI memberi otorisasi serta keputusan sesuai kewenangan.</p></header><CaseSopGuide/>{scopes.length?<HostedCaseWorkspace scopes={scopes} accountId={identity.accountId} templates={catalog.forms}/>:<section className="operations-panel"><h2>Belum ada akses kasus untuk periode aktif</h2><p>Periode kepengurusan, penerima sekretariat, petugas IOD, dan hak akses resmi harus ditetapkan sebelum penanganan kasus dibuka.</p></section>}</div>;
   }
   const scope = await getSelectedPreviewScope();
   const identity = getTestSession((await cookies()).get(sessionCookieName)?.value);
