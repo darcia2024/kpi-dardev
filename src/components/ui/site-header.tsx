@@ -18,7 +18,7 @@ export function SiteHeader(): React.JSX.Element | null {
     : [["/", "Beranda"], ["/publik", "Tentang KPI"], ["/publik/divisi", "Divisi"], ["/publik/kegiatan", "Kegiatan"], ["/publik/publikasi", "Publikasi"], ["/publik/layanan", "Layanan"], ["/publik/pengaduan", "Pengaduan"]];
   const otherLanguage = english ? { href: indonesianPathFor(pathname), label: "ID", title: "Baca dalam Bahasa Indonesia", lang: "id" } : { href: englishPathFor(pathname), label: "EN", title: "Read in English", lang: "en" };
 
-  if (isPortal) return null;
+  if (isPortal || pathname === "/pitch") return null;
 
   return (
     <header className="kp-topbar" onKeyDown={(event) => {
