@@ -3,7 +3,7 @@ import type { Permission } from "./permissions";
 import type { HostedTaskScope } from "@/platform/work/hosted-task-contract";
 
 export function hostedScopes(access: HostedAccess, permission: Permission): HostedTaskScope[] {
-  const candidates: HostedTaskScope[] = [...(access.systemAdmin ? access.managedScopes || [] : []), ...access.memberships.flatMap(item => [
+  const candidates: HostedTaskScope[] = [...(access.systemAdmin ? access.managedScopes || [] : []), ...(access.systemAdmin && access.superAdmin ? (access.superAdminScopes || []).map(({organizationCode,periodCode,divisionCode})=>({organizationCode,periodCode,divisionCode})) : []), ...access.memberships.flatMap(item => [
     { organizationCode: item.organizationCode, periodCode: item.periodCode, divisionCode: null },
     ...(item.divisionCode ? [{ organizationCode: item.organizationCode, periodCode: item.periodCode, divisionCode: item.divisionCode }] : [])
   ])];
