@@ -1,0 +1,114 @@
+name: Backup database production
+
+on:
+  schedule:
+    - cron: "0 20 * * *" # 03.00 WIB
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: backup
+  cancel-in-progress: false
+
+env:
+  SCHEMAS: "public platform org audit identity content files workflow intake work governance notifications management auth storage"
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      # Database kosong untuk membuktikan backup benar-benar bisa dipulihkan.
+      restore:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: restore-check
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pastikan secret tersedia
+        env:
+          KPI_DATABASE_URL: ${{ secrets.KPI_DATABASE_URL }}
+          KPI_BACKUP_PASSPHRASE: ${{ secrets.KPI_BACKUP_PASSPHRASE }}
+        run: |
+          [ -n "$KPI_DATABASE_URL" ] || { echo "::error::Secret KPI_DATABASE_URL belum diisi."; exit 1; }
+          [ ${#KPI_BACKUP_PASSPHRASE} -ge 24 ] || { echo "::error::Secret KPI_BACKUP_PASSPHRASE belum diisi atau kurang dari 24 karakter."; exit 1; }
+
+      - name: Pasang PostgreSQL client 17
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -fsSo /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client-17
+          echo /usr/lib/postgresql/17/bin >> "$GITHUB_PATH"
+
+      - name: Dump database production
+        env:
+          KPI_DATABASE_URL: ${{ secrets.KPI_DATABASE_URL }}
+        run: |
+          mkdir -p backup
+          args=""; for s in $SCHEMAS; do args="$args --schema=$s"; done
+          pg_dump "$KPI_DATABASE_URL" --format=custom --no-owner --no-privileges $args --file=backup/kpi.dump
+          psql "$KPI_DATABASE_URL" -X -A -t -F '|' -v ON_ERROR_STOP=1 -f scripts/backup/row-counts.sql > backup/source-counts.txt
+          echo "Ukuran dump: $(du -h backup/kpi.dump | cut -f1), tabel: $(wc -l < backup/source-counts.txt)"
+
+      - name: Uji restore ke database kosong
+        env:
+          RESTORE_URL: postgresql://postgres:restore-check@localhost:5432/postgres
+        run: |
+          # Peran dan ekstensi bawaan Supabase yang dirujuk policy dan fungsi.
+          psql "$RESTORE_URL" -X -q -v ON_ERROR_STOP=1 <<'SQL'
+          do $$ declare r text; begin
+            foreach r in array array['anon','authenticated','service_role','authenticator','supabase_admin','supabase_auth_admin','supabase_storage_admin','dashboard_user'] loop
+              if not exists (select 1 from pg_roles where rolname = r) then execute format('create role %I nologin', r); end if;
+            end loop;
+          end $$;
+          create schema if not exists extensions;
+          create extension if not exists pgcrypto with schema extensions;
+          create extension if not exists "uuid-ossp" with schema extensions;
+          SQL
+          pg_restore --dbname="$RESTORE_URL" --no-owner --no-privileges backup/kpi.dump 2> backup/restore-errors.txt || true
+          echo "Peringatan restore (objek khusus Supabase yang tidak ada di Postgres biasa): $(grep -c '^pg_restore: error' backup/restore-errors.txt || true)"
+          psql "$RESTORE_URL" -X -A -t -F '|' -v ON_ERROR_STOP=1 -f scripts/backup/row-counts.sql > backup/restored-counts.txt
+          if diff -u backup/source-counts.txt backup/restored-counts.txt; then
+            echo "Restore cocok: $(wc -l < backup/restored-counts.txt) tabel, $(awk -F'|' '{s+=$2} END {print s}' backup/restored-counts.txt) baris."
+          else
+            echo "::error::Jumlah baris hasil restore berbeda dari database sumber."
+            exit 1
+          fi
+
+      # Repo ini publik, jadi backup hanya disimpan dalam bentuk terenkripsi.
+      - name: Enkripsi backup
+        env:
+          KPI_BACKUP_PASSPHRASE: ${{ secrets.KPI_BACKUP_PASSPHRASE }}
+        run: |
+          stamp=$(date -u +%Y%m%d-%H%M)
+          tar -C backup -czf "kpi-backup-$stamp.tar.gz" kpi.dump source-counts.txt restore-errors.txt
+          printf '%s' "$KPI_BACKUP_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 --symmetric --cipher-algo AES256 --output "kpi-backup-$stamp.tar.gz.gpg" "kpi-backup-$stamp.tar.gz"
+          shred -u backup/kpi.dump "kpi-backup-$stamp.tar.gz"
+          echo "ARCHIVE=kpi-backup-$stamp.tar.gz.gpg" >> "$GITHUB_ENV"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARCHIVE }}
+          path: ${{ env.ARCHIVE }}
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Buka issue alarm jika backup gagal
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="Backup database production gagal"
+          number=$(gh issue list -R "$GITHUB_REPOSITORY" --state open --search "\"$title\" in:title" --json number -q '.[0].number')
+          note="Backup $(date -u +'%Y-%m-%d %H:%M UTC') gagal. Log: $RUN_URL"
+          if [ -n "$number" ]; then gh issue comment "$number" -R "$GITHUB_REPOSITORY" --body "$note"; else gh issue create -R "$GITHUB_REPOSITORY" --title "$title" --body "$note"; fi

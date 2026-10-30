@@ -1,0 +1,64 @@
+name: Uptime production
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+env:
+  SITE_URL: https://kpi-dardev.vercel.app
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Periksa halaman dan health check
+        id: probe
+        run: |
+          failed=""
+          for path in / /pitch /masuk; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 --retry 2 --retry-delay 10 "$SITE_URL$path" || echo 000)
+            echo "$path -> $code"
+            [ "$code" = "200" ] || failed="$failed $path=$code"
+          done
+          body=$(curl -s --max-time 20 --retry 2 --retry-delay 10 "$SITE_URL/api/v1/health" || true)
+          echo "/api/v1/health -> $body"
+          echo "$body" | grep -q '"status":"ok"' || failed="$failed /api/v1/health"
+          echo "failed=$failed" >> "$GITHUB_OUTPUT"
+          [ -z "$failed" ]
+
+      # GitHub mengirim notifikasi issue ke pemilik repo, jadi alarm sampai tanpa layanan tambahan.
+      - name: Buka atau perbarui issue alarm
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FAILED: ${{ steps.probe.outputs.failed }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="Production down: $SITE_URL"
+          number=$(gh issue list -R "$GITHUB_REPOSITORY" --state open --search "\"$title\" in:title" --json number -q '.[0].number')
+          note="Pemeriksaan $(date -u +'%Y-%m-%d %H:%M UTC') gagal:$FAILED. Log: $RUN_URL"
+          if [ -n "$number" ]; then
+            gh issue comment "$number" -R "$GITHUB_REPOSITORY" --body "$note"
+          else
+            gh issue create -R "$GITHUB_REPOSITORY" --title "$title" --body "$note"
+          fi
+
+      - name: Tutup issue alarm saat pulih
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Production down: $SITE_URL"
+          for number in $(gh issue list -R "$GITHUB_REPOSITORY" --state open --search "\"$title\" in:title" --json number -q '.[].number'); do
+            gh issue close "$number" -R "$GITHUB_REPOSITORY" --comment "Pulih pada $(date -u +'%Y-%m-%d %H:%M UTC')."
+          done
