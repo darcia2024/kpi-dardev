@@ -194,7 +194,7 @@ export default function PitchPage(): React.JSX.Element {
           </div>
           <div className="ready">
             <div className="list"><h3><span className="pill ok">Sudah jalan</span>Terpasang dan bisa dicek</h3><ul>
-              <li><b>Situs publik ID dan EN</b><span>Online di Vercel.</span></li>
+              <li><b>Situs publik ID dan EN</b><span>Online di kpi-dardev.vercel.app, terbit otomatis setiap ada push ke GitHub.</span></li>
               <li><b>Login pengurus</b><span>Memakai Supabase milik KPI.</span></li>
               <li><b>Database semua modul</b><span>37 migrasi terpasang di Supabase production.</span></li>
               <li><b>Aturan akses dan pemisahan wewenang</b><span>Dites otomatis di database terpisah.</span></li>
@@ -246,10 +246,8 @@ export default function PitchPage(): React.JSX.Element {
             </ul></div>
           </div>
           <div className="list list-wide"><h3><span className="pill no">Teknis, perlu dibereskan</span></h3><ul>
-            <li><b>Deploy masih manual</b><span>Situs diperbarui lewat Vercel CLI dari komputer pengembang. Push ke GitHub tidak otomatis mengubah situs, jadi isi repo dan isi situs bisa berbeda.</span></li>
-            <li><b>Alamat situs masih “preview”</b><span>Environment-nya sudah production, tapi nama domainnya belum resmi. Tidak ada server staging untuk uji coba terpisah.</span><small>Butuh: domain resmi KPI</small></li>
+            <li><b>Belum ada staging</b><span>Setiap push ke GitHub langsung terbit di kpi-dardev.vercel.app. Belum ada situs dan database terpisah untuk uji coba sebelum perubahan masuk production.</span><small>Butuh: project Supabase kedua untuk staging</small></li>
             <li><b>Konten resmi belum lengkap</b><span>Struktur pengurus, berita, dan dokumen final belum diisi. Situs tidak diisi berita buatan.</span><small>Butuh: bahan dari KPI, lalu ditelaah lewat Redaksi</small></li>
-            <li><b>Detail tampilan</b><span>Beberapa layar masih menampilkan label “Mode pratinjau”, dan teks di halaman serah terima masih menyebut “menunggu staging” padahal staging tidak dipakai.</span></li>
           </ul></div>
         </div>
       </section>
@@ -263,7 +261,7 @@ export default function PitchPage(): React.JSX.Element {
             <div className="card"><span className="q" /><h3>Tunjuk akun untuk uji bersama</h3><p>Minimal pemohon, pejabat pemberi keputusan, dan pelaksana teknis.</p></div>
             <div className="card"><span className="q" /><h3>Pilih penyedia pemindai berkas</h3><p>Tanpa ini, dokumen yang diunggah tidak bisa diunduh atau dipakai sebagai bukti.</p></div>
             <div className="card"><span className="q" /><h3>Putuskan soal AI, email, dan WhatsApp</h3><p>Penyedia yang dipakai dan persetujuan pemrosesan datanya.</p></div>
-            <div className="card"><span className="q" /><h3>Sahkan SOP dan domain resmi</h3><p>Kategori Sangat Rahasia, nomor pengesahan SOP, dan alamat situs tanpa kata “preview”.</p></div>
+            <div className="card"><span className="q" /><h3>Sahkan SOP</h3><p>Kategori Sangat Rahasia dan nomor pengesahan SOP, supaya formulir kasus tidak lagi berlabel DRAF.</p></div>
           </div>
         </div>
       </section>
@@ -274,7 +272,7 @@ export default function PitchPage(): React.JSX.Element {
           <div className="road">
             <div className="phase"><span className="when">Tahap 1</span><h3>Buka akses</h3><ul className="ticks"><li>Aktifkan periode dan catat mandat pertama</li><li>Aktifkan akun pengurus yang ikut uji</li><li>Isi jabatan dan ajukan izin lewat F01</li></ul></div>
             <div className="phase"><span className="when">Tahap 2</span><h3>Uji bersama</h3><ul className="ticks"><li>Jalankan alur tugas, rapat, keuangan, dan kasus dengan akun asli</li><li>Uji pencabutan izin dan akses lintas peran</li><li>Catat temuan, perbaiki, uji ulang</li></ul></div>
-            <div className="phase"><span className="when">Tahap 3</span><h3>Rilis resmi</h3><ul className="ticks"><li>Sambungkan pemindai berkas, AI, dan notifikasi</li><li>Uji backup dan pemulihan</li><li>Buka kanal pengaduan, pindah ke domain resmi</li></ul></div>
+            <div className="phase"><span className="when">Tahap 3</span><h3>Rilis resmi</h3><ul className="ticks"><li>Sambungkan pemindai berkas, AI, dan notifikasi</li><li>Uji backup dan pemulihan</li><li>Buka kanal pengaduan publik</li></ul></div>
           </div>
         </div>
       </section>
