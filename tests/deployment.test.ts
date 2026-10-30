@@ -7,8 +7,10 @@ const production = { KPI_APP_ENV: "production", KPI_APP_NAME: "kpi-ppmi-mesir", 
 test("hosted configuration rejects local authentication and environment mixups", () => {
   assert.doesNotThrow(() => validateDeployment(production));
   assert.doesNotThrow(() => validateDeployment({ ...production, VERCEL_ENV: undefined }));
-  assert.throws(() => validateDeployment({ ...production, KPI_APP_ENV: "staging", VERCEL_ENV: "preview" }));
-  for (const patch of [{ KPI_APP_ENV: "local" }, { KPI_TEST_AUTH_ENABLED: "true" }, { KPI_APP_ENV: "staging" }, { VERCEL_ENV: "preview" }, { KPI_AUTH_PROVIDER: "" }, { KPI_SUPABASE_SERVICE_ROLE_KEY: "[SENSITIVE]" }, { KPI_SUPABASE_URL: "http://example.supabase.co" }, { NEXT_PUBLIC_SECRET: production.KPI_SUPABASE_SERVICE_ROLE_KEY }, { KPI_SUPABASE_PUBLISHABLE_KEY: production.KPI_SUPABASE_SERVICE_ROLE_KEY }]) {
+  assert.doesNotThrow(() => validateDeployment({ ...production, KPI_APP_ENV: "staging", VERCEL_ENV: "preview" }));
+  assert.throws(() => validateDeployment({ ...production, KPI_APP_ENV: "staging", VERCEL_ENV: "preview", KPI_TEST_AUTH_ENABLED: "true" }));
+  assert.throws(() => validateDeployment({ ...production, KPI_APP_ENV: "staging", VERCEL_ENV: "development" }));
+  for (const patch of [{ KPI_APP_ENV: "local" }, { KPI_TEST_AUTH_ENABLED: "true" }, { KPI_APP_ENV: "staging" }, { VERCEL_ENV: "preview" },{ KPI_AUTH_PROVIDER: "" }, { KPI_SUPABASE_SERVICE_ROLE_KEY: "[SENSITIVE]" }, { KPI_SUPABASE_URL: "http://example.supabase.co" }, { NEXT_PUBLIC_SECRET: production.KPI_SUPABASE_SERVICE_ROLE_KEY }, { KPI_SUPABASE_PUBLISHABLE_KEY: production.KPI_SUPABASE_SERVICE_ROLE_KEY }]) {
     assert.throws(() => validateDeployment({ ...production, ...patch }));
   }
 });

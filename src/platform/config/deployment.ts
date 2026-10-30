@@ -2,9 +2,11 @@ import { parseEnvironment } from "./environment";
 
 export function validateDeployment(values: Record<string, string | undefined>): void {
   const environment = parseEnvironment(values);
-  if (environment.KPI_APP_ENV !== "production") throw new Error("Hosted KPI deployments require KPI_APP_ENV=production.");
+  if (environment.KPI_APP_ENV === "local") throw new Error("Hosted KPI deployments require KPI_APP_ENV=production or staging.");
   if (environment.KPI_TEST_AUTH_ENABLED !== "false") throw new Error("Hosted deployments must disable local test authentication.");
-  if (values.VERCEL_ENV && values.VERCEL_ENV !== "production") throw new Error("Deploy KPI using the Vercel Production target (--prod).");
+  // Vercel Production serves the official site; Vercel Preview serves staging with its own Supabase project.
+  const expectedTarget = environment.KPI_APP_ENV === "production" ? "production" : "preview";
+  if (values.VERCEL_ENV && values.VERCEL_ENV !== expectedTarget) throw new Error(`KPI_APP_ENV=${environment.KPI_APP_ENV} must be deployed to the Vercel ${expectedTarget === "production" ? "Production" : "Preview"} target.`);
   if (values.KPI_AUTH_PROVIDER !== "supabase") throw new Error("Hosted KPI deployments require KPI_AUTH_PROVIDER=supabase.");
   for (const name of ["KPI_SUPABASE_URL", "KPI_SUPABASE_PUBLISHABLE_KEY", "KPI_SUPABASE_SERVICE_ROLE_KEY"]) {
     const value = values[name]?.trim();
