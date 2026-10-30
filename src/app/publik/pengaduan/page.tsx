@@ -33,7 +33,7 @@ export default async function ComplaintPage(): Promise<React.JSX.Element> {
         <aside className="kp-complaint-notice" aria-label="Status layanan">
           <IconLock size={28} stroke={1.5} aria-hidden="true" />
           <p className="kp-eyebrow">{ready?"Penerimaan laporan aktif":"Belum menerima laporan resmi"}</p>
-          <h2>{ready?"Laporan ditangani secara terbatas":"Kanal resmi sedang disiapkan"}</h2>
+          <h2>{ready?"Laporan ditangani secara terbatas":"Dibuka setelah petugas resmi ditetapkan"}</h2>
           <p>{ready?"Sekretaris KPI menerima laporan untuk pemeriksaan awal. Petugas IOD yang ditugaskan menindaklanjuti, dengan akses terbatas bagi personel yang terlibat.":"Kanal belum menerima laporan karena periode aktif dan petugas resmi belum lengkap. Jangan masukkan identitas, bukti, atau cerita perkara nyata."}</p>
         </aside>
       </div>
