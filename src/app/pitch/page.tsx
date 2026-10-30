@@ -52,7 +52,7 @@ export default function PitchPage(): React.JSX.Element {
             <h1 className="h1">Pekerjaan KPI, dari laporan masuk sampai serah terima pengurus, <em>tercatat di satu tempat.</em></h1>
             <p className="lead">Ini penjelasan singkat tentang isi sistem digital KPI: apa yang sudah dibangun, bagaimana bentuknya, dan apa yang masih ditunggu dari KPI supaya bisa dipakai pengurus.</p>
             <div className="btns"><a className="btn primary" href="#isi">Mulai dari sini →</a><a className="btn" href="#portal">Lihat portalnya</a><a className="btn" href="#keputusan">Yang perlu diputuskan</a></div>
-            <div className="hero-meta"><span>Per <b>26 Oktober 2026</b></span><span>Pengembang <b>Dar Dev</b></span></div>
+            <div className="hero-meta"><span>Per <b>30 Oktober 2026</b></span><span>Pengembang <b>Dar Dev</b></span></div>
           </div>
           <div className="hero-shot">
             <div className="frame"><div className="frame-bar"><i /><i /><i /><span>Beranda situs publik</span></div><Image alt="Beranda situs publik KPI PPMI Mesir dengan judul Menjaga interaksi, Melindungi martabat" height={900} priority sizes="(min-width: 1248px) 1184px, 100vw" src="/pitch/d-beranda.jpg" width={1440} /></div>
@@ -77,10 +77,10 @@ export default function PitchPage(): React.JSX.Element {
             </div>
           </div>
           <div className="stats">
-            <div className="stat"><b>46</b><span>halaman aplikasi</span></div>
+            <div className="stat"><b>47</b><span>halaman aplikasi</span></div>
             <div className="stat"><b>100</b><span>endpoint API</span></div>
-            <div className="stat"><b>37</b><span>migrasi database</span></div>
-            <div className="stat"><b>185+</b><span>tes otomatis, semua lulus</span></div>
+            <div className="stat"><b>38</b><span>migrasi database</span></div>
+            <div className="stat"><b>240+</b><span>tes otomatis, termasuk 53 tes browser, semua lulus</span></div>
           </div>
         </div>
       </section>
@@ -175,7 +175,7 @@ export default function PitchPage(): React.JSX.Element {
           </div>
           <div className="grid3">
             <div className="card"><h3>Izin per divisi, periode, dan objek</h3><p>Akses ke satu kasus atau satu dokumen bisa diberikan tanpa membuka seluruh arsip.</p></div>
-            <div className="card"><h3>Admin teknis tidak otomatis bisa membaca</h3><p>Pengelola sistem tidak bisa melihat isi kasus atau penilaian kecuali diberi izin bisnis lewat formulir F01.</p></div>
+            <div className="card"><h3>Admin teknis tidak otomatis bisa membaca</h3><p>Pengelola sistem tidak bisa melihat isi kasus atau penilaian kecuali diberi izin lewat F01. Satu-satunya pengecualian adalah akun super admin resmi KPI yang disetujui tertulis, tercatat di audit, dan bisa dicabut.</p></div>
             <div className="card"><h3>Berkas private</h3><p>Dokumen disimpan tertutup. Unduhan memakai tautan sementara 60 detik setelah izin diperiksa.</p></div>
             <div className="card"><h3>Semua tindakan tercatat</h3><p>Setiap pengajuan, persetujuan, dan perubahan menyimpan pelaku, waktu, dan versinya.</p></div>
             <div className="card"><h3>Halaman internal wajib login</h3><p>Endpoint internal menolak pengunjung tanpa login; dicek ulang setiap rilis.</p></div>
@@ -196,7 +196,9 @@ export default function PitchPage(): React.JSX.Element {
             <div className="list"><h3><span className="pill ok">Sudah jalan</span>Terpasang dan bisa dicek</h3><ul>
               <li><b>Situs publik ID dan EN</b><span>Online di kpi-dardev.vercel.app, terbit otomatis setiap ada push ke GitHub.</span></li>
               <li><b>Login pengurus</b><span>Memakai Supabase milik KPI.</span></li>
-              <li><b>Database semua modul</b><span>38 migrasi terpasang di Supabase production, termasuk super admin.</span></li>
+              <li><b>Database semua modul</b><span>38 migrasi terpasang di Supabase production.</span></li>
+              <li><b>Super admin KPI</b><span>Aktif untuk akun resmi KPI. Bisa membaca semua modul sekarang; mengubah data setelah periode aktif.</span></li>
+              <li><b>Alarm situs down</b><span>Diperiksa setiap 15 menit. Kalau gagal, pengelola repo menerima notifikasi.</span></li>
               <li><b>Aturan akses dan pemisahan wewenang</b><span>Dites otomatis di database terpisah.</span></li>
               <li><b>Formulir dan workflow kasus</b><span>Tujuh formulir SOP, 1.114 kolom, register bukti.</span></li>
               <li><b>Tampilan HP dan tablet</b><span>Termasuk menu bawah di portal.</span></li>
@@ -207,7 +209,7 @@ export default function PitchPage(): React.JSX.Element {
               <li><b>Uji bersama pengurus (UAT)</b><span>Butuh minimal tiga akun dengan peran berbeda.</span><small>KPI dan Dar Dev</small></li>
               <li><b>Pemindai berkas</b><span>Berkas yang diunggah tetap dikarantina.</span><small>Persetujuan penyedia</small></li>
               <li><b>Asisten AI, email, WhatsApp</b><span>Siap secara teknis, penyedia belum dipilih.</span><small>Persetujuan penyedia</small></li>
-              <li><b>Uji backup dan pemulihan</b><span>Belum dilakukan di production.</span><small>Dar Dev</small></li>
+              <li><b>Backup harian</b><span>Backup terenkripsi dengan uji pemulihan otomatis sudah disiapkan, tapi belum jalan karena akses database untuk backup belum diisi.</span><small>Pemilik repo</small></li>
             </ul></div>
           </div>
         </div>
@@ -240,8 +242,8 @@ export default function PitchPage(): React.JSX.Element {
             </ul></div>
             <div className="list"><h3><span className="pill info">Belum teruji</span></h3><ul>
               <li><b>Pemakaian dengan akun pengurus asli</b><span>Belum pernah dicoba di situs online oleh beberapa peran sekaligus. Semua bukti sejauh ini dari tes otomatis.</span><small>Butuh: UAT bersama KPI</small></li>
-              <li><b>Tes klik-per-klik di browser</b><span>Belum ada tes otomatis yang mengklik halaman seperti pengguna. Tes yang ada menguji logika dan database.</span></li>
-              <li><b>Backup, pemulihan, dan pemantauan</b><span>Pemulihan database dan berkas production belum pernah dibuktikan. Belum ada alarm kalau situs bermasalah.</span></li>
+              <li><b>Tes klik-per-klik di browser</b><span>53 tes browser mengklik semua modul, tapi di mode pratinjau dengan data latihan. Belum ada tes browser di production dengan akun asli.</span></li>
+              <li><b>Backup dan pemulihan</b><span>Pemulihan database production belum pernah dibuktikan. Isi berkas di penyimpanan belum ikut dicadangkan.</span></li>
               <li><b>Reset sandi</b><span>Sudah memakai email pemulihan Supabase, tapi belum dicoba dengan akun asli di production.</span></li>
               <li><b>Uji penetrasi</b><span>Belum ada pentest. Pengecekan kerentanan baru sebatas daftar paket yang diketahui publik.</span></li>
             </ul></div>
@@ -290,7 +292,7 @@ export default function PitchPage(): React.JSX.Element {
 
     <footer className="pitch-footer">
       <div className="wrap">
-        <span>Disusun dari repositori sistem dan laporan progres pengembangan, per 26 Oktober 2026.</span>
+        <span>Disusun dari repositori sistem dan laporan progres pengembangan, per 30 Oktober 2026.</span>
         <span>Tangkapan layar portal diambil dari aplikasi yang dijalankan di komputer pengembang dengan data contoh bertanda TEST. Tidak ada data KPI di halaman ini.</span>
       </div>
     </footer>
