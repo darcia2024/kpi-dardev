@@ -22,7 +22,7 @@ Alurnya memakai `resetPasswordForEmail` Supabase dengan tautan kembali ke `/masu
 
 ### Persiapan di Supabase
 
-Per 30 Oktober 2026, **Site URL masih `https://kpi-ppmi-mesir-preview.vercel.app`** dan Redirect URLs hanya berisi `http://localhost:3000/**` serta `https://kpi-ppmi-mesir-preview.vercel.app/**`. Karena `kpi-dardev.vercel.app` tidak ada di daftar, Supabase mengabaikan `redirectTo` dari website resmi dan mengirim tautan pemulihan ke alamat preview lama. Perbaiki dulu sebelum menguji:
+Sebelum 30 Oktober 2026, Site URL masih `https://kpi-ppmi-mesir-preview.vercel.app` dan `kpi-dardev.vercel.app` belum ada di Redirect URLs, sehingga tautan pemulihan dikirim ke alamat preview lama. **Sudah diperbaiki 30 Oktober 2026**: Site URL menjadi `https://kpi-dardev.vercel.app` dan `https://kpi-dardev.vercel.app/**` ditambahkan ke Redirect URLs. Entri `https://kpi-ppmi-mesir-preview.vercel.app/**` masih ada dan bisa dihapus setelah project itu dimatikan. Pengaturan yang benar:
 
 1. Authentication → URL Configuration:
    - **Site URL**: `https://kpi-dardev.vercel.app`
