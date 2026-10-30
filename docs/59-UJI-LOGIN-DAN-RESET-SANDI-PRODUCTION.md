@@ -1,4 +1,4 @@
-# Uji login, login dua langkah, dan reset sandi di production
+# Login, keputusan MFA, dan uji reset sandi di production
 
 Tanggal: 30 Oktober 2026. Website: https://kpi-dardev.vercel.app.
 
@@ -6,15 +6,14 @@ Tanggal: 30 Oktober 2026. Website: https://kpi-dardev.vercel.app.
 
 **Login dua langkah (MFA) belum ada di production.** Di mode hosted, `/api/v1/auth/sign-in` memanggil `signInWithPassword` Supabase lalu langsung membuka portal. Langkah kode verifikasi enam digit hanya ada di mode pratinjau lokal (`KPI_TEST_AUTH_ENABLED=true`, kode tetap `000000`). Tidak ada pendaftaran faktor kedua, dan tidak ada pemeriksaan tingkat jaminan `aal2` di sisi server.
 
-Artinya bagian "MFA" pada tes otomatis dan Playwright hanya membuktikan alur simulasi lokal, bukan keamanan akun production. Menambahkan MFA sungguhan memerlukan:
+Artinya bagian "MFA" pada tes otomatis dan Playwright hanya membuktikan alur simulasi lokal, bukan keamanan akun production.
 
-1. Mengaktifkan TOTP di Supabase → Authentication → Multi-Factor.
-2. Halaman pendaftaran aplikasi autentikator (QR code) untuk setiap pengurus.
-3. Langkah verifikasi kode setelah kata sandi di `/masuk` untuk akun yang sudah punya faktor.
-4. Pemeriksaan `aal2` di server sebelum portal dan API internal melayani permintaan, minimal untuk admin dan pemegang izin RAHASIA.
-5. Prosedur pemulihan kalau pengurus kehilangan HP, misalnya admin mencabut faktor lewat Supabase setelah verifikasi identitas.
+**Keputusan 30 Oktober 2026: MFA tidak dipakai di production.** Login tetap email dan kata sandi. Konsekuensinya, kata sandi menjadi satu-satunya pelindung akun, termasuk akun yang bisa membuka data kasus dan keuangan RAHASIA. Untuk mengurangi risikonya:
 
-Keputusan yang dibutuhkan dari KPI: apakah MFA wajib untuk semua pengurus, atau hanya admin dan pemegang data rahasia.
+- Minta setiap pengurus memakai kata sandi unik (tidak dipakai di layanan lain), sebaiknya dari password manager.
+- Atur panjang minimum kata sandi di Supabase → Authentication → Sign In / Providers → Email, dan aktifkan pemeriksaan kata sandi bocor kalau tersedia di paket yang dipakai.
+- Batasi jumlah akun admin teknis, dan cabut akses pengurus yang selesai menjabat lewat F05 tepat waktu.
+- Kalau keputusan ini ditinjau ulang, langkah teknisnya: aktifkan TOTP di Supabase, tambahkan halaman pendaftaran autentikator dan langkah kode setelah kata sandi, lalu wajibkan tingkat `aal2` di server.
 
 ## Reset sandi (bisa diuji sekarang)
 

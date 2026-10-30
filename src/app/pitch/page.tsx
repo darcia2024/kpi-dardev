@@ -235,13 +235,13 @@ export default function PitchPage(): React.JSX.Element {
               <li><b>Formulir kasus berlabel DRAF</b><span>Status “terverifikasi” hanya catatan petugas, bukan pengesahan. Tanda tangan tidak diverifikasi sistem.</span><small>Butuh: nomor pengesahan SOP dan kategori Sangat Rahasia</small></li>
               <li><b>Keuangan</b><span>Hanya mencatat. Tidak mengirim uang, tidak menghitung kurs IDR/EGP/USD, dan tidak mengurus pajak.</span></li>
               <li><b>Serah terima</b><span>Menutup paket tidak otomatis mencabut akses pengurus lama. Pencabutan tetap lewat formulir F05.</span></li>
+              <li><b>Login</b><span>Cukup email dan kata sandi. Login dua langkah sengaja tidak dipakai, jadi kata sandi yang kuat dan tidak dipakai ulang menjadi pelindung utama akun.</span></li>
               <li><b>Asisten AI, setelah aktif</b><span>Hanya bisa membuat tugas sendiri atau draf pengetahuan, maksimal 5 sumber, 100 permintaan per hari per akun.</span></li>
             </ul></div>
             <div className="list"><h3><span className="pill info">Belum teruji</span></h3><ul>
               <li><b>Pemakaian dengan akun pengurus asli</b><span>Belum pernah dicoba di situs online oleh beberapa peran sekaligus. Semua bukti sejauh ini dari tes otomatis.</span><small>Butuh: UAT bersama KPI</small></li>
               <li><b>Tes klik-per-klik di browser</b><span>Belum ada tes otomatis yang mengklik halaman seperti pengguna. Tes yang ada menguji logika dan database.</span></li>
               <li><b>Backup, pemulihan, dan pemantauan</b><span>Pemulihan database dan berkas production belum pernah dibuktikan. Belum ada alarm kalau situs bermasalah.</span></li>
-              <li><b>Login dua langkah</b><span>Baru ada di simulasi lokal. Login di production saat ini cukup email dan kata sandi.</span></li>
               <li><b>Reset sandi</b><span>Sudah memakai email pemulihan Supabase, tapi belum dicoba dengan akun asli di production.</span></li>
               <li><b>Uji penetrasi</b><span>Belum ada pentest. Pengecekan kerentanan baru sebatas daftar paket yang diketahui publik.</span></li>
             </ul></div>
