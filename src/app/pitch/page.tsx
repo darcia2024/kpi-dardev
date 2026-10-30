@@ -196,7 +196,7 @@ export default function PitchPage(): React.JSX.Element {
             <div className="list"><h3><span className="pill ok">Sudah jalan</span>Terpasang dan bisa dicek</h3><ul>
               <li><b>Situs publik ID dan EN</b><span>Online di kpi-dardev.vercel.app, terbit otomatis setiap ada push ke GitHub.</span></li>
               <li><b>Login pengurus</b><span>Memakai Supabase milik KPI.</span></li>
-              <li><b>Database semua modul</b><span>37 migrasi terpasang di Supabase production.</span></li>
+              <li><b>Database semua modul</b><span>38 migrasi terpasang di Supabase production, termasuk super admin.</span></li>
               <li><b>Aturan akses dan pemisahan wewenang</b><span>Dites otomatis di database terpisah.</span></li>
               <li><b>Formulir dan workflow kasus</b><span>Tujuh formulir SOP, 1.114 kolom, register bukti.</span></li>
               <li><b>Tampilan HP dan tablet</b><span>Termasuk menu bawah di portal.</span></li>

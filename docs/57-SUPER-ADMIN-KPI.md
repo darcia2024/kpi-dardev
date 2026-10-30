@@ -26,4 +26,15 @@ Status aktivasi production harus dibuktikan dari hasil SQL dan context akun; fil
 
 Verifikasi 6 Oktober 2026: typecheck, 187/187 tes dan build production lulus. Deployment `dpl_J66Myq4EHoBcXGcy8ceUsjHcqTrw` READY pada alias `https://kpi-ppmi-mesir-preview.vercel.app`. SQL migration/aktivasi sudah disiapkan di dashboard Supabase, belum dijalankan; menunggu konfirmasi aktivasi saat tindakan browser. Log lokal berada pada `.vercel/super-admin-verify.log` dan `.vercel/super-admin-deploy.log`.
 
-Pembaruan 30 Oktober 2026: kode ini di-commit ke `main` dan terbit di website resmi https://kpi-dardev.vercel.app (188/188 tes lulus). Status migration dan SQL aktivasi di Supabase production belum diperiksa ulang sejak catatan 6 Oktober. Selama migration belum terpasang, `kpi_access_context` tidak mengirim `superAdmin`, sehingga akun berjalan sebagai admin teknis biasa.
+Pembaruan 30 Oktober 2026: kode ini di-commit ke `main` dan terbit di website resmi https://kpi-dardev.vercel.app (188/188 tes lulus).
+
+## Status production — aktif sejak 30 Oktober 2026
+
+Dijalankan lewat Supabase SQL Editor atas persetujuan pengguna 30 Oktober 2026:
+
+1. Sebelum migration, isi empat fungsi akses yang disalin migration ke versi `*_standard` dibandingkan dengan definisi yang terpasang (hash isi fungsi). Keempatnya identik, jadi aturan akses yang sudah ada tidak berubah.
+2. Migration `20261006003300_explicit_super_administration.sql` berhasil. Tabel `identity.super_administrators` ada dengan RLS aktif dan tidak bisa dibaca `anon` maupun `authenticated`.
+3. Skrip aktivasi semula mencari organisasi berkode `KPI`, padahal kode di production adalah `KPI_PPMI_MESIR`. Skrip diperbaiki, lalu dijalankan: `kpippmimesirofficial@gmail.com` terdaftar sebagai super admin `KPI_PPMI_MESIR`, dan peristiwa `SUPER_ADMIN_ACTIVATED` tercatat di audit.
+4. Pemeriksaan dengan klaim JWT akun tersebut (di dalam transaksi yang di-rollback): `superAdmin=true`, scope `KPI_PPMI_MESIR/2026_2027` dengan `operational=false`; `CASE_READ` dan `FINANCE_READ` diizinkan; `TASK_CREATE` ditolak karena periode masih PLANNED; permission tidak dikenal ditolak.
+
+Akibatnya, sampai periode 2026–2027 diaktifkan, super admin bisa **membaca** seluruh modul dan data tetapi belum bisa membuat atau mengubah data bisnis. Pengguna perlu keluar lalu masuk lagi agar konteks baru terbaca di portal.
