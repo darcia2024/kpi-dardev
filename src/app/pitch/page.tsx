@@ -241,7 +241,8 @@ export default function PitchPage(): React.JSX.Element {
               <li><b>Pemakaian dengan akun pengurus asli</b><span>Belum pernah dicoba di situs online oleh beberapa peran sekaligus. Semua bukti sejauh ini dari tes otomatis.</span><small>Butuh: UAT bersama KPI</small></li>
               <li><b>Tes klik-per-klik di browser</b><span>Belum ada tes otomatis yang mengklik halaman seperti pengguna. Tes yang ada menguji logika dan database.</span></li>
               <li><b>Backup, pemulihan, dan pemantauan</b><span>Pemulihan database dan berkas production belum pernah dibuktikan. Belum ada alarm kalau situs bermasalah.</span></li>
-              <li><b>Login dua langkah dan reset sandi</b><span>Baru diuji di simulasi lokal, belum dengan akun asli di production.</span></li>
+              <li><b>Login dua langkah</b><span>Baru ada di simulasi lokal. Login di production saat ini cukup email dan kata sandi.</span></li>
+              <li><b>Reset sandi</b><span>Sudah memakai email pemulihan Supabase, tapi belum dicoba dengan akun asli di production.</span></li>
               <li><b>Uji penetrasi</b><span>Belum ada pentest. Pengecekan kerentanan baru sebatas daftar paket yang diketahui publik.</span></li>
             </ul></div>
           </div>
