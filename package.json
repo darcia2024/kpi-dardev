@@ -12,6 +12,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/**/*.test.ts",
+    "test:e2e": "playwright test",
     "verify": "npm run typecheck && npm run test && npm run build",
     "seed:demo": "node --env-file=.env.local --import tsx scripts/seed-demo.ts",
     "deployment:check": "node --import tsx scripts/check-deployment.ts",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
+    "@playwright/test": "1.56.1",
     "@types/node": "24.10.0",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",

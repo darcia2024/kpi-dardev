@@ -17,6 +17,8 @@ node_modules/
 out/
 *.tsbuildinfo
 .kpi-test/
+test-results/
+playwright-report/
 
 # Environment dan Supabase CLI
 .env
