@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { recoveryAllowed, sameOrigin } from "@/platform/http/attempt-limit";
 import { errorResponse } from "@/platform/http/response";
 import { getRequestId } from "@/platform/http/request-id";
 import { createHostedAuthClient, getHostedAuthConfiguration } from "@/platform/identity/hosted-auth";
@@ -18,7 +19,10 @@ export async function POST(request: Request): Promise<Response> {
   const requestId = getRequestId(request.headers.get("x-request-id"));
   const headers = { "x-request-id": requestId, "Cache-Control": "no-store" };
   try {
+    if (!sameOrigin(request)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
     const input = schema.parse(await request.json());
+    // Only requests send email; reset needs a one-time code that cannot be guessed.
+    if (input.action === "REQUEST" && !recoveryAllowed(request)) return errorResponse("RATE_LIMITED", requestId, 429);
     if (input.action === "RESET" && passwordProblems(input.password).length) return errorResponse("AUTHENTICATION_INVALID", requestId, 422);
 
     if (getHostedAuthConfiguration()) {

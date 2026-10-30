@@ -11,6 +11,20 @@ test("beranda, pitch, dan situs publik terbuka tanpa error konsol", async ({ pag
   expect(errors).toEqual([]);
 });
 
+test("security headers terpasang dan tidak memblokir isi halaman", async ({ page }) => {
+  const violations: string[] = [];
+  page.on("console", (message) => { if (/Content Security Policy|Content-Security-Policy/i.test(message.text())) violations.push(message.text()); });
+  for (const path of ["/", "/pitch", "/publik", "/en", "/masuk", "/masuk/lupa-sandi"]) {
+    const response = await page.goto(path);
+    const headers = response?.headers() ?? {};
+    expect(headers["content-security-policy"], path).toContain("frame-ancestors 'none'");
+    expect(headers["x-frame-options"], path).toBe("DENY");
+    expect(headers["x-content-type-options"], path).toBe("nosniff");
+    await expect(page.locator("h1").first(), path).toBeVisible();
+  }
+  expect(violations).toEqual([]);
+});
+
 test("halaman publik tidak bergeser ke samping di layar sempit", async ({ page }) => {
   for (const path of ["/", "/pitch", "/publik"]) {
     await page.goto(path);

@@ -19,7 +19,7 @@ export function RecoveryRequestForm(): React.JSX.Element {
     setPending(true); setError("");
     try {
       const response = await fetch("/api/v1/auth/recovery", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "REQUEST", email: new FormData(event.currentTarget).get("email") }) });
-      if (!response.ok) { setError(response.status >= 500 ? "Layanan pemulihan sedang tidak tersedia. Coba lagi nanti." : "Periksa kembali format email."); return; }
+      if (!response.ok) { setError(response.status === 429 ? "Terlalu banyak permintaan. Tunggu 15 menit, lalu coba lagi." : response.status >= 500 ? "Layanan pemulihan sedang tidak tersedia. Coba lagi nanti." : "Periksa kembali format email."); return; }
       setResult(await response.json());
     } catch { setError("Koneksi terputus. Coba lagi."); }
     finally { setPending(false); }

@@ -25,7 +25,7 @@ export function SignInForm({ mode = "local" }: { mode?: "local" | "hosted" }): R
         body: JSON.stringify({ email: form.get("email"), password: form.get("password") })
       });
       const body = await response.json();
-      if (!response.ok) return setMessage(response.status >= 500 ? "Layanan masuk sedang tidak tersedia. Coba lagi nanti." : "Email atau kata sandi tidak sesuai, atau akun belum diaktifkan.");
+      if (!response.ok) return setMessage(response.status === 429 ? "Terlalu banyak percobaan masuk. Tunggu 15 menit, lalu coba lagi." : response.status >= 500 ? "Layanan masuk sedang tidak tersedia. Coba lagi nanti." : "Email atau kata sandi tidak sesuai, atau akun belum diaktifkan.");
       if (body.next === "PORTAL") {
         router.replace("/portal");
         router.refresh();

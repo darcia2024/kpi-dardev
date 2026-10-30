@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { isTestAuthEnabled, startTestSignIn } from "@/platform/identity/test-auth";
+import { sameOrigin, signInAllowed } from "@/platform/http/attempt-limit";
 import { errorResponse } from "@/platform/http/response";
 import { getRequestId } from "@/platform/http/request-id";
 import { createHostedAuthClient, getHostedAuthConfiguration, resolveHostedAccess } from "@/platform/identity/hosted-auth";
@@ -10,7 +11,9 @@ const signInSchema = z.object({ email: z.string().email().max(254), password: z.
 export async function POST(request: Request): Promise<Response> {
   const requestId = getRequestId(request.headers.get("x-request-id"));
   try {
+    if (!sameOrigin(request)) return errorResponse("AUTHORIZATION_DENIED", requestId, 403);
     const input = signInSchema.parse(await request.json());
+    if (!signInAllowed(request, input.email)) return errorResponse("RATE_LIMITED", requestId, 429);
     if (getHostedAuthConfiguration()) {
       const client = await createHostedAuthClient();
       if (!client) return errorResponse("CONFIGURATION_INVALID", requestId, 503);
