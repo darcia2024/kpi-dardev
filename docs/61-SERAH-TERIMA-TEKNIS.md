@@ -63,6 +63,7 @@ Login cukup email dan kata sandi (keputusan 30 Oktober 2026: tanpa login dua lan
 | Uji bersama pengurus (UAT) | Checklist per peran dan modul. | 56 |
 | Mengaktifkan / mencabut super admin | `supabase/manual/activate-kpi-super-admin.sql`; cabut dengan `revoked_at=now()`. | 57 |
 | Reset sandi pengurus | Pengurus memakai `/masuk/lupa-sandi`. | 59 |
+| Menangani serangan / memblokir alamat | Vercel → kpi-dardev → Firewall (IP Blocking, Attack Mode). Header keamanan dan pembatas login ada di kode. | 62 |
 
 ## 6. Syarat serah terima
 
