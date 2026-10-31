@@ -185,8 +185,8 @@ export default function PitchPage(): React.JSX.Element {
 
       <section className="statement">
         <div className="wrap">
-          <h2 className="h2">Yang bikin nggak boleh nyetujuin sendiri. <em>Yang nyetujuin nggak boleh bayar sendiri.</em></h2>
-          <p>Aturan ini berlaku di tugas, keuangan, evaluasi, redaksi, kasus, dan izin akses. Yang nolak itu database-nya langsung, jadi tetap nggak tembus walaupun tombolnya diakali.</p>
+          <h2 className="h2">Nggak ada yang bisa jalan sendirian. <em>Tiap keputusan dicek orang lain.</em></h2>
+          <p>Contohnya di keuangan: yang ngajuin dana, yang nyetujuin, dan yang bayar harus orang yang beda. Aturan yang sama berlaku di tugas, evaluasi, redaksi, kasus, dan izin akses. Aturannya dikunci langsung di database, jadi nggak bisa diakali lewat tampilan.</p>
         </div>
       </section>
 
