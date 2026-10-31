@@ -59,8 +59,8 @@ export default function PitchPage(): React.JSX.Element {
         <div className="wrap">
           <div className="hero-copy">
             <span className="eyebrow">Update website · 30 Oktober 2026</span>
-            <h1 className="h1">Sidi, ini update website KPI, <em>sekalian progres kerjaan saya.</em></h1>
-            <p className="lead">Website-nya udah online, portal pengurus udah bisa dibuka, dan minggu ini saya nambahin firewall, alarm kalau website mati, sama backup database. Satu hal yang masih nahan: portal belum bisa dipakai kerja karena periode 2026–2027 belum aktif di sistem. Lengkapnya di bawah.</p>
+            <h1 className="h1">Website KPI udah online. <em>Ini update dan progres terbarunya.</em></h1>
+            <p className="lead">Portal pengurus juga udah bisa dibuka, dan minggu ini ada tambahan firewall, alarm kalau website mati, sama backup database. Satu hal yang masih nahan: portal belum bisa dipakai kerja karena periode 2026–2027 belum aktif di sistem. Lengkapnya di bawah.</p>
             <div className="btns"><a className="btn primary" href="#update">Lihat yang baru →</a><a className="btn" href="#masuk">Cara masuk portal</a><a className="btn" href="#langkah">Yang saya butuhin dari Sidi</a></div>
             <div className="hero-meta"><span>Per <b>30 Oktober 2026</b></span><span>Dari <b>Dar Dev</b></span><span>Untuk <b>Sidi Abdul, Ketua KPI</b></span></div>
           </div>
