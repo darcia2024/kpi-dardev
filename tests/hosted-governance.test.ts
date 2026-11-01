@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {governanceContextSchema} from '../src/platform/governance/contract';
 import {createHostedDatabase,hostedFixture as f,loginHostedFixture} from './fixtures/hosted-database';
-const migrations=['00300_hosted_tasks','00400_system_administration','00500_hosted_meetings','00600_hosted_content','00700_publication_organization_scope','00800_hosted_assets','00900_hosted_notifications','01000_hosted_intake_cases','01100_case_notifications','01200_operational_schema_check','01300_confidentiality_sop_v11','01400_sop_asset_case_enforcement','01500_governance_workflows','01600_transition_access_expiry','01700_workflow_approval_binding'].map(s=>`migrations/202610020${s}.sql`);
+const migrations=['00300_hosted_tasks','00400_system_administration','00500_hosted_meetings','00600_hosted_content','00700_publication_organization_scope','00800_hosted_assets','00900_hosted_notifications','01000_hosted_intake_cases','01100_case_notifications','01200_operational_schema_check','01300_confidentiality_sop_v11','01400_sop_asset_case_enforcement','01500_governance_workflows','01600_transition_access_expiry','01700_workflow_approval_binding'].map(s=>`migrations/202610020${s}.sql`).concat('migrations/20261101003400_access_decision_rpc_internal.sql');
 type R={id:string;version:number;status:string;payload:Record<string,any>;canRead:boolean;events:any[]};
 test('SOP workflows persist access decisions, incidents, classification and scoped offboarding',async()=>{
  const db=await createHostedDatabase(migrations,[]);
@@ -23,9 +23,11 @@ test('SOP workflows persist access decisions, incidents, classification and scop
  await assert.rejects(act(access,'DECIDE',{authorityId:authority[reviewer],outcome:'APPROVED',approvedPermissions:['TASK_READ'],reference:'Fixture approval',needFinding:'Fixture need verified',note:'Fixture approved'}),/Independent decision/);
  await loginHostedFixture(db,reviewer);
  await assert.rejects(act(access,'DECIDE',{authorityId:authority[reviewer],outcome:'APPROVED',approvedPermissions:['ASSET_DOWNLOAD'],reference:'Fixture approval',needFinding:'Fixture need verified',note:'Fixture approved'}),/exceeds request/);
+ await assert.rejects(db.query('select public.kpi_record_access_decision($1)',[JSON.stringify({authorityId:authority[reviewer],recipientAccountId:owner,organizationId:organization,periodId:period,classification:'INTERNAL',permission:'TASK_READ',startsAt:input.startsAt,expiresAt:input.expiresAt,formReference:'No F01',mandateReference:'Fixture',purpose:'Bypass attempt',informationScope:'Fixture',decisionReference:'Fixture'})]),/permission denied/);
  access=await act(access,'DECIDE',{authorityId:authority[reviewer],outcome:'PARTIAL',approvedPermissions:['TASK_READ'],reference:'Fixture approval',needFinding:'Fixture need verified',note:'Fixture read only'});assert.equal(access.status,'PARTIAL');
  await assert.rejects(act({...access,version:1},'IMPLEMENT',{reference:'Fixture technical execution'}),/refresh first/);
  await loginHostedFixture(db,stranger);const technical=(await context()).records.find((r:R)=>r.id===access.id);assert.equal(technical.canRead,false);assert.equal(technical.payload.purpose,undefined);assert.equal(technical.payload.submission,undefined);
+ await assert.rejects(db.query('select public.kpi_apply_access_decision($1)',[access.payload.decisionIds?.[0]??crypto.randomUUID()]),/permission denied/);
  access=await act(access,'IMPLEMENT',{reference:'Fixture technical execution'});assert.equal(access.status,'IMPLEMENTED');
  await loginHostedFixture(db,owner);assert.equal((await context()).register[0].status,'ACTIVE');
  let denied=await create('ACCESS',{...input,formReference:'Fixture F01 denied'});await loginHostedFixture(db,reviewer);denied=await act(denied,'DECIDE',{authorityId:authority[reviewer],outcome:'DENIED',reference:'Fixture rejection',needFinding:'Fixture unnecessary',note:'Fixture rejected'});assert.equal(denied.status,'DENIED');await assert.rejects(act(denied,'IMPLEMENT',{reference:'Fixture denied attempt'}),/finalized/);
