@@ -10,6 +10,9 @@ begin
   if decision_reference is null or length(trim(decision_reference)) < 5 then
     raise exception 'Isi rujukan keputusan resmi pengaktifan periode terlebih dahulu';
   end if;
+  if exists(select 1 from org.periods p join org.organizations o on o.id=p.organization_id where o.code='KPI_PPMI_MESIR' and p.code='CONTOH') then
+    raise exception 'Data CONTOH masih terpasang. Jalankan supabase/manual/contoh-hapus.sql dulu';
+  end if;
   select p.* into target from org.periods p join org.organizations o on o.id=p.organization_id
     where o.code='KPI_PPMI_MESIR' and p.code='2026_2027' for update of p;
   if target.id is null then raise exception 'Periode KPI_PPMI_MESIR / 2026_2027 belum terdaftar'; end if;
