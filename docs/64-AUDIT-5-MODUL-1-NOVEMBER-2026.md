@@ -22,7 +22,7 @@ Tanda ✅ berarti sudah diperbaiki di commit ini. Semua perbaikan itu hanya di U
 
 | Kategori | Jumlah | Sudah diperbaiki |
 |---|---|---|
-| BUG | 8 | 1 disiapkan (B1, migration belum dijalankan di production). Sisanya menunggu persetujuan. |
+| BUG | 8 | 1 (B1, migration dilaporkan sudah dijalankan di production, hasil belum diperiksa). Sisanya menunggu persetujuan. |
 | UX | 13 | 8 |
 | REQUIREMENT GAP | 11 | 0 |
 | NEEDS CONFIRMATION | 8 | n/a |
@@ -44,7 +44,7 @@ Masalah terbesar ada di tempat lain:
 - **Penyebab:** `kpi_record_access_decision` dan `kpi_apply_access_decision` diberi izin eksekusi untuk semua pengguna login (`authenticated`). Padahal keduanya hanya perlu dipanggil dari dalam `kpi_governance_action`.
 - **Dampak:** pemegang mandat bisa memanggil RPC ini langsung lewat PostgREST untuk penerima siapa pun. Admin sistem lalu bisa menerapkannya. Hasilnya izin sungguhan tanpa pemohon, tanpa F01, dan tanpa riwayat workflow. Uji: `workflowRecords: 0`, grant tetap terbentuk. Alur SOP "pemohon → keputusan → pelaksanaan" terlewati.
 - **Solusi (migration):** cabut izin eksekusi kedua fungsi dari `authenticated`. Kode aplikasi tidak memanggil keduanya secara langsung (sudah diperiksa).
-- **Status:** migration disiapkan di `supabase/migrations/20261101003400_access_decision_rpc_internal.sql` (Paket 1, disetujui 1 November 2026). **Belum dijalankan di production.** Jalankan sekali lewat SQL Editor Supabase production. Migration ini aman dijalankan ulang karena hanya mencabut izin dan mencatat audit.
+- **Status:** migration disiapkan di `supabase/migrations/20261101003400_access_decision_rpc_internal.sql` (Paket 1, disetujui 1 November 2026). Menurut laporan pengembang, sudah dijalankan lewat SQL Editor Supabase production pada 1 November 2026. Hasilnya masih perlu diperiksa dengan kueri `has_function_privilege` untuk `authenticated` pada kedua fungsi: keduanya harus `false`. Migration ini aman dijalankan ulang karena hanya mencabut izin dan mencatat audit.
 - **Cara uji:** `tests/hosted-governance.test.ts` sekarang memuat migration ini. Tes memastikan panggilan langsung ditolak `permission denied`, sementara alur F01 lengkap (buat → putuskan → laksanakan → cabut/ubah) tetap berjalan. Tanpa migration, tes ini gagal. Setelah dijalankan di production: ajukan dan laksanakan satu F01 di portal seperti biasa, lalu pastikan izinnya muncul di "Hak akses saya".
 
 ### B2 · P1 · Halaman Pengaturan langsung mengaktifkan periode tanpa keputusan resmi
@@ -219,7 +219,7 @@ Semua butir di bawah memerlukan migration database. Belum ada yang dikerjakan. S
 
 | Paket | Isi | Risiko | Syarat |
 |---|---|---|---|
-| 1 | B1: cabut izin eksekusi dua RPC keputusan akses | Rendah. Hanya menutup jalan pintas, alur portal tidak berubah. | ✅ Disetujui dan disiapkan (`20261101003400`). Menunggu dijalankan di SQL Editor production. |
+| 1 | B1: cabut izin eksekusi dua RPC keputusan akses | Rendah. Hanya menutup jalan pintas, alur portal tidak berubah. | ✅ Disetujui. Migration `20261101003400` dilaporkan sudah dijalankan di production pada 1 November 2026, hasil belum diperiksa. |
 | 2 | B2 + B3 + U12: periode baru selalu PLANNED, RPC aktivasi dengan rujukan, cegah dua periode aktif | Sedang. Mengubah cara aktivasi. | C3 |
 | 3 | B4 + B5 + B6: perbaikan pelaksanaan F01 | Rendah–sedang | Persetujuan owner |
 | 4 | G1 + G2: klasifikasi rapat dan klasifikasi saat unggah | Sedang. Menyentuh aturan baca. | C2, C7 |
