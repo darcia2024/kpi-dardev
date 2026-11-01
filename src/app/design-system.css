@@ -153,3 +153,18 @@ body { font-size: 16px; }
   .kp-breadcrumb { width: calc(100% - 40px); margin-top: 12px; margin-bottom: 12px; overflow-x: auto; white-space: nowrap; }
   .kp-library-chips { gap: 6px; }
 }
+
+/* Gaya situs publik yang lebih tenang: label tanpa titik, judul dengan jarak huruf wajar, aksen merah hanya di judul utama. */
+.kp-eyebrow > span, .kp-public-eyebrow > span { display: none; }
+.kp-site .kp-eyebrow, .kp-public-eyebrow { gap: 0; letter-spacing: .02em; }
+.kp-site .kp-hero h1, .kp-library .kp-library-hero h1, .kp-public-page .kp-public-hero h1, .kp-site h1 { letter-spacing: -.025em; }
+.kp-site h2, .kp-public-page h2, .kp-site h3, .kp-public-page h3 { letter-spacing: -.015em; }
+.kp-site h2 em, .kp-public-page h2 em { color: inherit; }
+.kp-public-footer { flex-wrap: wrap; }
+.kp-public-footer__contact { flex-basis: 100%; margin: 0; color: #6c5963; font-size: .78rem; }
+.kp-public-footer__contact a, .kp-footer-bottom a { color: inherit; }
+:root[data-theme="dark"] .kp-public-footer__contact { color: #c6b7be; }
+.kp-not-found__body { padding-block: 72px 96px; }
+.kp-not-found__body > * { max-width: 720px; }
+.kp-not-found__body h1 { margin: 0 0 16px; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; }
+.kp-not-found__body > p:not(.kp-eyebrow) { margin-bottom: 28px; color: var(--text-secondary); }

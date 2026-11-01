@@ -17,6 +17,7 @@ export function PublicFooter({ locale = "id" }: { locale?: "id" | "en" }): React
         <Link href="/en/search">Search</Link>
         <Link href="/" hrefLang="id" lang="id">Bahasa Indonesia</Link>
       </nav>
+      <p className="kp-public-footer__contact">Official email: <a href="mailto:kpippmimesirofficial@gmail.com">kpippmimesirofficial@gmail.com</a></p>
     </footer>
   );
   return (
@@ -38,6 +39,7 @@ export function PublicFooter({ locale = "id" }: { locale?: "id" | "en" }): React
         <Link href="/publik/aspirasi">Aspirasi</Link>
         <Link href="/publik/pengaduan">Pengaduan</Link>
       </nav>
+      <p className="kp-public-footer__contact">Email resmi: <a href="mailto:kpippmimesirofficial@gmail.com">kpippmimesirofficial@gmail.com</a></p>
     </footer>
   );
 }

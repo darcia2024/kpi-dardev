@@ -28,8 +28,8 @@ export default async function PublicationsPage(): Promise<React.JSX.Element> {
   return <div className="kp-site kp-library">
     <section className="kp-library-hero" aria-labelledby="library-title">
       <div className="kp-wrap kp-library-hero__inner">
-        <p className="kp-eyebrow"><span /> Ruang pengetahuan KPI</p>
-        <h1 id="library-title">Pahami interaksi.<br /><em>Kenali peran KPI.</em></h1>
+        <p className="kp-eyebrow">Publikasi</p>
+        <h1 id="library-title">Materi edukasi dan publikasi KPI</h1>
         <p>Jelajahi materi tentang norma interaksi, pencegahan persoalan, hak setiap pihak, dan cara KPI bekerja sesuai mandat organisasi.</p>
         <div className="kp-library-hero__actions"><a className="kp-button kp-button--red" href="#koleksi">Jelajahi koleksi <IconArrowRight size={18} aria-hidden="true" /></a><Link className="kp-button kp-button--outline" href="/publik">Tentang KPI <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
       </div>
@@ -37,7 +37,7 @@ export default async function PublicationsPage(): Promise<React.JSX.Element> {
     </section>
 
     <section className="kp-wrap kp-library-feature" aria-labelledby="featured-title">
-      <div className="kp-library-feature__copy"><p className="kp-eyebrow">Pilihan utama</p><h2 id="featured-title">Mandat yang jelas.<br />Proses yang adil.</h2><p>Kenali peran KPI dalam pencegahan, pengawasan, dan penanganan persoalan interaksi, beserta prinsip yang membatasi setiap kewenangan.</p><Link className="kp-text-link" href="/publik">Baca profil dan mandat KPI <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
+      <div className="kp-library-feature__copy"><p className="kp-eyebrow">Pilihan utama</p><h2 id="featured-title">Mulai dari sini: peran dan batas wewenang KPI</h2><p>Kenali peran KPI dalam pencegahan, pengawasan, dan penanganan persoalan interaksi, beserta prinsip yang membatasi setiap kewenangan.</p><Link className="kp-text-link" href="/publik">Baca profil dan mandat KPI <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
       <div className="kp-library-feature__visual" aria-hidden="true"><div className="kp-library-book"><div><Image src="/brand/kpi-ppmi-mesir-logo.png" alt="" width={46} height={46} /><span>KPI PPMI Mesir</span></div><strong>Peduli.<br />Pahami.<br />Hormati.</strong><small>Ringkasan pedoman<br />Komisi Peduli Interaksi</small></div><div className="kp-library-note"><IconShieldCheck size={26} stroke={1.5} /><span>Martabat dan hak setiap pihak menjadi bagian dari setiap proses.</span></div></div>
     </section>
 

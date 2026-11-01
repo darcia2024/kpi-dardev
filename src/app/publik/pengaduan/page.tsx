@@ -25,8 +25,8 @@ export default async function ComplaintPage(): Promise<React.JSX.Element> {
     <section className="kp-complaint-hero" aria-labelledby="complaint-title">
       <div className="kp-wrap kp-complaint-hero__inner">
         <div>
-          <p className="kp-eyebrow"><span /> Layanan pengaduan</p>
-          <h1 id="complaint-title">Ruang untuk melapor.<br /><em>Proses yang menjaga semua pihak.</em></h1>
+          <p className="kp-eyebrow">Layanan</p>
+          <h1 id="complaint-title">Layanan pengaduan</h1>
           <p>Pengaduan terkait interaksi Masisir perlu diterima dengan saksama, ditelaah sesuai kewenangan KPI, dan ditangani tanpa mendahului kesimpulan.</p>
           <div className="kp-complaint-actions"><Link className="kp-button kp-button--red" href="#alur">Pahami tahapannya <IconArrowRight size={18} aria-hidden="true" /></Link><Link className="kp-button kp-button--outline" href="/publik/layanan">Lihat layanan <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
         </div>
@@ -47,7 +47,7 @@ export default async function ComplaintPage(): Promise<React.JSX.Element> {
     </section>
 
     <section className="kp-complaint-process" id="alur" aria-labelledby="process-title"><div className="kp-wrap">
-      <div className="kp-complaint-process__head"><div><p className="kp-eyebrow">Alur penanganan</p><h2 id="process-title">Dari informasi awal<br />ke tindak lanjut.</h2></div><p>Sekretaris KPI menerima laporan; Intelligence and Operation Division menindaklanjuti. Kategori, batas waktu, akses rinci, dan jalur rujukan masih menunggu SOP organisasi.</p></div>
+      <div className="kp-complaint-process__head"><div><p className="kp-eyebrow">Alur penanganan</p><h2 id="process-title">Tahapan setelah pengaduan dikirim</h2></div><p>Sekretaris KPI menerima laporan; Intelligence and Operation Division menindaklanjuti. Kategori, batas waktu, akses rinci, dan jalur rujukan masih menunggu SOP organisasi.</p></div>
       <ol>{stages.map(([number, title, description]) => <li key={number}><span>{number}</span><div><h3>{title}</h3><p>{description}</p></div></li>)}</ol>
     </div></section>
 
