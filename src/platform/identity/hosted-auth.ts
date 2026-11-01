@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
@@ -62,7 +63,8 @@ export async function resolveHostedAccess(client: SupabaseClient, user: User | n
   return error ? null : parseHostedAccess(data, user.id, user.email);
 }
 
-export async function getHostedIdentity(): Promise<HostedAccess | null> {
+// Layout and page both ask for the identity; React's per-request cache keeps that to one Auth check and one RPC.
+export const getHostedIdentity = cache(async (): Promise<HostedAccess | null> => {
   try {
     const client = await createHostedAuthClient();
     if (!client) return null;
@@ -71,4 +73,4 @@ export async function getHostedIdentity(): Promise<HostedAccess | null> {
   } catch {
     return null;
   }
-}
+});
