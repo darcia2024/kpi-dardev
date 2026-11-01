@@ -23,7 +23,7 @@ Tanda ✅ berarti sudah diperbaiki di commit ini. Semua perbaikan itu hanya di U
 | Kategori | Jumlah | Sudah diperbaiki |
 |---|---|---|
 | BUG | 8 | 1 (B1, migration dilaporkan sudah dijalankan di production, hasil belum diperiksa). Sisanya menunggu persetujuan. |
-| UX | 13 | 8 |
+| UX | 13 | 12 (U12 belum; U9 dan U11 masih punya sisa kecil) |
 | REQUIREMENT GAP | 11 | 0 |
 | NEEDS CONFIRMATION | 8 | n/a |
 
@@ -91,7 +91,7 @@ Masalah terbesar ada di tempat lain:
   - `supabase/migrations/20261002001300_confidentiality_sop_v11.sql:79`
   - `src/components/access/governance-workspace.tsx:36`: kolom objek ditandai opsional.
 - **Dampak:** penyetuju melihat pesan "Periksa tanggal, rujukan, status checklist…" dan tidak bisa memperbaikinya. Satu-satunya pilihan adalah menolak.
-- **Solusi (migration + UI):** wajibkan `objectId` dan periksa peringkatnya di `kpi_governance_create`. Di UI, jadikan kolom objek wajib saat Rahasia dipilih.
+- **Solusi (migration + UI):** wajibkan `objectId` dan periksa peringkatnya di `kpi_governance_create`. ✅ Bagian UI selesai: kolom objek wajib saat Rahasia dipilih. Bagian server belum, jadi permohonan yang dikirim di luar portal masih lolos.
 - **Cara uji:** buat F01 Rahasia tanpa objek → harus ditolak dengan pesan yang jelas.
 
 ### B7 · P3 · Daftar sumber informasi di konteks tata kelola memakai izin yang salah
@@ -122,11 +122,11 @@ Masalah terbesar ada di tempat lain:
 | U6 | P1 | Setelah unggah, berkas tidak muncul di daftar (lihat G2) tanpa penjelasan. | `hosted-document-workspace.tsx` | ✅ Pesan menjelaskan bahwa berkas tersimpan sebagai Rahasia dan alasannya tidak tampil |
 | U7 | P3 | Pesan sukses Pengaturan menyuruh "buka ulang halaman Tugas". | `hosted-admin-setup.tsx` | ✅ |
 | U8 | P3 | Galat lama di Kerahasiaan & Hak Akses tidak hilang setelah muat ulang berhasil. | `governance-workspace.tsx:24` | ✅ |
-| U9 | P2 | Form F01 meminta UUID mentah (divisi, objek, keputusan sebelumnya). Izin tampil sebagai kode (`TASK · READ`). Semua galat 400 memakai satu pesan umum yang menyebut "status checklist". Daftar izin yang bisa disetujui tidak disaring sesuai mandat penyetuju. | `governance-workspace.tsx:10,26,35-36,59` | Usulan: pemilih (dropdown) pengganti UUID, label izin bahasa Indonesia, validasi per kolom. Hanya UI, tapi cukup besar. |
-| U10 | P2 | "Hak akses saya" menampilkan kode izin (`ASSET_READ`) dan tanggal ISO mentah. | `hosted-account-panel.tsx:7` | Usulan: katalog label izin yang dipakai bersama oleh U9 |
-| U11 | P2 | Untuk super admin, bingkai portal menulis "CONTOH" padahal pilihan periode di Rapat/Dokumen juga memuat 2026_2027 (PLANNED) tanpa tanda "baca saja". Setelah CONTOH dihapus, bingkai akan menulis "Periode belum diatur" sementara Rapat/Dokumen tetap terbuka. | `src/app/portal/layout.tsx:17`, `hosted-scopes.ts:6`, `hosted-task-scopes.ts:5` | Usulan: satu fungsi lingkup periode bersama, beri label "baca saja" (hanya UI) |
+| U9 | P2 | Form F01 meminta UUID mentah (divisi, objek, keputusan sebelumnya). Izin tampil sebagai kode (`TASK · READ`). Semua galat 400 memakai satu pesan umum yang menyebut "status checklist". Daftar izin yang bisa disetujui tidak disaring sesuai mandat penyetuju. | `governance-workspace.tsx:10,26,35-36,59` | ✅ Objek, keputusan sebelumnya, dan petugas teknis kini dipilih dari daftar. Izin berlabel Indonesia. Kolom wajib mengikuti pilihan (Rahasia wajib objek, perubahan/pencabutan wajib keputusan lama, persetujuan wajib izin). Tanggal diperiksa sebelum dikirim. Daftar izin yang bisa disetujui disaring sesuai mandat. Pesan galat diperjelas. **Sisa:** kode divisi masih diisi manual karena konteks belum memuat daftar divisi (butuh migration kecil). |
+| U10 | P2 | "Hak akses saya" menampilkan kode izin (`ASSET_READ`) dan tanggal ISO mentah. | `hosted-account-panel.tsx:7` | ✅ Memakai `permission-labels.ts` bersama U9 dan tanggal waktu Kairo |
+| U11 | P2 | Untuk super admin, bingkai portal menulis "CONTOH" padahal pilihan periode di Rapat/Dokumen juga memuat 2026_2027 (PLANNED) tanpa tanda "baca saja". Setelah CONTOH dihapus, bingkai akan menulis "Periode belum diatur" sementara Rapat/Dokumen tetap terbuka. | `src/app/portal/layout.tsx:17`, `hosted-scopes.ts:6`, `hosted-task-scopes.ts:5` | ✅ Untuk Rapat dan Dokumen: periode tertentu berlabel "Baca saja" disertai penjelasan, dan bingkai menulis "Belum ada periode aktif". Modul Konten dan Manajemen belum memakai label ini. |
 | U12 | P2 | Menyimpan ulang 2026_2027 dengan tanggal yang sama memunculkan pesan "tersimpan", padahal tidak ada yang berubah. Admin bisa mengira periode sudah aktif. | `20261002000400_system_administration.sql:73-75` | Usulan: RPC mengembalikan tanda `unchanged` (migration kecil) |
-| U13 | P3 | Galat database tak terduga menjadi 503 "Coba lagi dengan isian yang sama", padahal galatnya akan terulang. | `src/app/api/v1/work/governance/route.ts:24` | Usulan: bedakan galat validasi dan gangguan layanan |
+| U13 | P3 | Galat database tak terduga menjadi 503 "Coba lagi dengan isian yang sama", padahal galatnya akan terulang. | `src/app/api/v1/work/governance/route.ts:24` | ✅ Pesan di layar sekarang menyebut gangguan layanan dan arah bantuan. API masih memakai kode 503 yang sama. |
 
 **Cara uji U1–U8:** masuk sebagai pengurus dengan MEETING_READ/MANAGE.
 - Buka rapat: petunjuk catatan tampil, dan riwayat berbahasa Indonesia lengkap dengan nama.
@@ -147,7 +147,7 @@ Masalah terbesar ada di tempat lain:
 | G5 | P2 | Aturan konflik kepentingan hanya berlaku lewat tabel `governance.conflicts`, dan tidak ada RPC atau UI untuk mendeklarasikan konflik. Dalam praktik, aturan ini tidak bisa dijalankan pengurus. | `kebijakan/page.tsx` (paragraf "konflik kepentingan") | RPC + form deklarasi konflik |
 | G6 | P2 | Pengajuan F01 tidak bisa ditarik. Pengajuan yang menunggu atau sudah disetujui tapi tidak pernah dilaksanakan tetap terbuka selamanya. | `20261002001500…` (aksi ACCESS) | Aksi WITHDRAW untuk pemohon, dan batas waktu untuk catatan Disetujui |
 | G7 | P2 | Riwayat peninjauan F02 (catat/verifikasi/tangguhkan) berada di luar riwayat workflow. Siapa yang memverifikasi atau menangguhkan tidak dikirim ke UI, dan peninjau lain tidak bisa melihatnya. | `20261002001500…:70-71,291-311` | Migration: tambah kolom pada konteks, tetapkan aturan visibilitas |
-| G8 | P2 | Divisi dan jabatan `CONTOH_` ikut muncul di roster periode resmi. Jika orang sungguhan ditugaskan ke sana, `contoh-hapus.sql` gagal (foreign key) dan aktivasi 2026_2027 ikut terhalang. Berkas di storage dari masa coba juga tertinggal. | `20261003002900…:16-17,40`, `contoh-hapus.sql:53,68-69` | Sembunyikan atau tandai `CONTOH_` di UI roster, beri pemeriksaan awal dan langkah pembersihan storage di skrip hapus |
+| G8 | P2 | Divisi dan jabatan `CONTOH_` ikut muncul di roster periode resmi. Jika orang sungguhan ditugaskan ke sana, `contoh-hapus.sql` gagal (foreign key) dan aktivasi 2026_2027 ikut terhalang. Berkas di storage dari masa coba juga tertinggal. | `20261003002900…:16-17,40`, `contoh-hapus.sql:53,68-69` | ✅ Sebagian: unit `CONTOH_` kini bertanda "data contoh, jangan dipakai" di form roster. Sisa: pemeriksaan awal dan pembersihan storage di skrip hapus |
 | G9 | P2 | Tes rapat dan aset hanya memuat migration sebelum SOP, jadi aturan klasifikasi dan keputusan untuk rapat/dokumen tidak pernah dites. | `tests/hosted-meetings.test.ts:14`, `tests/hosted-assets.test.ts:22` | Tambah tes dengan migration terbaru dan keputusan F01 |
 | G10 | P2 | Modul pengaduan menganggap periode CLOSING sudah tutup, sementara modul lain menganggapnya masih bekerja. | `20261002001000:65,74`, `20261002001400:118`, `20261003003000:49` | Samakan setelah C3 |
 | G11 | P3 | Kecocokan organisasi–periode hanya dijaga oleh RPC. Tabel rapat, aset, dan keputusan akses tidak memaksanya (pertahanan berlapis). | `20261002000100:31-50` | Composite foreign key atau trigger tambahan |
@@ -224,4 +224,4 @@ Semua butir di bawah memerlukan migration database. Belum ada yang dikerjakan. S
 | 3 | B4 + B5 + B6: perbaikan pelaksanaan F01 | Rendah–sedang | Persetujuan owner |
 | 4 | G1 + G2: klasifikasi rapat dan klasifikasi saat unggah | Sedang. Menyentuh aturan baca. | C2, C7 |
 | 5 | G3–G7: pelengkap SOP (pencabutan oleh pejabat, tinjauan tiga bulan, konflik, tarik permohonan, riwayat F02) | Sedang | C1, C5, C8 |
-| UI | U9–U11: form F01 tanpa UUID, label izin, label periode "baca saja" | Rendah, tanpa migration | Bisa langsung dikerjakan |
+| UI | U9–U11: form F01 tanpa UUID, label izin, label periode "baca saja" | Rendah, tanpa migration | ✅ Selesai, kecuali sisa yang dicatat di tabel UX. Form F01 diuji di browser dengan data tiruan, belum dengan akun sungguhan. |
