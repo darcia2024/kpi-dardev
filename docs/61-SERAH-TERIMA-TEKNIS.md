@@ -69,6 +69,7 @@ Login cukup email dan kata sandi (keputusan 30 Oktober 2026: tanpa login dua lan
 
 | # | Syarat | Penanggung jawab | Status |
 |---|---|---|---|
+| 0 | Data CONTOH dihapus dengan `supabase/manual/contoh-hapus.sql` (dokumen 63) | Pengembang | BELUM |
 | 1 | Periode 2026–2027 aktif dengan nomor keputusan resmi | KPI (keputusan), pengembang (skrip) | BELUM |
 | 2 | Mandat pejabat pemberi keputusan akses tercatat | KPI | BELUM |
 | 3 | Minimal 3 pengurus penguji aktif dengan izin F01 sesuai peran | KPI | BELUM |
