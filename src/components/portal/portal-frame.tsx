@@ -12,6 +12,7 @@ import {
   IconListDetails, IconLock, IconMenu2, IconSearch, IconShieldCheck, IconUserCircle, IconWallet, IconX
 } from "@tabler/icons-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { FloatingReportAssistant } from "@/components/ai/floating-report-assistant";
 import type { PortalNavigationItem } from "@/lib/portal-navigation";
 import { formatPreviewPeriodLabel } from "@/lib/period-label";
@@ -114,7 +115,7 @@ export function PortalFrame({ children, identity, navigation, period, periods, c
           return <div className="portal-sidebar__group" key={group}><p>{group}</p>{items.map((item) => <Link aria-current={current?.href === item.href ? "page" : undefined} className={current?.href === item.href ? "is-current" : ""} href={item.href} key={item.href} onClick={() => setMenuOpen(false)}><NavigationIcon name={item.icon} /><span>{item.label}</span></Link>)}</div>;
         })}
       </nav>
-      <div className="portal-sidebar__foot"><div><span className="portal-sidebar__avatar" aria-hidden="true">{identity.name.slice(0, 1)}</span><span><strong>{identity.name}</strong><small title={identity.email}>{identity.email}</small></span></div><div className="portal-sidebar__account-actions"><Link href="/" onClick={() => setMenuOpen(false)}>Situs publik</Link><SignOutButton/></div></div>
+      <div className="portal-sidebar__foot"><div><span className="portal-sidebar__avatar" aria-hidden="true">{identity.name.slice(0, 1)}</span><span><strong>{identity.name}</strong><small title={identity.email}>{identity.email}</small></span></div><div className="portal-sidebar__account-actions"><Link href="/" onClick={() => setMenuOpen(false)}>Situs publik</Link><ViewModeToggle /><SignOutButton/></div></div>
     </aside>
     <div className="portal-frame__content" inert={menuOpen || undefined}>
       <header className="portal-topbar">

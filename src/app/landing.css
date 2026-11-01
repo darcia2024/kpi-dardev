@@ -22,6 +22,10 @@ body:has(.kp-site) { background: #fff; color-scheme: light; }
 .kp-nav { display: flex; align-items: center; gap: 28px; }
 .kp-nav a { display: flex; align-items: center; min-height: 44px; font-size: .79rem; color: #54464d; font-weight: 500; text-decoration: none; transition: color 160ms; }
 .kp-nav a:hover { color: #b91632; }
+.view-mode-toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: 0; background: none; color: inherit; font: inherit; font-weight: 500; cursor: pointer; }
+.kp-nav .kp-nav-view { font-size: .79rem; color: #54464d; }
+.kp-nav .kp-nav-view:hover { color: #b91632; }
+:root[data-theme="dark"] .kp-nav .kp-nav-view { color: #c6b7be; }
 .kp-nav .kp-nav-login { min-height: 42px; padding: 0 20px; border-radius: 8px; color: #fff; background: #b91632; margin-left: 10px; gap: 8px; }
 .kp-nav .kp-nav-login:hover { background: #991129; color: #fff; }
 .kp-nav-controls { display: flex; align-items: center; gap: 8px; }

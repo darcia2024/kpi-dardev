@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { IconDatabase, IconLayoutSidebar, IconWorld } from "@tabler/icons-react";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { PitchModuleTabs, PitchNav, type PitchModule, type PitchSection } from "@/components/pitch/pitch-interactive";
 import "./pitch.css";
 
@@ -352,6 +353,7 @@ export default function PitchPage(): React.JSX.Element {
       <div className="wrap">
         <span>Update per 30 Oktober 2026, disusun dari kode sistem, dokumen perencanaan, dan catatan perkembangan. Dar Dev.</span>
         <span>Tangkapan layar portal diambil di komputer saya pakai data contoh bertanda TEST. Nggak ada data Masisir di halaman ini.</span>
+        <ViewModeToggle />
       </div>
     </footer>
   </div>;

@@ -60,7 +60,8 @@
 .portal-sidebar__foot { padding: 14px 16px; gap: 10px; }
 .portal-sidebar__foot strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .portal-sidebar__account-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.portal-sidebar__account-actions a { color: var(--portal-muted); text-decoration: none; font-size: .74rem; }
+.portal-sidebar__account-actions a, .portal-sidebar__account-actions .view-mode-toggle { color: var(--portal-muted); text-decoration: none; font-size: .74rem; }
+.portal-sidebar__account-actions .view-mode-toggle { min-height: 36px; gap: 4px; }
 .portal-sidebar__account-actions .button { min-height: 36px; padding: 6px 10px; font-size: .74rem; }
 .portal-topbar { min-height: 66px; grid-template-columns: minmax(0, 1fr) minmax(140px, 280px) auto; gap: 16px; padding-inline: clamp(16px, 2.6vw, 36px); }
 .portal-topbar__search { background: var(--portal-soft); }

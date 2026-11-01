@@ -4,6 +4,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/ui/site-header";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { viewModeBootScript } from "@/lib/view-mode";
 import "./globals.css";
 import "./landing.css";
 import "./publik/public-about.css";
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="id" suppressHydrationWarning>
       <body className={plusJakartaSans.variable}>
+        <script dangerouslySetInnerHTML={{ __html: viewModeBootScript }} />
         <a className="skip-link" href="#main-content">Langsung ke isi</a>
         <SiteHeader />
         <main className="app-main" id="main-content"><Breadcrumbs />{children}</main>

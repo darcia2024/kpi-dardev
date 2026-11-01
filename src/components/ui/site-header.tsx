@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { IconArrowUpRight, IconMenu2, IconX, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { englishPathFor, indonesianPathFor } from "@/lib/public-en";
 
 export function SiteHeader(): React.JSX.Element | null {
@@ -35,6 +36,7 @@ export function SiteHeader(): React.JSX.Element | null {
         <nav id="kp-navigation" className={`kp-nav${menuOpen ? " is-open" : ""}`} aria-label="Navigasi utama">
           {publicLinks.map(([href, label]) => <Link href={href} key={href} aria-current={pathname === href || ((href === "/publik/divisi" || href === "/en/divisions" || href === "/en/publications") && pathname.startsWith(`${href}/`)) ? "page" : undefined} onClick={() => setMenuOpen(false)}>{label}</Link>)}
           <Link className="kp-nav-lang-menu" href={otherLanguage.href} hrefLang={otherLanguage.lang} lang={otherLanguage.lang} onClick={() => setMenuOpen(false)}>{otherLanguage.title}</Link>
+          <ViewModeToggle className="kp-nav-view" />
           <Link href="/masuk" className="kp-nav-login" onClick={() => setMenuOpen(false)}>Login <IconArrowUpRight size={16} aria-hidden="true" /></Link>
         </nav>
         <div className="kp-nav-controls">

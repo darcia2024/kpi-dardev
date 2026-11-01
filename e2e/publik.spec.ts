@@ -33,6 +33,24 @@ test("halaman publik tidak bergeser ke samping di layar sempit", async ({ page }
   }
 });
 
+test("di HP pengunjung bisa pindah ke tampilan desktop dan balik lagi", async ({ page }, info) => {
+  test.skip(info.project.name !== "mobile", "tombol cuma muncul di layar kecil");
+  const viewport = () => page.evaluate(() => ({ meta: document.querySelector('meta[name="viewport"]')?.getAttribute("content"), width: window.innerWidth }));
+  await page.goto("/");
+  await page.getByRole("button", { name: "Buka menu" }).click();
+  await page.getByRole("button", { name: "Tampilan desktop" }).click();
+  await expect.poll(async () => (await viewport()).width).toBe(1280);
+  await page.reload();
+  expect((await viewport()).meta).toBe("width=1280");
+  await page.getByRole("link", { name: "Divisi", exact: true }).first().click();
+  await expect(page).toHaveURL(/\/publik\/divisi$/);
+  expect((await viewport()).meta, "pilihan bertahan saat pindah halaman").toBe("width=1280");
+  await page.getByRole("button", { name: "Tampilan HP" }).click();
+  await expect.poll(async () => (await viewport()).width).toBeLessThan(500);
+  await page.reload();
+  expect((await viewport()).meta).toBe("width=device-width, initial-scale=1");
+});
+
 test("halaman pitch memuat semua gambar layar", async ({ page }) => {
   await page.goto("/pitch");
   const broken = await page.evaluate(async () => {
