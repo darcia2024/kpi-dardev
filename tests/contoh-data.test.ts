@@ -13,7 +13,7 @@ async function productionLikeDatabase(): Promise<PGlite> {
   create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz,raw_app_meta_data jsonb,aud text,role text,banned_until timestamptz);
   create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
   create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);`);
-  const names = (await readdir(new URL("../supabase/migrations/", import.meta.url))).filter((n) => /^2026100200(0[3-9]|1[0-9]|2[0-3])00|^2026100300|^20261005003100|^20261006003[23]00/.test(n)).sort();
+  const names = (await readdir(new URL("../supabase/migrations/", import.meta.url))).filter((n) => /^2026100200(0[3-9]|1[0-9]|2[0-3])00|^2026100300|^20261005003100|^20261006003[23]00|^202611/.test(n)).sort();
   for (const file of ["migrations/20260921000000_platform.sql", "manual/paket-2-install.sql", ...names.map((n) => `migrations/${n}`)]) {
     let text = (await sql(file)).replace("create extension if not exists pgcrypto;", "");
     if (file.endsWith("_system_administration.sql")) {

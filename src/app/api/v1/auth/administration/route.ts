@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createHostedAuthClient,resolveHostedAccess } from "@/platform/identity/hosted-auth";
-import { adminDirectorySchema,adminSetupSchema } from "@/platform/identity/hosted-admin-contract";
+import { adminDirectorySchema,adminPeriodActionSchema,adminSetupSchema } from "@/platform/identity/hosted-admin-contract";
 import { getRequestId } from "@/platform/http/request-id";
 import { errorResponse } from "@/platform/http/response";
 
@@ -14,14 +14,20 @@ async function handle(request:Request):Promise<Response> {
     const identity=authError ? null : await resolveHostedAccess(client,auth.user);
     if(!identity) return errorResponse("AUTHENTICATION_REQUIRED",requestId,401);
     if(!identity.systemAdmin) return errorResponse("AUTHORIZATION_DENIED",requestId,403);
+    let rpc="kpi_admin_directory";
     let args:Record<string,unknown>={};
     if(request.method==="POST") {
       const raw=await request.text();
       if(raw.length>8000) return errorResponse("AUTHENTICATION_INVALID",requestId,413);
-      const input=adminSetupSchema.parse(JSON.parse(raw));
-      args={organization_code:input.organizationCode,organization_name:input.organizationName,period_code:input.periodCode,start_date:input.startsOn,end_date:input.endsOn};
+      const body:unknown=JSON.parse(raw);
+      const periodAction=adminPeriodActionSchema.safeParse(body);
+      if(periodAction.success){rpc="kpi_admin_period_action";args={period_id:periodAction.data.periodId,command:periodAction.data.command,reference:periodAction.data.reference};}
+      else{
+        const input=adminSetupSchema.parse(body);
+        rpc="kpi_admin_setup";args={organization_code:input.organizationCode,organization_name:input.organizationName,period_code:input.periodCode,start_date:input.startsOn,end_date:input.endsOn};
+      }
     }
-    const {data,error}=await client.rpc(request.method==="POST" ? "kpi_admin_setup" : "kpi_admin_directory",args);
+    const {data,error}=await client.rpc(rpc,args);
     if(error) return errorResponse(error.code==="42501" ? "AUTHORIZATION_DENIED" : error.code==="40001" ? "ADMIN_SETUP_CONFLICT" : error.code==="22023" ? "AUTHENTICATION_INVALID" : "CONFIGURATION_INVALID",requestId,error.code==="42501" ? 403 : error.code==="40001" ? 409 : error.code==="22023" ? 400 : 503);
     return Response.json(adminDirectorySchema.parse(data),{headers:{"Cache-Control":"private, no-store","x-request-id":requestId}});
   }catch(error){return errorResponse(error instanceof z.ZodError || error instanceof SyntaxError ? "AUTHENTICATION_INVALID":"CONFIGURATION_INVALID",requestId,error instanceof z.ZodError || error instanceof SyntaxError ? 400:503);}

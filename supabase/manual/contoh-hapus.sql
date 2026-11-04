@@ -10,6 +10,17 @@ begin
  select id into pid from org.periods where organization_id=oid and code='CONTOH';
  select coalesce(array_agg(id),'{}') into contoh from identity.accounts where email like '%@contoh.invalid';
  if pid is null and cardinality(contoh)=0 then raise notice 'Tidak ada data CONTOH; tidak ada perubahan'; return; end if;
+ -- Berhenti dengan pesan jelas, bukan galat foreign key di tengah jalan.
+ if exists(select 1 from org.assignments a join org.positions p on p.id=a.position_id where p.organization_id=oid and p.code like 'CONTOH\_%' escape '\' and a.period_id is distinct from pid) then
+  raise exception 'Ada penugasan di periode resmi yang memakai jabatan CONTOH_. Akhiri atau pindahkan dulu, lalu jalankan lagi';
+ end if;
+ if exists(select 1 from governance.information_resources where period_id=pid and hold_reference is not null) then
+  raise exception 'Ada objek periode CONTOH yang dilindungi sebagai bukti. Lepaskan perlindungannya dulu lewat portal, lalu jalankan lagi';
+ end if;
+ -- Berkas fisik tidak terhapus oleh SQL. Hapus path berikut dari bucket kpi-private lewat dasbor Storage.
+ if exists(select 1 from files.managed_assets where period_id=pid) then
+  raise notice 'Berkas di Storage yang perlu dihapus manual: %',(select string_agg(object_path,', ') from files.managed_assets where period_id=pid);
+ end if;
 
  if pid is not null then
   -- Pengaduan

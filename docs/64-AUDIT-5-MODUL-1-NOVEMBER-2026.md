@@ -15,6 +15,8 @@ Tindak lanjut review owner tanggal 1 November 2026. Modul yang diaudit:
 - Pengecekan otorisasi mencakup dua jalur: lewat API Next.js, dan pemanggilan Supabase langsung memakai JWT pengguna sendiri.
 - Hasil: `npm test` 193/193 lolos, `tsc` bersih, `next build` lolos.
 
+> **Pembaruan 4 November 2026:** temuan di bawah sudah ditindaklanjuti dengan aturan default. Status terbaru ada di [dokumen 65](65-PENYELESAIAN-DAN-SERAH-TERIMA-4-NOVEMBER-2026.md). Isi dokumen ini tetap sebagai catatan kondisi saat audit.
+
 Prioritas: **P1** perlu segera, **P2** penting, **P3** perbaikan kecil.
 Tanda ✅ berarti sudah diperbaiki di commit ini. Semua perbaikan itu hanya di UI dan tidak mengubah aturan bisnis maupun hak akses.
 

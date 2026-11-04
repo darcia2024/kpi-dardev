@@ -16,6 +16,7 @@ declare
     'HANDOVER_READ','HANDOVER_ACCEPT','ASPIRATION_TRIAGE','CASE_READ','CASE_MANAGE','CASE_REVIEW',
     'SOP_ACCESS_REVIEW','SOP_ACCESS_SUSPEND'];
   klasifikasi text[] := array['INTERNAL','TERBATAS','RAHASIA']; -- RAHASIA hanya bisa diberikan per objek
+  penyetuju_rahasia boolean := false; -- isi true untuk Ketua atau pejabat dengan delegasi khusus (SOP 002: persetujuan akses Rahasia)
   target org.periods;
   pejabat uuid;
 begin
@@ -32,7 +33,7 @@ begin
     raise notice 'Pejabat sudah memiliki mandat aktif; tidak ada perubahan'; return;
   end if;
   insert into governance.access_authorities(account_id,organization_id,period_id,classifications,permissions,mandate_reference,starts_at,expires_at)
-    values(pejabat,target.organization_id,target.id,klasifikasi,izin,trim(mandate_reference),now(),(target.ends_on+1)::timestamptz);
+    values(pejabat,target.organization_id,target.id,klasifikasi,case when penyetuju_rahasia then izin||'SOP_SECRET_APPROVE'::text else izin end,trim(mandate_reference),now(),(target.ends_on+1)::timestamptz);
   insert into audit.audit_events(action,module,entity_type,entity_id,result,request_id,metadata)
     values('INITIAL_MANDATE_RECORDED','governance','account',pejabat,'SUCCESS','manual:' || gen_random_uuid(),
       jsonb_build_object('mandateReference',trim(mandate_reference),'periodId',target.id));

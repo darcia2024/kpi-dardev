@@ -34,12 +34,23 @@ export const permissionLabels: Record<string, string> = {
   CASE_REVIEW: "Memeriksa kasus",
   NOTIFICATION_READ: "Melihat notifikasi",
   NOTIFICATION_TEMPLATE_REVIEW: "Memeriksa template notifikasi",
-  ACCESS_REVIEW: "Meninjau hak akses",
-  CLASSIFICATION_APPROVE: "Menyetujui klasifikasi",
-  CLASSIFICATION_DOWNGRADE: "Menurunkan klasifikasi",
-  EVIDENCE_HOLD: "Melindungi bukti",
-  EVIDENCE_RELEASE: "Melepas perlindungan bukti"
+  SOP_ACCESS_REVIEW: "Meninjau hak akses",
+  SOP_ACCESS_SUSPEND: "Menangguhkan hak akses",
+  SOP_SECRET_APPROVE: "Menyetujui akses Rahasia",
+  SOP_INCIDENT_HANDLE: "Menangani insiden",
+  SOP_INCIDENT_APPROVE: "Menyetujui pemulihan insiden",
+  SOP_BPI_REVIEW: "Menangani jalur BPI",
+  SOP_OFFBOARD_MANAGE: "Mengelola serah terima",
+  SOP_OFFBOARD_VERIFY: "Memverifikasi serah terima",
+  SOP_TECHNICAL_OFFBOARD: "Mengakhiri mandat admin teknis",
+  INFORMATION_CLASSIFY: "Menetapkan klasifikasi",
+  INFORMATION_DECLASSIFY: "Menurunkan klasifikasi",
+  INFORMATION_HOLD: "Melindungi bukti",
+  INFORMATION_HOLD_RELEASE: "Melepas perlindungan bukti"
 };
+
+// Decision powers a mandate can carry on top of ordinary permissions. Same codes the database checks.
+export const mandateCapabilities = ["SOP_ACCESS_REVIEW", "SOP_ACCESS_SUSPEND", "SOP_SECRET_APPROVE", "SOP_INCIDENT_HANDLE", "SOP_INCIDENT_APPROVE", "SOP_BPI_REVIEW", "SOP_OFFBOARD_MANAGE", "SOP_OFFBOARD_VERIFY", "SOP_TECHNICAL_OFFBOARD", "INFORMATION_CLASSIFY", "INFORMATION_DECLASSIFY", "INFORMATION_HOLD", "INFORMATION_HOLD_RELEASE"];
 
 export function permissionLabel(code: string): string {
   return permissionLabels[code] ?? code.replaceAll("_", " ");

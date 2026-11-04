@@ -11,6 +11,13 @@ export function scopeLabel(access: HostedAccess, scope: HostedTaskScope): string
   return `${scope.organizationCode} · ${scope.periodCode}${scope.divisionCode ? ` · ${scope.divisionCode}` : ""}${isReadOnlyScope(access, scope) ? " · Baca saja" : ""}`;
 }
 
+// Invited members without the meeting permission can still open the Rapat page and see their internal meetings.
+export function hostedMeetingScopes(access: HostedAccess): HostedTaskScope[] {
+  const unique = new Map<string, HostedTaskScope>();
+  for (const scope of [...hostedScopes(access, "MEETING_READ"), ...access.memberships.map(item => ({ organizationCode: item.organizationCode, periodCode: item.periodCode, divisionCode: null }))]) unique.set(JSON.stringify(scope), scope);
+  return [...unique.values()];
+}
+
 export function hostedScopes(access: HostedAccess, permission: Permission): HostedTaskScope[] {
   const candidates: HostedTaskScope[] = [...(access.systemAdmin ? access.managedScopes || [] : []), ...(access.systemAdmin && access.superAdmin ? (access.superAdminScopes || []).map(({organizationCode,periodCode,divisionCode})=>({organizationCode,periodCode,divisionCode})) : []), ...access.memberships.flatMap(item => [
     { organizationCode: item.organizationCode, periodCode: item.periodCode, divisionCode: null },

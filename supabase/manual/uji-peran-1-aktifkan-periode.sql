@@ -1,6 +1,7 @@
 -- Aktifkan periode resmi 2026_2027 (PLANNED -> ACTIVE).
 -- Jalankan sebagai owner database di SQL Editor HANYA setelah KPI menerbitkan keputusan resmi.
--- Tidak ada RPC aplikasi yang mengubah status periode; status tidak berubah sendiri saat tanggal mulai lewat.
+-- Setelah migration 20261104003500, super admin juga bisa mengaktifkan periode dari /portal/pengaturan. Skrip ini tetap tersedia sebagai jalur owner.
+-- Status tidak berubah sendiri saat tanggal mulai lewat.
 begin;
 do $$
 declare
@@ -19,6 +20,9 @@ begin
   if target.status='ACTIVE' then raise notice 'Periode sudah ACTIVE; tidak ada perubahan'; return; end if;
   if target.status<>'PLANNED' or current_date not between target.starts_on and target.ends_on then
     raise exception 'Periode harus PLANNED dan hari ini harus berada di dalam masa periode';
+  end if;
+  if exists(select 1 from org.periods where organization_id=target.organization_id and id<>target.id and status in ('ACTIVE','CLOSING')) then
+    raise exception 'Masih ada periode lain yang berjalan. Tutup dulu sebelum mengaktifkan periode ini';
   end if;
   update org.periods set status='ACTIVE' where id=target.id;
   insert into audit.audit_events(action,module,entity_type,entity_id,result,request_id,metadata)

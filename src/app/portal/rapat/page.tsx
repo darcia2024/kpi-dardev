@@ -6,7 +6,7 @@ import { hasTestPermission } from "@/platform/authorization/permissions";
 import { MeetingWorkspace } from "@/components/meetings/meeting-workspace";
 import { PortalAccessDenied } from "@/components/portal/portal-access-denied";
 import { getHostedAuthConfiguration, getHostedIdentity } from "@/platform/identity/hosted-auth";
-import { hostedScopes } from "@/platform/authorization/hosted-scopes";
+import { hostedMeetingScopes } from "@/platform/authorization/hosted-scopes";
 import { HostedMeetingWorkspace } from "@/components/meetings/hosted-meeting-workspace";
 
 export default async function MeetingsPage({ searchParams }: { searchParams: Promise<{ meeting?: string | string[] }> }): Promise<React.JSX.Element> {
@@ -15,7 +15,7 @@ export default async function MeetingsPage({ searchParams }: { searchParams: Pro
   if (getHostedAuthConfiguration()) {
     const identity = await getHostedIdentity();
     if (!identity) return <div className="portal-shell"><h1>Masuk diperlukan</h1><Link href="/masuk">Masuk ke portal</Link></div>;
-    const scopes = hostedScopes(identity, "MEETING_READ");
+    const scopes = hostedMeetingScopes(identity);
     return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Rapat organisasi</p><h1>Rapat dan keputusan</h1><p>Undangan, kehadiran, voting dan notulen tersimpan dalam periode kepengurusan yang sesuai.</p></header>{scopes.length ? <HostedMeetingWorkspace identity={identity} scopes={scopes} initialSelectedId={initialMeetingId}/> :<section className="operations-panel"><h2>Periode atau izin rapat belum aktif</h2><p>Rapat memerlukan periode kerja aktif dan penugasan pengurus yang resmi.</p><Link href="/portal/pengaturan">Periksa organisasi dan periode</Link></section>}</div>;
   }
   const scope = await getSelectedPreviewScope();
