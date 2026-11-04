@@ -42,7 +42,7 @@ Pengembang memilih aturan berikut supaya sistem bisa diselesaikan selama KPI fok
 | G9 Celah tes | Selesai | `tests/hosted-completion.test.ts` |
 | G10 Pengaduan memperlakukan CLOSING berbeda | **Tidak diubah** | Tidak berdampak: tidak ada fitur yang menyetel CLOSING. Tombol Tutup langsung ke CLOSED. |
 | G11 Kecocokan organisasi–periode | Selesai | trigger di rapat, aset, keputusan, workflow |
-| Tutorial per peran | Selesai | `/portal/panduan` |
+| Tutorial per peran | Selesai | `/tutorial` |
 
 Sengaja belum dibuat: tautan `?document=` tidak membuka berkas tertentu, karena modul Dokumen hosted tidak punya halaman detail. Tautannya tetap membuka daftar dokumen.
 
@@ -93,7 +93,7 @@ Bukan pekerjaan kode:
 1. Jalankan `supabase/manual/contoh-hapus.sql`. Kalau skrip menyebut berkas Storage, hapus manual lewat dasbor.
 2. Super admin mengaktifkan 2026_2027 dengan rujukan keputusan, dari `/portal/pengaturan`.
 3. Catat mandat awal, lalu buat penugasan pengurus.
-4. Pengurus mengajukan F01 sesuai kebutuhan. `/portal/panduan` menjelaskan alurnya per peran.
+4. Pengurus mengajukan F01 sesuai kebutuhan. `/tutorial` menjelaskan alurnya per peran.
 
 ## Selama jeda
 

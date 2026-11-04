@@ -57,7 +57,7 @@ body:has(.portal-frame), body:has(.portal-guest) { background: #f7f5f6; }
 .screen-catalog__summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; overflow: hidden; border: 1px solid var(--portal-edge, #e4dce0); border-radius: 10px; background: var(--portal-edge, #e4dce0); }
 .screen-catalog__summary > div { display: grid; align-content: space-between; min-height: 122px; padding: 18px; background: var(--portal-surface, #fff); }
 .screen-catalog__summary span { color: var(--portal-muted, #756b70); font-size: .7rem; }
-.screen-catalog__summary strong { color: var(--portal-ink, #332b2f); font-size: 2rem; letter-spacing: -.06em; }
+.screen-catalog__summary strong { color: var(--portal-ink, #332b2f); font-size: 2rem; letter-spacing: -.01em; }
 .screen-catalog__summary small { color: var(--portal-muted, #756b70); font-size: .63rem; line-height: 1.4; }
 .screen-catalog__intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-block: 12px 4px; }
 .screen-catalog__intro h2 { margin: 4px 0; font-size: 1.4rem; }

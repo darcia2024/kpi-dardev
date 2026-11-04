@@ -6,7 +6,7 @@ const destinations: Array<PortalNavigationItem & { permissions: Permission[] }> 
   { href: "/portal", label: "Beranda", group: "Beranda", icon: "home", permissions: [] },
   { href: "/portal/kebijakan", label: "Kerahasiaan & akses", group: "Beranda", icon: "access", permissions: [] },
   { href: "/portal/profil", label: "Profil saya", group: "Beranda", icon: "access", permissions: [] },
-  { href: "/portal/panduan", label: "Panduan", group: "Beranda", icon: "document", permissions: [] },
+  { href: "/tutorial", label: "Panduan", group: "Beranda", icon: "document", permissions: [] },
   { href: "/portal/workspace", label: "Ruang kerja", group: "Pekerjaan", icon: "workspace", permissions: ["WORKSPACE_READ"] },
   { href: "/portal/tugas", label: "Tugas", group: "Pekerjaan", icon: "task", permissions: ["TASK_READ"] },
   { href: "/portal/rapat", label: "Rapat", group: "Pekerjaan", icon: "meeting", permissions: ["MEETING_READ"] },

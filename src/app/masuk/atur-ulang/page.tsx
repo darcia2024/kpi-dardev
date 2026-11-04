@@ -10,7 +10,7 @@ export default async function ResetPasswordPage({ searchParams }: { searchParams
   const token = typeof value === "string" && /^[\w-]{16,200}$/.test(value) ? value : "";
   return <div className="auth-shell">
     <section aria-labelledby="reset-title" className="auth-panel">
-      <div className="intro-panel__topline"><p className="eyebrow">Pemulihan akun</p>{isTestAuthEnabled() && <span className="status-chip">Pratinjau lokal</span>}</div>
+      <div className="intro-panel__topline">{isTestAuthEnabled() && <span className="status-chip">Pratinjau lokal</span>}</div>
       <h1 id="reset-title">Buat kata sandi baru</h1>
       <p className="intro-panel__lead">Gunakan kata sandi yang belum pernah dipakai di layanan lain.</p>
       <ResetPasswordForm token={token} />

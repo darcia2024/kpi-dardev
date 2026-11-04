@@ -27,7 +27,7 @@ export function ScreenCatalog(): React.JSX.Element {
       <div><span>Sebagian tersedia</span><strong>{internalScreenTotals.partial}</strong><small>Masih ada alur yang belum lengkap</small></div>
       <div><span>Belum dibangun</span><strong>{internalScreenTotals.planned}</strong><small>Belum ada alur operasional</small></div>
     </div>
-    <div className="screen-catalog__intro"><div><p className="eyebrow">Registry Fase 0</p><h2 id="internal-catalog-title">Peta layar internal</h2><p>Buka tiap baris untuk melihat target perilaku, izin, dan API terkait. Tautan menuju halaman induk yang tersedia saat ini.</p></div><p>Label status adalah hasil audit awal, bukan sertifikasi siap produksi. Status “terhubung” masih perlu verifikasi lintas role dan alur.</p></div>
+    <div className="screen-catalog__intro"><div><h2 id="internal-catalog-title">Peta layar internal</h2><p>Buka tiap baris untuk melihat target perilaku, izin, dan API terkait. Tautan menuju halaman induk yang tersedia saat ini.</p></div><p>Label status adalah hasil audit awal, bukan sertifikasi siap produksi. Status “terhubung” masih perlu verifikasi lintas role dan alur.</p></div>
     <div className="screen-catalog__filters" role="search">
       <label>Cari ID atau nama<input onChange={(event) => { setQuery(event.target.value); setShown(20); }} placeholder="Contoh: T05 atau bukti" type="search" value={query} /></label>
       <label>Kelompok<select onChange={(event) => { setGroup(event.target.value); setShown(20); }} value={group}><option value="all">Semua kelompok</option>{internalGroups.map((entry) => <option key={entry.code} value={entry.code}>{entry.label}</option>)}</select></label>

@@ -27,7 +27,7 @@ export function HandoverChecklist({ accountId, canManage }: { accountId: string;
   }
 
   return <section className="operations-panel" aria-label="Daftar periksa operasi">
-    <p className="eyebrow">Daftar periksa operasi</p><h2>Tindak lanjut serah terima</h2>
+    <h2>Tindak lanjut serah terima</h2>
     <p>Setiap butir punya penanggung jawab dan tenggat. Pemilik mencatat alasan saat menandai selesai.</p>
     {message && <p className="form-message" role="status">{message}</p>}
     {items.loading && <p role="status">Memuat checklist…</p>}

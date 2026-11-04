@@ -1,0 +1,57 @@
+/* Hallmark · scope: docs page in the existing KPI system · tokens: design-system.css · signature: steps set as a large numbered column beside each task */
+/* critique: reads as a printed handbook, one task per row; nothing here but the instructions and the way to find them */
+/* waive 7b: white on the KPI red button is the site's existing button treatment */
+:root { --brand-red: #b91632; --brand-red-hover: #991129; --brand-red-active: #7f0e22; --on-brand: #fff; }
+.kp-tutorial { --tutorial-gap: clamp(32px, 5vw, 72px); padding-block: clamp(32px, 5vw, 64px) 96px; color: var(--text-primary); }
+.kp-tutorial-head { padding-bottom: 36px; border-bottom: 2px solid var(--text-primary); }
+.kp-tutorial-head h1 { margin: 0; color: inherit; font-size: clamp(2.2rem, 5vw, 3.75rem); font-weight: 600; line-height: 1.1; letter-spacing: -.01em; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+.kp-tutorial-head > p { margin: 16px 0 0; color: var(--text-secondary); font-size: 1.0625rem; line-height: 1.6; }
+.kp-tutorial-head form { max-width: 560px; margin-top: 28px; }
+.kp-tutorial-head label { display: block; margin-bottom: 8px; font-size: .875rem; font-weight: 600; }
+.kp-tutorial-head form > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.kp-tutorial-head input { min-width: 0; min-height: 48px; padding: 0 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: inherit; font: inherit; }
+.kp-tutorial-head input::placeholder { color: var(--text-tertiary); }
+.kp-tutorial-head input:hover { border-color: var(--text-tertiary); }
+.kp-tutorial-head button { min-height: 48px; padding: 0 24px; border: 0; border-radius: 8px; background: var(--brand-red); color: var(--on-brand); font: inherit; font-weight: 600; cursor: pointer; transition: background-color 140ms ease; }
+.kp-tutorial-head button:hover { background: var(--brand-red-hover); }
+.kp-tutorial-head button:active { background: var(--brand-red-active); }
+.kp-tutorial-head button:disabled, .kp-tutorial-head input:disabled { opacity: .55; cursor: not-allowed; }
+.kp-tutorial :is(a, input, button):focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; transition: none; }
+
+.kp-tutorial-layout { display: grid; grid-template-columns: minmax(0, 232px) minmax(0, 1fr); gap: var(--tutorial-gap); padding-top: 40px; }
+.kp-tutorial-roles { position: sticky; top: 96px; align-self: start; }
+.kp-tutorial-roles ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.kp-tutorial-roles a { display: block; padding: 12px; border-left: 2px solid var(--border); color: var(--text-secondary); font-size: .9375rem; line-height: 1.4; text-decoration: none; transition: color 140ms ease, border-color 140ms ease; }
+.kp-tutorial-roles a:hover { border-color: var(--text-tertiary); color: var(--text-primary); }
+.kp-tutorial-roles a[aria-current="page"] { border-color: var(--accent); color: var(--text-primary); font-weight: 600; }
+
+.kp-tutorial-main { min-width: 0; }
+.kp-tutorial-main section > h2 { margin: 0; text-wrap: balance; scroll-margin-top: 96px; color: inherit; font-size: clamp(1.6rem, 3vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -.01em; overflow-wrap: break-word; }
+.kp-tutorial-who { max-width: 62ch; margin: 12px 0 0; color: var(--text-secondary); line-height: 1.65; }
+.kp-tutorial-owner { margin: 32px 0 -20px; color: var(--text-secondary); font-size: .875rem; }
+
+.kp-tutorial-task { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); gap: 16px 40px; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border); scroll-margin-top: 96px; }
+.kp-tutorial-task__head { align-self: start; }
+.kp-tutorial-task h3 { margin: 0; color: inherit; font-size: 1.1875rem; font-weight: 600; line-height: 1.35; letter-spacing: 0; }
+.kp-tutorial-task__head a, .kp-tutorial-clear, .kp-tutorial-stuck a { display: inline-block; margin-top: 12px; color: var(--accent); font-size: .9375rem; font-weight: 600; text-underline-offset: 3px; transition: color 140ms ease; }
+.kp-tutorial-task__head a:hover, .kp-tutorial-clear:hover, .kp-tutorial-stuck a:hover { color: var(--accent-hover); }
+.kp-tutorial-task ol { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; counter-reset: tutorial-step; }
+.kp-tutorial-task li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 12px; line-height: 1.6; counter-increment: tutorial-step; }
+.kp-tutorial-task li::before { content: counter(tutorial-step); color: var(--accent); font-size: 1.625rem; font-weight: 600; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.kp-tutorial-note { margin: 20px 0 0 44px; padding: 12px 16px; border-radius: 8px; background: var(--surface-secondary); color: var(--text-primary); font-size: .9375rem; line-height: 1.6; }
+
+.kp-tutorial-clear { margin-top: 32px; }
+.kp-tutorial-stuck { margin-top: 64px; padding: clamp(24px, 3vw, 32px); border-radius: 8px; background: var(--surface-secondary); }
+.kp-tutorial-main .kp-tutorial-stuck > h2 { font-size: 1.25rem; }
+.kp-tutorial-stuck ul { display: grid; gap: 8px; margin: 16px 0 0; padding-left: 20px; line-height: 1.6; }
+
+@media (max-width: 860px) {
+  .kp-tutorial-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; padding-top: 24px; }
+  .kp-tutorial-roles { position: static; }
+  .kp-tutorial-roles ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .kp-tutorial-roles a { height: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
+  .kp-tutorial-roles a[aria-current="page"] { border-color: var(--accent); }
+  .kp-tutorial-task { grid-template-columns: minmax(0, 1fr); }
+  .kp-tutorial-note { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .kp-tutorial * { transition: none; } }

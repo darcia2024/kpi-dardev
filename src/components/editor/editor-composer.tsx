@@ -250,7 +250,7 @@ export function EditorComposer({ record, seed, initialNotice, siblings, media, a
           <div className="cms-toolbar" role="toolbar" aria-label="Format teks">{tools.map((tool) => <button aria-label={tool.label} key={tool.label} onClick={tool.run} title={tool.shortcut ? `${tool.label} (${tool.shortcut})` : tool.label} type="button">{tool.icon}</button>)}</div>
           <textarea ref={bodyRef} aria-label="Isi naskah" className="cms-surface cms-body" maxLength={draftRules.bodyMax} onChange={(event) => setBody(event.target.value)} onKeyDown={onBodyKey} placeholder={"Mulai menulis…\n\nGunakan toolbar untuk subjudul, daftar, kutipan, dan tautan."} value={body} />
         </> : <article className="cms-preview">
-          <p className="eyebrow">{(viewing?.snapshot.type ?? type)} · {localeLabels[viewing?.snapshot.locale ?? record?.locale ?? locale]}</p>
+          
           <h1>{shown.title || "Judul naskah"}</h1>
           {shown.description && <p className="cms-preview__lead">{shown.description}</p>}
           {shown.body ? <RichTextView className="cms-prose" source={shown.body} /> : <p className="cms-preview__empty">Isi naskah belum ditulis.</p>}

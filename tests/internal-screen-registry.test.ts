@@ -19,7 +19,7 @@ test("internal registry maps all 98 IDs to distinct targets and acceptance crite
 
 test("portal navigation only exposes destinations with a granted read capability", () => {
   const restricted = visiblePortalNavigation((permission) => permission === "TASK_READ" || permission === "ASSET_READ");
-  assert.deepEqual(restricted.map((item) => item.href), ["/portal", "/portal/kebijakan", "/portal/profil", "/portal/panduan", "/portal/tugas", "/portal/dokumen"]);
+  assert.deepEqual(restricted.map((item) => item.href), ["/portal", "/portal/kebijakan", "/portal/profil", "/tutorial", "/portal/tugas", "/portal/dokumen"]);
   const reviewer = visiblePortalNavigation((permission) => permission === "CONTENT_REVIEW");
-  assert.deepEqual(reviewer.map((item) => item.href), ["/portal", "/portal/kebijakan", "/portal/profil", "/portal/panduan", "/portal/editor"]);
+  assert.deepEqual(reviewer.map((item) => item.href), ["/portal", "/portal/kebijakan", "/portal/profil", "/tutorial", "/portal/editor"]);
 });

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IconArrowUpRight, IconSearch } from "@tabler/icons-react";
+import { IconSearch } from "@tabler/icons-react";
 import { PublicFooter } from "@/components/public/public-footer";
 import { queryTerms, searchPublic } from "@/lib/public-search";
 import { publicSearchDocuments } from "@/lib/public-search-index";
@@ -34,7 +34,7 @@ export async function PublicSearchView({ locale, params }: { locale: "id" | "en"
 
   return <div className="kp-site kp-search-page" lang={locale}>
     <section className="kp-wrap kp-search" aria-labelledby="search-title">
-      <p className="kp-eyebrow"><span /> {text.eyebrow}</p>
+      
       <h1 id="search-title">{text.title}</h1>
       <form action={text.base} className="kp-search__form" method="get" role="search">
         <label className="sr-only" htmlFor="public-search">{text.label}</label>
@@ -48,7 +48,7 @@ export async function PublicSearchView({ locale, params }: { locale: "id" | "en"
         <p className="kp-search__count" role="status">{results.length ? text.count(results.length, query) : text.none(query)}</p>
       </>}
       {query && !hasTerms && <p className="kp-search__count" role="status">{text.short}</p>}
-      {shown.length > 0 && <ol className="kp-search__results">{shown.map(({ document, snippet }) => <li key={document.id}><Link href={document.href}><span className="kp-search__label">{text.kinds[document.kind]} · {document.label}</span><strong>{document.title}</strong><p>{snippet}</p><span className="kp-search__url">{document.href.split("?")[0]} <IconArrowUpRight aria-hidden="true" size={14} /></span></Link></li>)}</ol>}
+      {shown.length > 0 && <ol className="kp-search__results">{shown.map(({ document, snippet }) => <li key={document.id}><Link href={document.href}><span className="kp-search__label">{text.kinds[document.kind]} · {document.label}</span><strong>{document.title}</strong><p>{snippet}</p><span className="kp-search__url">{document.href.split("?")[0]}</span></Link></li>)}</ol>}
       {hasTerms && results.length === 0 && <div className="kp-search__empty"><p>{text.hint}</p><div>{text.suggestions.map(([href, label]) => <Link href={href} key={href}>{label}</Link>)}</div></div>}
       {pages > 1 && <nav aria-label={text.pages} className="kp-search__pages">{current > 1 && <Link href={link({ page: current - 1 })}>{text.previous}</Link>}<span>{text.page(current, pages)}</span>{current < pages && <Link href={link({ page: current + 1 })}>{text.next}</Link>}</nav>}
     </section>

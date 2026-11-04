@@ -32,5 +32,5 @@ test("kode MFA salah ditolak", async ({ page }) => {
 test("login dengan kata sandi dan MFA membuka portal", async ({ page }) => {
   await signIn(page, testAccounts.admin);
   await page.goto("/portal/tugas");
-  await expect(page.getByRole("heading", { name: "Daftar tugas dan antrean review." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Tugas dan review" })).toBeVisible();
 });

@@ -29,12 +29,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "KPI PPMI Mesir | Menjaga Interaksi Masisir dengan Amanah",
+  title: "KPI PPMI Mesir | Komisi Peduli Interaksi",
   description: "Ruang resmi Komisi Peduli Interaksi PPMI Mesir untuk edukasi interaksi, informasi publik, dan aspirasi Masisir.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://kpi-dardev.vercel.app"),
   alternates: { canonical: "/" },
   openGraph: {
-    title: "KPI PPMI Mesir | Menjaga Interaksi Masisir dengan Amanah",
+    title: "KPI PPMI Mesir | Komisi Peduli Interaksi",
     description: "Ruang resmi Komisi Peduli Interaksi PPMI Mesir untuk edukasi interaksi, informasi publik, dan aspirasi Masisir.",
     type: "website",
     locale: "id_ID",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "KPI PPMI Mesir | Menjaga Interaksi Masisir dengan Amanah",
+    title: "KPI PPMI Mesir | Komisi Peduli Interaksi",
     description: "Ruang resmi KPI PPMI Mesir untuk edukasi interaksi, informasi publik, dan aspirasi Masisir."
   }
 };

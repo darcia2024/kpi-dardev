@@ -7,7 +7,7 @@ const config={workspace:{title:'Ruang kerja',description:'Tugas, rapat, dan peme
 export type GroupOneModule=keyof typeof config;
 export async function HostedGroupOne({module}:{module:GroupOneModule}){
  const identity=await getHostedIdentity();if(!identity)redirect('/masuk');const item=config[module];const scopes=hostedScopes(identity,item.permission);
- return <div className="portal-shell"><header className="page-heading"><p className="eyebrow">Workspace KPI</p><h1>{item.title}</h1><p>{item.description}</p></header>
+ return <div className="portal-shell"><header className="page-heading"><h1>{item.title}</h1><p>{item.description}</p></header>
  {module==='workspace'?<HostedWorkspaceDashboard scopes={scopes}/>:module==='katalog'?<HostedScreenCatalog administrator={identity.systemAdmin===true}/>:module==='operasi'?<><HostedOperationsPanel administrator={identity.systemAdmin===true}/><HostedManagementWorkspace identity={identity} scopes={scopes} initialKind="RECOVERY_CHECK"/></>:module==='ai'?<HostedAiSurface identity={identity} scopes={scopes}/>:'kind' in item?<HostedManagementWorkspace identity={identity} scopes={scopes} initialKind={item.kind}/>:null}
  </div>;
 }

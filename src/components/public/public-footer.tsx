@@ -26,7 +26,7 @@ export function PublicFooter({ locale = "id" }: { locale?: "id" | "en" }): React
         <Image src="/brand/kpi-ppmi-mesir-logo.png" alt="Logo KPI PPMI Mesir" width={44} height={44} />
         <span><strong>KPI PPMI Mesir</strong><small>Komisi Peduli Interaksi</small></span>
       </Link>
-      <p>Menjaga interaksi.<br />Melindungi martabat.</p>
+      <p>Badan Semi Otonom PPMI Mesir</p>
       <nav aria-label="Navigasi footer informasi publik">
         <Link href="/">Beranda</Link>
         <Link href="/publik">Tentang KPI</Link>

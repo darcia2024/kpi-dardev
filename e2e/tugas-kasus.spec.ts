@@ -16,7 +16,7 @@ test("tugas baru tersimpan dan tetap ada setelah dimuat ulang", async ({ page })
 test("halaman kasus terbuka untuk petugas berizin", async ({ page }) => {
   await signIn(page, testAccounts.admin);
   await page.goto("/portal/kasus");
-  await expect(page.getByRole("heading", { name: "Setiap laporan punya tindak lanjut." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Penanganan laporan" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Antrean kasus" })).toBeVisible();
   await expect(page.getByLabel("Cari kasus")).toBeVisible();
   // Antrean bisa kosong di data lokal; yang penting halaman tidak gagal memuat.

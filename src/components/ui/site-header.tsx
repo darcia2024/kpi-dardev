@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { IconArrowUpRight, IconMenu2, IconX, IconSearch } from "@tabler/icons-react";
+import { IconMenu2, IconX, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
@@ -37,7 +37,7 @@ export function SiteHeader(): React.JSX.Element | null {
           {publicLinks.map(([href, label]) => <Link href={href} key={href} aria-current={pathname === href || ((href === "/publik/divisi" || href === "/en/divisions" || href === "/en/publications") && pathname.startsWith(`${href}/`)) ? "page" : undefined} onClick={() => setMenuOpen(false)}>{label}</Link>)}
           <Link className="kp-nav-lang-menu" href={otherLanguage.href} hrefLang={otherLanguage.lang} lang={otherLanguage.lang} onClick={() => setMenuOpen(false)}>{otherLanguage.title}</Link>
           <ViewModeToggle className="kp-nav-view" />
-          <Link href="/masuk" className="kp-nav-login" onClick={() => setMenuOpen(false)}>Login <IconArrowUpRight size={16} aria-hidden="true" /></Link>
+          <Link href="/masuk" className="kp-nav-login" onClick={() => setMenuOpen(false)}>Login</Link>
         </nav>
         <div className="kp-nav-controls">
           <Link className="kp-nav-lang" href={otherLanguage.href} hrefLang={otherLanguage.lang} lang={otherLanguage.lang} title={otherLanguage.title}>{otherLanguage.label}</Link>

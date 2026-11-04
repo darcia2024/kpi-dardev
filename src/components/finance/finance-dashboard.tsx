@@ -59,7 +59,7 @@ export function FinanceDashboard({ records, usage, threshold, accountId, canMana
   }
 
   return <section className="finance-dashboard" aria-label="Dasbor keuangan">
-    <div className="finance-dashboard__head"><div><p className="eyebrow">Dasbor keuangan</p><h2>Posisi anggaran periode ini</h2></div><button className="button button--quiet" onClick={() => downloadReport(records, usage)} type="button"><IconDownload size={16} aria-hidden="true" />Unduh laporan</button></div>
+    <div className="finance-dashboard__head"><div><h2>Posisi anggaran periode ini</h2></div><button className="button button--quiet" onClick={() => downloadReport(records, usage)} type="button"><IconDownload size={16} aria-hidden="true" />Unduh laporan</button></div>
     <div className="finance-kpis">
       <div><span>Anggaran disahkan</span><strong>{allocated ? units(allocated) : "—"}</strong><small>{usage.length ? `${usage.length} pos anggaran` : "Belum ada anggaran disahkan"}</small></div>
       <div><span>Sudah terpakai</span><strong>{units(spent)}</strong><small>{allocated ? `${Math.round(spent / allocated * 100)}% dari anggaran` : "Dari pembayaran tercatat"}</small></div>

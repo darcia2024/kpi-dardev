@@ -4,7 +4,7 @@ import {portalDemos, findPortalDemo} from "../src/lib/portal-demo";
 import {visiblePortalNavigation} from "../src/lib/portal-navigation";
 
 test("each work module has exactly one identifiable demo, including organization setup", () => {
-  const expected = [...visiblePortalNavigation(() => true).filter(item => item.href !== "/portal/kebijakan" && item.href !== "/portal/panduan").map(item => item.href), "/portal/pengaturan"];
+  const expected = [...visiblePortalNavigation(() => true).filter(item => item.href !== "/portal/kebijakan" && item.href !== "/tutorial").map(item => item.href), "/portal/pengaturan"];
   assert.equal(portalDemos.length, expected.length);
   assert.equal(new Set(portalDemos.map(item => item.href)).size, expected.length);
   assert.equal(new Set(portalDemos.map(item => item.id)).size, expected.length);

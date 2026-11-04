@@ -99,7 +99,7 @@ export function PhotoGallery({ photos }: { photos: GalleryPhoto[] }): React.JSX.
         <button className="kp-public-photo__trigger" style={{ position: "absolute" }} aria-label={`Buka foto ${index + 1}: ${photo.caption}`} onDragStart={(event) => event.preventDefault()} onPointerUp={(event) => { if (drag.current && !drag.current.moved) { opener.current = event.currentTarget; setActiveIndex(index); } }} onClick={(event) => { if (event.detail === 0) { opener.current = event.currentTarget; setActiveIndex(index); } }} type="button">
           <Image alt={photo.alt} fill loading={index < 6 ? "eager" : "lazy"} sizes="(max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw" src={photo.src} />
         </button>
-        <figcaption><span>{String(index + 1).padStart(2, "0")}</span>{photo.caption}</figcaption>
+        <figcaption>{photo.caption}</figcaption>
       </figure>)}
     </div>
 

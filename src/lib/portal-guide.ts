@@ -96,6 +96,19 @@ export const portalGuide: GuideRole[] = [
   }
 ];
 
+export function guideSlug(title: string): string {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+// Every word of the query has to appear somewhere in the feature, so "unggah dokumen" and "dokumen unggah" match alike.
+export function searchGuide(query: string): { role: GuideRole; feature: GuideFeature }[] {
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+  return portalGuide.flatMap(role => role.features
+    .filter(feature => { const text = [feature.title, ...feature.steps, feature.note ?? ""].join(" ").toLowerCase(); return words.every(word => text.includes(word)); })
+    .map(feature => ({ role, feature })));
+}
+
 export function guideRoleForAccount(account: { systemAdmin?: boolean; superAdmin?: boolean }): string {
   return account.systemAdmin && account.superAdmin ? "super" : account.systemAdmin ? "admin" : "semua";
 }

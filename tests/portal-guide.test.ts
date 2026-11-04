@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { access } from "node:fs/promises";
-import { guideRoleForAccount, portalGuide } from "../src/lib/portal-guide";
+import { guideRoleForAccount, guideSlug, portalGuide, searchGuide } from "../src/lib/portal-guide";
 
 test("every guide feature points at a page that exists and says what to do", async () => {
   assert.equal(new Set(portalGuide.map(role => role.key)).size, portalGuide.length);
@@ -12,6 +12,16 @@ test("every guide feature points at a page that exists and says what to do", asy
       await access(new URL(`../src/app${feature.href}/page.tsx`, import.meta.url));
     }
   }
+});
+
+test("tutorial anchors are unique and search matches every word across roles", () => {
+  const slugs = portalGuide.flatMap(role => role.features.map(feature => guideSlug(feature.title)));
+  assert.equal(new Set(slugs).size, slugs.length);
+  assert.ok(slugs.every(slug => /^[a-z0-9-]+$/.test(slug)));
+  assert.ok(searchGuide("dokumen unggah").some(({ feature }) => feature.title === "Mengunggah dokumen"));
+  assert.ok(searchGuide("AKTIFKAN periode").some(({ role }) => role.key === "super"));
+  assert.deepEqual(searchGuide("kata yang tidak ada di panduan"), []);
+  assert.deepEqual(searchGuide("   "), []);
 });
 
 test("the guide opens on the reader's own role", () => {

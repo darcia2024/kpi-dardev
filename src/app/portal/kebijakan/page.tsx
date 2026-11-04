@@ -38,10 +38,10 @@ export default async function PolicyPage():Promise<React.JSX.Element>{
 
  return <div className="portal-shell">
 
- <header className="page-heading"><p className="eyebrow">Tata kelola informasi · Internal</p><h1>Kerahasiaan dan hak akses</h1><p>Akses diberikan untuk menjalankan tugas, dalam ruang lingkup dan masa berlaku yang disetujui.</p><p>SOP 002/SOP/KPI/X/2026 · Versi 1.1 Final · Diterbitkan 2 Oktober 2026. Berlaku sejak pengesahan Dewan Penasehat.</p></header>
+ <header className="page-heading"><h1>Kerahasiaan dan hak akses</h1><p>Akses diberikan untuk menjalankan tugas, dalam ruang lingkup dan masa berlaku yang disetujui.</p><p>SOP 002/SOP/KPI/X/2026 · Versi 1.1 Final · Diterbitkan 2 Oktober 2026. Berlaku sejak pengesahan Dewan Penasehat.</p></header>
 
  <GovernanceWorkspace accountId={identity.accountId} technicalAdmin={identity.systemAdmin===true}/><details className="operations-panel"><summary>Acuan SOP dan klasifikasi informasi</summary>
- <section className="operations-panel"><h2>Hak akses mengikuti keputusan, bukan nama jabatan</h2><p>Admin sistem mengelola konfigurasi dan akun. Akses isi kasus, keuangan, dan dokumen tetap memerlukan penugasan serta keputusan akses. Membaca tidak otomatis memberi hak mengubah, mengunduh, menyalin, meneruskan, menerbitkan, atau memberikan akses kepada orang lain.</p><p>Komitmen kerahasiaan bukan izin akses. Pemohon tidak dapat menyetujui aksesnya sendiri. Pejabat yang memiliki konflik kepentingan tidak boleh mengendalikan persetujuan terkait.</p></section>
+ <section className="operations-panel"><h2>Cara hak akses diberikan</h2><p>Admin sistem mengelola konfigurasi dan akun. Akses isi kasus, keuangan, dan dokumen tetap memerlukan penugasan serta keputusan akses. Membaca tidak otomatis memberi hak mengubah, mengunduh, menyalin, meneruskan, menerbitkan, atau memberikan akses kepada orang lain.</p><p>Komitmen kerahasiaan bukan izin akses. Pemohon tidak dapat menyetujui aksesnya sendiri. Pejabat yang memiliki konflik kepentingan tidak boleh mengendalikan persetujuan terkait.</p></section>
 
  <section className="operations-panel"><h2>Empat klasifikasi informasi</h2><dl>{categories.map(([name,description])=><div key={name}><dt><strong>{name}</strong></dt><dd>{description}</dd></div>)}</dl><p>Dokumen campuran mengikuti klasifikasi tertinggi. Penurunan klasifikasi rahasia harus mendapat persetujuan yang berwenang, disertai alasan dan catatan keputusan.</p></section>
 

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { publishDueContent } from "@/platform/content/scheduled-publishing";
-import Image from "next/image";
 import Link from "next/link";
-import { IconArrowRight, IconArrowUpRight, IconBook2, IconFileText, IconMessageCircle, IconShieldCheck } from "@tabler/icons-react";
 import { PublicationCatalog } from "@/components/public/publication-catalog";
 import { PublicFooter } from "@/components/public/public-footer";
 import { getLocalContentRepository } from "@/platform/content/content-repository";
@@ -28,22 +26,15 @@ export default async function PublicationsPage(): Promise<React.JSX.Element> {
   return <div className="kp-site kp-library">
     <section className="kp-library-hero" aria-labelledby="library-title">
       <div className="kp-wrap kp-library-hero__inner">
-        <p className="kp-eyebrow">Publikasi</p>
+        
         <h1 id="library-title">Materi edukasi dan publikasi KPI</h1>
-        <p>Jelajahi materi tentang norma interaksi, pencegahan persoalan, hak setiap pihak, dan cara KPI bekerja sesuai mandat organisasi.</p>
-        <div className="kp-library-hero__actions"><a className="kp-button kp-button--red" href="#koleksi">Jelajahi koleksi <IconArrowRight size={18} aria-hidden="true" /></a><Link className="kp-button kp-button--outline" href="/publik">Tentang KPI <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
-      </div>
-      <div className="kp-wrap kp-library-ribbon" aria-label="Cakupan materi publik"><span><IconBook2 size={20} aria-hidden="true" /> Edukasi interaksi</span><span><IconShieldCheck size={20} aria-hidden="true" /> Prinsip perlindungan</span><span><IconFileText size={20} aria-hidden="true" /> Panduan yang jelas</span></div>
+        <p>Materi tentang norma interaksi, pencegahan persoalan, hak setiap pihak, dan cara kerja KPI.</p>
+              </div>
     </section>
 
-    <section className="kp-wrap kp-library-feature" aria-labelledby="featured-title">
-      <div className="kp-library-feature__copy"><p className="kp-eyebrow">Pilihan utama</p><h2 id="featured-title">Mulai dari sini: peran dan batas wewenang KPI</h2><p>Kenali peran KPI dalam pencegahan, pengawasan, dan penanganan persoalan interaksi, beserta prinsip yang membatasi setiap kewenangan.</p><Link className="kp-text-link" href="/publik">Baca profil dan mandat KPI <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
-      <div className="kp-library-feature__visual" aria-hidden="true"><div className="kp-library-book"><div><Image src="/brand/kpi-ppmi-mesir-logo.png" alt="" width={46} height={46} /><span>KPI PPMI Mesir</span></div><strong>Peduli.<br />Pahami.<br />Hormati.</strong><small>Ringkasan pedoman<br />Komisi Peduli Interaksi</small></div><div className="kp-library-note"><IconShieldCheck size={26} stroke={1.5} /><span>Martabat dan hak setiap pihak menjadi bagian dari setiap proses.</span></div></div>
-    </section>
+    <section className="kp-library-catalog" id="koleksi" aria-labelledby="catalog-title"><div className="kp-wrap"><div className="kp-library-section-head"><div><h2 id="catalog-title">Semua materi</h2></div><p>{localPreview ? "Koleksi ini memuat konten contoh untuk meninjau tampilan dan alur baca. Publikasi resmi akan tampil setelah persetujuan KPI." : "Publikasi resmi akan tampil setelah proses editorial dan persetujuan KPI selesai."}</p></div>{publications.length ? <PublicationCatalog publications={publications} /> : <p>Belum ada publikasi resmi yang tersedia.</p>}</div></section>
 
-    <section className="kp-library-catalog" id="koleksi" aria-labelledby="catalog-title"><div className="kp-wrap"><div className="kp-library-section-head"><div><p className="kp-eyebrow">Koleksi publik</p><h2 id="catalog-title">Baca sesuai kebutuhanmu.</h2></div><p>{localPreview ? "Koleksi ini memuat konten contoh untuk meninjau tampilan dan alur baca. Publikasi resmi akan tampil setelah persetujuan KPI." : "Publikasi resmi akan tampil setelah proses editorial dan persetujuan KPI selesai."}</p></div>{publications.length ? <PublicationCatalog publications={publications} /> : <p>Belum ada publikasi resmi yang tersedia.</p>}</div></section>
-
-    <section className="kp-wrap kp-library-contact"><div><p className="kp-eyebrow">Ruang penyampaian</p><h2>Ada hal yang ingin disampaikan?</h2><p>Pelajari alur aspirasi lebih dulu agar informasi dapat diterima dengan jelas dan bertanggung jawab.</p></div><Link className="kp-button kp-button--white" href="/publik/aspirasi">Lihat alur aspirasi <IconMessageCircle size={18} aria-hidden="true" /></Link></section>
+    <section className="kp-wrap kp-library-contact"><div><h2>Ada hal yang ingin disampaikan?</h2><p>Baca alur aspirasi lebih dulu.</p></div><Link className="kp-button kp-button--white" href="/publik/aspirasi">Lihat alur aspirasi</Link></section>
 
     <PublicFooter />
   </div>;

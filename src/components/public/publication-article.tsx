@@ -1,6 +1,6 @@
 import {HostedPublicAttachments} from "./hosted-public-attachments";
 import Link from "next/link";
-import { IconArrowLeft, IconArrowUpRight, IconClock, IconLanguage } from "@tabler/icons-react";
+import { IconArrowLeft, IconClock, IconLanguage } from "@tabler/icons-react";
 import { RichTextView } from "@/components/editor/rich-text-view";
 import { PublicFooter } from "@/components/public/public-footer";
 import { readingMinutes } from "@/lib/rich-text";
@@ -40,7 +40,7 @@ export async function PublicationArticle({ article, published, publishedAt, sour
     <article className="kp-example-article kp-wrap">
       <Link className="kp-text-link" href={english ? "/en/publications" : "/publik/publikasi"}><IconArrowLeft size={18} aria-hidden="true" /> {english ? "Back to publications" : "Kembali ke publikasi"}</Link>
       <div className="kp-example-article__heading">
-        <p className="kp-eyebrow">{article.type}{publishedAt ? ` · ${new Date(publishedAt).toLocaleDateString(english ? "en-GB" : "id-ID", { day: "numeric", month: "long", year: "numeric", timeZone: "Africa/Cairo" })}` : ""}</p>
+        
         <h1>{article.title}</h1>
         <p>{article.description}</p>
       </div>
@@ -49,7 +49,7 @@ export async function PublicationArticle({ article, published, publishedAt, sour
       {article.body ? <RichTextView className="kp-example-article__body kp-article-prose" source={article.body} /> : <div className="kp-example-article__body"><p>{article.description}</p></div>}
       {hosted&&<HostedPublicAttachments itemId={article.id}/>}
       {related.length > 0 && <aside className="kp-article-related" aria-labelledby="related-title"><h2 id="related-title">{english ? "More to read" : "Baca juga"}</h2><ul>{related.map((item) => <li key={item.id}><Link href={articlePath(item)}><span>{item.type}</span><strong>{item.title}</strong><small>{item.description}</small></Link></li>)}</ul></aside>}
-      <div className="kp-example-article__end"><p>{english ? "Need to understand the reporting channel?" : "Butuh memahami jalur penyampaian informasi?"}</p><Link className="kp-button kp-button--outline" href={english ? "/en/services" : "/publik/layanan"}>{english ? "See public services" : "Lihat layanan publik"} <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
+      <div className="kp-example-article__end"><p>{english ? "Need to understand the reporting channel?" : "Butuh memahami jalur penyampaian informasi?"}</p><Link className="kp-button kp-button--outline" href={english ? "/en/services" : "/publik/layanan"}>{english ? "See public services" : "Lihat layanan publik"}</Link></div>
     </article>
     <PublicFooter locale={article.locale} />
   </div>;

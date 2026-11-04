@@ -32,7 +32,7 @@ export function BudgetWorkspace({ accountId, canManage, onChanged }: { accountId
   }
 
   return <section className="operations-panel" aria-label="Rancangan anggaran">
-    <p className="eyebrow">Anggaran dan pos</p><h2>Rancangan anggaran per periode</h2>
+    <h2>Rancangan anggaran per periode</h2>
     <p>Angka di bawah hanya untuk pratinjau lokal. Pos yang disetujui dapat dikaitkan ke transaksi; sisa dihitung dari pembayaran yang tercatat pada pos tersebut.</p>
     {message && <p className="form-message" role="status">{message}</p>}
     {plans.loading && <p role="status">Memuat anggaran…</p>}

@@ -28,10 +28,10 @@ export function AiGovernanceWorkspace(): React.JSX.Element {
   }
 
   return <section className="ai-governance" aria-label="Tata kelola AI">
-    <article className="ai-banner"><div><span className="eyebrow">Gerbang aktivasi</span><strong>AI eksternal belum aktif</strong></div><p>{data?.readiness.blockers.join(" ") ?? "Memuat status tata kelola…"}</p></article>
+    <article className="ai-banner"><div><strong>AI eksternal belum aktif</strong></div><p>{data?.readiness.blockers.join(" ") ?? "Memuat status tata kelola…"}</p></article>
     {data?.canManage ? <div className="operations-grid">
       <article className="operations-panel">
-        <p className="eyebrow">Daftar penyedia AI</p><h2>Calon provider dan model</h2>
+        <h2>Calon provider dan model</h2>
         <p>Catat kandidat untuk review. Draf tidak mengaktifkan koneksi dan tidak menyimpan API key.</p>
         <label>Nama penyedia AI<input maxLength={120} value={provider.providerName} onChange={(event) => setProvider({ ...provider, providerName: event.target.value })} /></label>
         <label>ID model<input maxLength={160} value={provider.modelId} onChange={(event) => setProvider({ ...provider, modelId: event.target.value })} /></label>
@@ -41,7 +41,7 @@ export function AiGovernanceWorkspace(): React.JSX.Element {
         <h3>Daftar lokal</h3>{data.providers.length ? <ol>{data.providers.map((item) => <li key={item.id}><strong>{item.providerName || "Provider belum diisi"} · v{item.version}</strong><p>{item.modelId || "Model belum diisi"} · {item.status === "DRAFT" ? "Draf" : "Menunggu review"}</p>{item.status === "DRAFT" ? <div className="ai-form-actions"><button className="button button--quiet" disabled={busy} onClick={() => { setSelectedProvider(item); setProvider({ providerName: item.providerName, modelId: item.modelId, processingRegion: item.processingRegion, promptVersion: item.promptVersion }); }} type="button">Edit</button><button className="button button--quiet" disabled={busy} onClick={() => void submit({ action: "SUBMIT_PROVIDER", id: item.id, version: item.version }, "Kandidat dikirim untuk review; belum aktif.")} type="button">Ajukan review</button></div> : null}</li>)}</ol> : <p>Belum ada kandidat.</p>}
       </article>
       <article className="operations-panel">
-        <p className="eyebrow">Kebijakan AI</p><h2>Batas penggunaan data</h2>
+        <h2>Batas penggunaan data</h2>
         <p>Susun usulan kelas data, lokasi, dan retensi. Nilai yang ditulis di sini belum menjadi kebijakan resmi.</p>
         <label>Kelas data yang diusulkan, pisahkan dengan koma<input maxLength={500} value={policy.allowedDataClasses} onChange={(event) => setPolicy({ ...policy, allowedDataClasses: event.target.value })} /></label>
         <label>Wilayah pemrosesan<input maxLength={120} value={policy.processingRegion} onChange={(event) => setPolicy({ ...policy, processingRegion: event.target.value })} /></label>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { IconArrowLeft, IconArrowUpRight } from "@tabler/icons-react";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { PublicFooter } from "@/components/public/public-footer";
 import { examplePublication } from "@/lib/example-publication";
 import { isTestAuthEnabled } from "@/platform/identity/test-auth";
@@ -19,7 +19,7 @@ export default function ExamplePublicationPage(): React.JSX.Element {
     <article className="kp-example-article kp-wrap">
       <Link className="kp-text-link" href="/publik/publikasi"><IconArrowLeft size={18} aria-hidden="true" /> Kembali ke publikasi</Link>
       <div className="kp-example-article__heading">
-        <p className="kp-eyebrow">Artikel contoh · belum diterbitkan resmi</p>
+        
         <h1>{examplePublication.title}</h1>
         <p>{examplePublication.description}</p>
       </div>
@@ -34,7 +34,7 @@ export default function ExamplePublicationPage(): React.JSX.Element {
         <h2>Peran setiap Masisir</h2>
         <p>Menjaga interaksi bukan hanya tugas sebuah lembaga. Kita dapat memulai dari komunikasi yang jelas, menghormati persetujuan dan batas pribadi, tidak menyebarkan dugaan, serta memberi ruang bagi orang lain untuk menjelaskan sudut pandangnya. Ketika sebuah keadaan membutuhkan bantuan, gunakan jalur yang aman dan hindari menyebarkan identitas atau bukti pribadi di ruang publik.</p>
       </div>
-      <div className="kp-example-article__end"><p>Butuh memahami jalur penyampaian informasi?</p><Link className="kp-button kp-button--outline" href="/publik/layanan">Lihat layanan publik <IconArrowUpRight size={18} aria-hidden="true" /></Link></div>
+      <div className="kp-example-article__end"><p>Butuh memahami jalur penyampaian informasi?</p><Link className="kp-button kp-button--outline" href="/publik/layanan">Lihat layanan publik</Link></div>
     </article>
     <PublicFooter />
   </div>;
