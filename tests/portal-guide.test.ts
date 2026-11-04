@@ -9,6 +9,8 @@ test("every guide feature points at a page that exists and says what to do", asy
     assert.ok(role.features.length > 0);
     for (const feature of role.features) {
       assert.ok(feature.steps.length > 0, feature.title);
+      assert.ok(feature.shots.length > 0, feature.title);
+      for (const shot of feature.shots) { assert.ok(shot.caption.length > 5); await access(new URL(`../public/tutorial/${shot.file}.jpg`, import.meta.url)); }
       await access(new URL(`../src/app${feature.href}/page.tsx`, import.meta.url));
     }
   }

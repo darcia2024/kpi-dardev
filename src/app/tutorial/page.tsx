@@ -14,6 +14,7 @@ function Feature({ feature }: { feature: GuideFeature }): React.JSX.Element {
       <ol>{feature.steps.map(step => <li key={step}>{step}</li>)}</ol>
       {feature.note ? <p className="kp-tutorial-note">{feature.note}</p> : null}
     </div>
+    <div className="kp-tutorial-shots">{feature.shots.map(shot => <figure key={shot.file}><a href={`/tutorial/${shot.file}.jpg`} target="_blank" rel="noopener"><img src={`/tutorial/${shot.file}.jpg`} alt={shot.caption} loading="lazy" /></a><figcaption>{shot.caption}</figcaption></figure>)}</div>
   </article>;
 }
 
@@ -33,7 +34,7 @@ export default async function TutorialPage({ searchParams }: { searchParams: Pro
   return <div className="kp-tutorial">
     <header className="kp-tutorial-head">
       <h1>Tutorial portal pengurus</h1>
-      <p>Pilih peran Anda, atau cari langsung hal yang ingin dikerjakan.</p>
+      <p>Pilih peran Anda, atau cari langsung hal yang ingin dikerjakan. Semua gambar memakai data contoh, dan bisa ditekan untuk memperbesar.</p>
       <form action="/tutorial" role="search"><label htmlFor="tutorial-search">Cari tutorial</label><div><input id="tutorial-search" name="q" type="search" maxLength={80} defaultValue={query} placeholder="Misalnya: unggah dokumen" /><button type="submit">Cari</button></div></form>
     </header>
     <div className="kp-tutorial-layout">

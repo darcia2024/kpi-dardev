@@ -65,6 +65,7 @@ Urutannya penting. Database dulu, baru kode. Kode lama tetap berjalan dengan dat
    - `supabase/migrations/20261104003500_period_activation.sql`
    - `supabase/migrations/20261104003600_access_request_completion.sql`
    - `supabase/migrations/20261104003700_meeting_asset_classification.sql`
+   - `supabase/migrations/20261104003800_governance_names.sql`: nama pemegang akses di register F02 dan riwayat. Ditambahkan belakangan; jalankan kalau tiga di atas sudah terpasang.
 4. **Push kode** supaya Vercel melakukan deploy.
 
 Data yang sudah ada tidak dihapus. Rapat lama menjadi Internal, sama seperti perlakuan sebelumnya. Dokumen lama tetap Rahasia, dan pengunggahnya kini bisa melihatnya.
@@ -101,3 +102,13 @@ Bukan pekerjaan kode:
 - Tetap pasang patch keamanan dan pastikan backup berjalan (dokumen 58).
 - Periksa paket Supabase dan Vercel. Project paket gratis yang lama tidak aktif bisa dijeda penyedianya.
 - Super admin dan admin jangan mengubah data resmi selain yang diperlukan.
+
+## Memperbarui gambar tutorial
+
+Gambar di `public/tutorial` diambil dari portal asli yang berjalan di komputer sendiri, memakai database sementara berisi seluruh migration dan data contoh. Alat ini tidak memakai akun, kunci, atau data production, dan tidak ikut ter-deploy sebagai fitur aplikasi.
+
+1. Jalankan `node scripts/tutorial-capture/start.mjs` lalu tunggu portal siap di port 3100.
+2. Di terminal lain jalankan `node scripts/tutorial-capture/capture.mjs`. Tambahkan nama adegan untuk mengambil satu layar saja.
+3. Kalau layar atau langkah berubah, sesuaikan juga `src/lib/portal-guide.ts`.
+
+Gambar bisa dibuka lewat alamat langsung tanpa login, jadi hanya boleh berisi data contoh.

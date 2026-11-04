@@ -270,16 +270,6 @@ body:has(.kp-site) { background: #fff; color-scheme: light; }
   .kp-division-card p { font-size: .72rem; }
 }
 
-.kp-hero { padding-top: 56px; }
-.kp-hero-top { text-align: left; }
-.kp-site .kp-hero h1 { margin: 0; max-width: 16ch; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.12; }
-.kp-site .kp-hero-lead { max-width: 62ch; margin: 20px 0 0; }
-.kp-hero .kp-actions { justify-content: flex-start; }
-.kp-hero-photo { margin-block: 44px 0; padding-bottom: 56px; }
-.kp-hero-photo > div { position: relative; aspect-ratio: 21 / 9; overflow: hidden; border-radius: 8px; }
-.kp-hero-photo img { object-fit: cover; }
-.kp-activity-band .kp-text-link { margin-top: 28px; }
-@media (max-width: 640px) { .kp-hero-photo > div { aspect-ratio: 4 / 3; } }
 
 .kp-topbar { background: #fcf8f9; box-shadow: none; }
 :root[data-theme="dark"] .kp-topbar { background: #171216; }
