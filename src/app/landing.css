@@ -273,7 +273,6 @@ body:has(.kp-site) { background: #fff; color-scheme: light; }
 
 .kp-topbar { background: #fcf8f9; box-shadow: none; }
 :root[data-theme="dark"] .kp-topbar { background: #171216; }
-.kp-site .kp-education-art, :root[data-theme="dark"] .kp-site .kp-education-art { min-height: 0; padding: 0; background: none; }
 .cms-composer__bar { background: var(--portal-surface, #fff); }
 .report-assistant__header { background: #fff; }
 :root[data-theme="dark"] .report-assistant__header { background: #302027; }
