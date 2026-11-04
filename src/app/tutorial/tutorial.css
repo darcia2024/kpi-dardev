@@ -18,6 +18,20 @@
 .kp-tutorial-head button:disabled, .kp-tutorial-head input:disabled { opacity: .55; cursor: not-allowed; }
 .kp-tutorial :is(a, input, button):focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; transition: none; }
 
+.kp-tutorial-gate { max-width: 480px; margin-inline: auto; min-height: 60vh; }
+.kp-tutorial-gate h1 { margin: 0; color: inherit; font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 600; line-height: 1.15; letter-spacing: -.01em; overflow-wrap: break-word; text-wrap: balance; }
+.kp-tutorial-gate > p { margin: 16px 0 0; color: var(--text-secondary); font-size: 1.0625rem; line-height: 1.6; }
+.kp-tutorial-gate form { margin-top: 28px; }
+.kp-tutorial-gate label { display: block; margin-bottom: 8px; font-size: .875rem; font-weight: 600; }
+.kp-tutorial-gate form > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.kp-tutorial-gate input:not([type="hidden"]) { min-width: 0; min-height: 48px; padding: 0 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: inherit; font: inherit; letter-spacing: .2em; }
+.kp-tutorial-gate input:hover { border-color: var(--text-tertiary); }
+.kp-tutorial-gate input[aria-invalid="true"] { border-color: var(--accent); }
+.kp-tutorial-gate button { min-height: 48px; padding: 0 24px; border: 0; border-radius: 8px; background: var(--brand-red); color: var(--on-brand); font: inherit; font-weight: 600; cursor: pointer; transition: background-color 140ms ease; }
+.kp-tutorial-gate button:hover { background: var(--brand-red-hover); }
+.kp-tutorial-gate button:active { background: var(--brand-red-active); }
+.kp-tutorial-gate form > p { margin: 12px 0 0; color: var(--accent); font-size: .9375rem; font-weight: 600; }
+
 .kp-tutorial-layout { display: grid; grid-template-columns: minmax(0, 232px) minmax(0, 1fr); gap: var(--tutorial-gap); padding-top: 40px; }
 .kp-tutorial-roles { position: sticky; top: 96px; align-self: start; }
 .kp-tutorial-roles ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }

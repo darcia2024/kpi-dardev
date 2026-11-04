@@ -2,6 +2,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { access } from "node:fs/promises";
 import { guideRoleForAccount, guideSlug, portalGuide, searchGuide } from "../src/lib/portal-guide";
+import { isTutorialPin } from "../src/lib/tutorial-access";
+
+test("the tutorial opens only with the exact PIN", () => {
+  assert.equal(isTutorialPin("0001"), true);
+  for (const wrong of ["", "1", "0002", "00010", " 0001", null, 1]) assert.equal(isTutorialPin(wrong), false);
+});
 
 test("every guide feature points at a page that exists and says what to do", async () => {
   assert.equal(new Set(portalGuide.map(role => role.key)).size, portalGuide.length);

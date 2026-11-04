@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { getHostedAuthConfiguration, getHostedIdentity } from "@/platform/identity/hosted-auth";
 import { guideRoleForAccount, guideSlug, portalGuide, searchGuide, type GuideFeature } from "@/lib/portal-guide";
+import { tutorialCookie, tutorialCookieValue } from "@/lib/tutorial-access";
+import { unlockTutorial } from "./actions";
 import "./tutorial.css";
 
 export const metadata: Metadata = { title: "Tutorial portal | KPI PPMI Mesir", description: "Cara memakai portal pengurus KPI PPMI Mesir, per peran dan per fitur.", robots: { index: false } };
@@ -18,15 +20,31 @@ function Feature({ feature }: { feature: GuideFeature }): React.JSX.Element {
   </article>;
 }
 
-export default async function TutorialPage({ searchParams }: { searchParams: Promise<{ peran?: string | string[]; q?: string | string[] }> }): Promise<React.JSX.Element> {
+function PinGate({ wrong, role }: { wrong: boolean; role?: string }): React.JSX.Element {
+  return <div className="kp-tutorial kp-tutorial-gate">
+    <h1>Tutorial portal pengurus</h1>
+    <p>Masukkan PIN untuk membuka tutorial. Tidak perlu login.</p>
+    <form action={unlockTutorial}>
+      {role ? <input type="hidden" name="peran" value={role} /> : null}
+      <label htmlFor="tutorial-pin">PIN</label>
+      <div><input id="tutorial-pin" name="pin" type="password" inputMode="numeric" autoComplete="off" maxLength={4} required autoFocus aria-invalid={wrong} aria-describedby={wrong ? "tutorial-pin-error" : undefined} /><button type="submit">Buka tutorial</button></div>
+      {wrong ? <p id="tutorial-pin-error" role="alert">PIN salah. Coba lagi.</p> : null}
+    </form>
+  </div>;
+}
+
+export default async function TutorialPage({ searchParams }: { searchParams: Promise<{ peran?: string | string[]; q?: string | string[]; pin?: string | string[] }> }): Promise<React.JSX.Element> {
+  const params = await searchParams;
   let ownRole = "semua", signedIn = false;
   if (getHostedAuthConfiguration()) {
     const identity = await getHostedIdentity();
-    if (!identity) redirect("/masuk");
-    ownRole = guideRoleForAccount(identity);
-    signedIn = true;
+    if (identity) {
+      ownRole = guideRoleForAccount(identity);
+      signedIn = true;
+    } else if ((await cookies()).get(tutorialCookie)?.value !== tutorialCookieValue) {
+      return <PinGate wrong={params.pin === "salah"} role={portalGuide.find(item => item.key === params.peran)?.key} />;
+    }
   }
-  const params = await searchParams;
   const query = typeof params.q === "string" ? params.q.trim().slice(0, 80) : "";
   const asked = typeof params.peran === "string" ? portalGuide.find(role => role.key === params.peran) : undefined;
   const role = asked ?? portalGuide.find(item => item.key === ownRole) ?? portalGuide[0];
